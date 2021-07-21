@@ -6,9 +6,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField, Min(0)] private float delayBetweenMovement = 0.1f;
-    [SerializeField] private bool selected = false;
     [SerializeField] private Collider myCollider;
 
+    public bool Selected = false;
     private float castDownDistance = 0.9f;
     private float timer = 0;
     private Vector3 targetPos;
@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (selected && myCollider != null && !doMovement && !freeFall)
+        if (Selected && myCollider != null && !doMovement && !freeFall)
         {
             if (Input.GetKeyDown(KeyCode.D))   MoveToSpace(transform.forward);
             if (Input.GetKeyDown(KeyCode.A))    MoveToSpace(-transform.forward);

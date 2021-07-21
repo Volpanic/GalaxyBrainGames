@@ -845,8 +845,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delayBetweenMovement: 0.1
-  selected: 0
   myCollider: {fileID: 102861467}
+  Selected: 0
 --- !u!1 &211642555
 GameObject:
   m_ObjectHideFlags: 0
@@ -1633,6 +1633,53 @@ Transform:
   m_Father: {fileID: 1666525697}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &364433115
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 364433117}
+  - component: {fileID: 364433116}
+  m_Layer: 0
+  m_Name: CreatureManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &364433116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364433115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75ab24aa44b462f4b83fc347bf428027, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CreaturesInLevel:
+  - {fileID: 102861473}
+  - {fileID: 1345119482}
+  - {fileID: 480621749}
+--- !u!4 &364433117
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364433115}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.7838063, y: 5.332815, z: 1.194922}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &480621743
 GameObject:
   m_ObjectHideFlags: 0
@@ -1984,8 +2031,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delayBetweenMovement: 0.1
-  selected: 1
   myCollider: {fileID: 480621744}
+  Selected: 0
 --- !u!1 &653260035
 GameObject:
   m_ObjectHideFlags: 0
@@ -4127,8 +4174,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delayBetweenMovement: 0.1
-  selected: 0
   myCollider: {fileID: 1345119477}
+  Selected: 0
 --- !u!43 &1349663234
 Mesh:
   m_ObjectHideFlags: 0
