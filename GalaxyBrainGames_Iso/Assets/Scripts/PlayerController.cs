@@ -14,7 +14,9 @@ public class PlayerController : MonoBehaviour
 
     public bool Selected = false;
     public CreatureAnchorPoint AnchordToo = null;
+    public bool ManualMove = true;
 
+    public bool SelectedAndNotMoving { get { return Selected && myCollider != null && !doMovement && !freeFall; } }
 
     private CreatureAnchorPoint toAttach = null;
     private float castDownDistance = 0.9f;
@@ -35,7 +37,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Selected && myCollider != null && !doMovement && !freeFall)
+        if (SelectedAndNotMoving && !Input.GetKey(KeyCode.LeftControl) && !ManualMove)
         {
             if (Input.GetKeyDown(KeyCode.D)) MoveToAdjacentSpace(transform.forward);
             if (Input.GetKeyDown(KeyCode.A)) MoveToAdjacentSpace(-transform.forward);
@@ -91,16 +93,30 @@ public class PlayerController : MonoBehaviour
 
             if(AnchordToo) AnchordToo.DetachCurrent();
 
-            Collider anchor = CheckForAnchorPoint(offset);
+            CheckAndAttachToAnchorPoint(offset);
+        }
+    }
 
-            if(anchor != null)
+    public void CheckAndAttachToAnchorPoint(Vector3 offset, bool autoAttach = false)
+    {
+        Collider anchor = CheckForAnchorPoint(offset);
+
+        if (anchor != null)
+        {
+            toAttach = anchor.gameObject.GetComponent<CreatureAnchorPoint>();
+
+            if (toAttach != null)
             {
-                toAttach = anchor.gameObject.GetComponent<CreatureAnchorPoint>();
+                targetPos = toAttach.transform.position + new Vector3(0, myCollider.bounds.extents.y, 0);
+            }
+        }
 
-                if(toAttach != null)
-                {
-                    targetPos = toAttach.transform.position + new Vector3(0, myCollider.bounds.extents.y, 0);
-                }
+        if(autoAttach)
+        {
+            if (toAttach)
+            {
+                toAttach.AttemptAttach(this, new Vector3(0, myCollider.bounds.extents.y, 0));
+                toAttach = null;
             }
         }
     }
@@ -115,6 +131,11 @@ public class PlayerController : MonoBehaviour
         }
 
         return null;
+    }
+
+    public void DetachAnchorPoint()
+    {
+        if (AnchordToo) AnchordToo.DetachCurrent();
     }
 
     private bool CheckFloorBelow(Vector3 offset, float downDist)
@@ -185,5 +206,15 @@ public class PlayerController : MonoBehaviour
         bool r1Hit = Physics.BoxCast(myCollider.bounds.center, myCollider.bounds.extents, Vector3.down, out hit, transform.rotation, myCollider.bounds.size.y + downDist, groundMask);
 
         transform.position = new Vector3(transform.position.x, hit.point.y + myCollider.bounds.extents.y, transform.position.z);
+    }
+
+    /// <summary>
+    /// Adds the colliders half extents to the Y
+    /// </summary>
+    /// <param name="y"></param>
+    /// <returns></returns>
+    public float CorrectYPos(float y)
+    {
+        return y + myCollider.bounds.extents.y;
     }
 }
