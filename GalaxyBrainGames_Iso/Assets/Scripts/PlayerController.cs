@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     public bool Selected = false;
     public CreatureAnchorPoint AnchordToo = null;
 
+
     private CreatureAnchorPoint toAttach = null;
     private float castDownDistance = 0.9f;
     private float timer = 0;
@@ -74,14 +75,17 @@ public class PlayerController : MonoBehaviour
     public void MoveToSpace(Vector3 position)
     {
         Vector3 offset = transform.position - position;
+        MoveToAdjacentSpace(offset);
     }
 
     public void MoveToAdjacentSpace(Vector3 offset)
     {
-        if (CheckSpaceFree(offset))
+        float addY = 0;
+        if (CheckSpaceFree(offset, out addY))
         {
             startTargetPos = transform.position;
-            targetPos = transform.position += offset;
+            targetPos = transform.position + offset;
+            targetPos.y += addY;
             timer = 0;
             doMovement = true;
 
@@ -99,15 +103,6 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        else
-        {
-            if (CheckSpaceFreeSlope(offset, out Vector3 targetPos))
-            {
-                startTargetPos = transform.position;
-                timer = 0;
-                doMovement = true;
-            }
-        }
     }
 
     private Collider CheckForAnchorPoint(Vector3 offset)
@@ -120,21 +115,6 @@ public class PlayerController : MonoBehaviour
         }
 
         return null;
-    }
-
-    private bool CheckSpaceFreeSlope(Vector3 offset, out Vector3 targetPos)
-    {
-        RaycastHit hit;
-        bool r1Hit = Physics.BoxCast(myCollider.bounds.center + new Vector3(0, myCollider.bounds.extents.y * 3, 0) + offset, myCollider.bounds.extents, Vector3.down, out hit, transform.rotation, myCollider.bounds.size.y * 3 + castDownDistance, groundMask);
-
-        targetPos = transform.position;
-        if (CheckSpaceFree(offset + Vector3.up))
-        {
-            Debug.DrawRay(myCollider.bounds.center + new Vector3(0, myCollider.bounds.extents.y * 3f, 0) + offset, Vector3.down, Color.cyan, 0.5f);
-            targetPos = new Vector3(hit.point.x, hit.point.y + myCollider.bounds.extents.y, hit.point.z);
-        }
-
-        return r1Hit;
     }
 
     private bool CheckFloorBelow(Vector3 offset, float downDist)
@@ -156,9 +136,34 @@ public class PlayerController : MonoBehaviour
         return r1Hit && r2Hit && r3Hit && r4Hit;
     }
 
-    public bool CheckSpaceFree(Vector3 offset)
+    public bool CheckSpaceFree(Vector3 offset, out float addY)
     {
-        return !Physics.CheckBox(myCollider.bounds.center + offset, myCollider.bounds.extents * 0.9f, myCollider.transform.localRotation, groundMask);
+        addY = 0;
+        if(!Physics.CheckBox(myCollider.bounds.center + offset, myCollider.bounds.extents * 0.9f, myCollider.transform.localRotation, groundMask))
+        {
+            return true;
+        }
+        else
+        {
+            Vector3 yOff = new Vector3(0,myCollider.bounds.extents.y,0);
+            //Check if space above is empty
+            if (!Physics.CheckBox(myCollider.bounds.center + offset + yOff, myCollider.bounds.extents * 0.9f, myCollider.transform.localRotation, groundMask))
+            {
+                //Get floor point
+                Ray downRay = new Ray(myCollider.bounds.center + offset + yOff,Vector3.down);
+                RaycastHit hit;
+                Physics.Raycast(downRay, out hit, myCollider.bounds.size.y,groundMask);
+
+                if(hit.collider != null)
+                {
+                    float targetY = hit.point.y + myCollider.bounds.extents.y;
+                    addY = targetY - transform.position.y;
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private void UpdateFreeFall()
