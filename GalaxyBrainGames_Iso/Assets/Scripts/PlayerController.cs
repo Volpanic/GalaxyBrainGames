@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (SelectedAndNotMoving && !Input.GetKey(KeyCode.LeftControl) && !ManualMove)
+        if (SelectedAndNotMoving && !Input.GetKey(KeyCode.LeftControl) && ManualMove)
         {
             if (Input.GetKeyDown(KeyCode.D)) MoveToAdjacentSpace(transform.forward);
             if (Input.GetKeyDown(KeyCode.A)) MoveToAdjacentSpace(-transform.forward);
@@ -59,18 +59,18 @@ public class PlayerController : MonoBehaviour
                     toAttach.AttemptAttach(this, new Vector3(0, myCollider.bounds.extents.y, 0));
                     toAttach = null;
                 }
-
-                //If we should be in free fall
-                if (!CheckFloorBelow(Vector3.zero, castDownDistance))
-                {
-                    freeFall = true;
-                }
             }
         }
 
         if (freeFall)
         {
             UpdateFreeFall();
+        }
+
+        //If we should be in free fall
+        if (ManualMove && !CheckFloorBelow(Vector3.zero, castDownDistance) && AnchordToo == null)
+        {
+            freeFall = true;
         }
     }
 

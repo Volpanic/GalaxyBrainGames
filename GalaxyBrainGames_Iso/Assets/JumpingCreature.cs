@@ -9,26 +9,29 @@ public class JumpingCreature : MonoBehaviour
     [SerializeField] private float maxJumpDistance = 4;
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private LineRenderer lRenderer;
+    [SerializeField] private GameObject landingPointIdecator;
 
     // Start is called before the first frame update
     void Awake()
     {
-        if(controller == null)
+        if (controller == null)
         {
             Debug.LogWarning("Controller not attached to jumping creature! on " + gameObject.name);
             enabled = false;
         }
+
+        if (landingPointIdecator != null) landingPointIdecator.SetActive(true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(controller.SelectedAndNotMoving)
+        if (controller.SelectedAndNotMoving)
         {
             //Jumping mode
-            if(Input.GetKey(KeyCode.LeftControl) && curveMovement < 0)
+            if (Input.GetKey(KeyCode.LeftControl) && curveMovement < 0)
             {
-                if(!selectingJump)
+                if (!selectingJump)
                 {
                     selectingJump = true;
                     startCurve = transform.position;
@@ -36,9 +39,20 @@ public class JumpingCreature : MonoBehaviour
                     endCursor = endCurve;
                     validJump = true;
                     curveMovement = -1;
+
+                    lRenderer.enabled = true;
+                    if(landingPointIdecator != null) landingPointIdecator.SetActive(true);
                 }
 
                 ControlJumpCursor();
+
+            }
+            else if (curveMovement < 0)
+            {
+                selectingJump = false;
+
+                lRenderer.enabled = false;
+                if(landingPointIdecator != null) landingPointIdecator.SetActive(false);
 
             }
             else
@@ -49,18 +63,21 @@ public class JumpingCreature : MonoBehaviour
         else
         {
             selectingJump = false;
+            lRenderer.enabled = false;
+            if (landingPointIdecator != null) landingPointIdecator.SetActive(false);
         }
 
 
         if (curveMovement >= 0)
         {
+            lRenderer.enabled = true;
             curveMovement += Time.deltaTime;
             controller.transform.position = BezierCurve(curveMovement);
 
             if (curveMovement > 1)
             {
                 curveMovement = -1;
-                controller.CheckAndAttachToAnchorPoint(Vector3.zero,true);
+                controller.CheckAndAttachToAnchorPoint(Vector3.zero, true);
                 controller.ManualMove = true;
             }
         }
@@ -73,11 +90,13 @@ public class JumpingCreature : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W)) MoveJumpCursor(-transform.right);
         if (Input.GetKeyDown(KeyCode.S)) MoveJumpCursor(transform.right);
 
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             curveMovement = 0;
             controller.ManualMove = false;
             controller.DetachAnchorPoint();
+            if (landingPointIdecator != null) landingPointIdecator.SetActive(false);
+
         }
     }
 
@@ -86,7 +105,7 @@ public class JumpingCreature : MonoBehaviour
         endCursor += offset;
         RaycastHit hit;
         endCursor.y = transform.position.y + (maxJumpDistance / 2);
-        bool didHit = Physics.Raycast(endCursor,Vector3.down, out hit,float.MaxValue,groundMask);
+        bool didHit = Physics.Raycast(endCursor, Vector3.down, out hit, float.MaxValue, groundMask);
         validJump = false;
 
         if (hit.collider != null)
@@ -99,7 +118,13 @@ public class JumpingCreature : MonoBehaviour
                 validJump = true;
 
                 handle = (startCurve + endCurve) * 0.5f;
-                handle.y += Mathf.Min(1,maxJumpDistance-dist);
+                handle.y += Mathf.Min(1, maxJumpDistance - dist);
+
+                //Set landing poing indecator to right place
+                if (landingPointIdecator != null)
+                {
+                    landingPointIdecator.transform.position = hit.point;
+                }
             }
 
             handle = (startCurve + endCurve) * 0.5f;
@@ -113,7 +138,7 @@ public class JumpingCreature : MonoBehaviour
 
     private void UpdateLineRenderer()
     {
-        if(lRenderer != null)
+        if (lRenderer != null)
         {
             lRenderer.positionCount = lineRendererPoints.Length;
 
@@ -124,7 +149,7 @@ public class JumpingCreature : MonoBehaviour
                 lineRendererPoints[i] = BezierCurve(cur);
                 cur += incr;
             }
-            lineRendererPoints[lineRendererPoints.Length-1] = BezierCurve(1);
+            lineRendererPoints[lineRendererPoints.Length - 1] = BezierCurve(1);
             lRenderer.SetPositions(lineRendererPoints);
         }
     }
