@@ -8,6 +8,7 @@ public class JumpingCreature : MonoBehaviour
     [SerializeField] private PlayerController controller;
     [SerializeField] private float maxJumpDistance = 4;
     [SerializeField] private LayerMask groundMask;
+    [SerializeField] private LineRenderer lRenderer;
 
     // Start is called before the first frame update
     void Awake()
@@ -103,6 +104,28 @@ public class JumpingCreature : MonoBehaviour
 
             handle = (startCurve + endCurve) * 0.5f;
             handle.y += 8;
+
+            UpdateLineRenderer();
+        }
+    }
+
+    private Vector3[] lineRendererPoints = new Vector3[16];
+
+    private void UpdateLineRenderer()
+    {
+        if(lRenderer != null)
+        {
+            lRenderer.positionCount = lineRendererPoints.Length;
+
+            float incr = 1.0f / lineRendererPoints.Length;
+            float cur = 0;
+            for (var i = 0; i < lineRendererPoints.Length; i++)
+            {
+                lineRendererPoints[i] = BezierCurve(cur);
+                cur += incr;
+            }
+            lineRendererPoints[lineRendererPoints.Length-1] = BezierCurve(1);
+            lRenderer.SetPositions(lineRendererPoints);
         }
     }
 
@@ -153,13 +176,13 @@ public class JumpingCreature : MonoBehaviour
 
         if (validJump)
         {
-            float incr = 1.0f / 8.0f;
-            float cur = 0;
-            for (var i = 0; i < 8; i++)
-            {
-                Gizmos.DrawLine(BezierCurve(cur), BezierCurve(cur + incr));
-                cur += incr;
-            }
+            //float incr = 1.0f / 8.0f;
+            //float cur = 0;
+            //for (var i = 0; i < 8; i++)
+            //{
+            //    Gizmos.DrawLine(BezierCurve(cur), BezierCurve(cur + incr));
+            //    cur += incr;
+            //}
         }
     }
 }
