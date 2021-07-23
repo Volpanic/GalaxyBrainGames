@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
 
     public bool SelectedAndNotMoving { get { return Selected && myCollider != null && !doMovement && !freeFall; } }
 
+    private Vector3 tileOffset;
     private CreatureAnchorPoint toAttach = null;
     private float castDownDistance = 0.9f;
     private float timer = 0;
@@ -32,6 +33,11 @@ public class PlayerController : MonoBehaviour
         startTargetPos = transform.position;
         targetPos = transform.position;
         timer = delayBetweenMovement;
+
+        //Work out our offset from a tile
+        tileOffset = new Vector3(transform.position.x - Mathf.Floor(transform.position.x),0,
+            transform.position.z - Mathf.Floor(transform.position.z));
+        tileOffset *= 2f;
     }
 
     // Update is called once per frame
@@ -216,5 +222,13 @@ public class PlayerController : MonoBehaviour
     public float CorrectYPos(float y)
     {
         return y + myCollider.bounds.extents.y;
+    }
+
+    public Vector3 SnapToTileXZ(Vector3 value)
+    {
+        value.x = (Mathf.RoundToInt(value.x / tileOffset.x) * tileOffset.x) + 0.5f;
+        value.z = (Mathf.RoundToInt(value.z / tileOffset.z) * tileOffset.z) + 0.5f;
+
+        return value;
     }
 }

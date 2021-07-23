@@ -11,6 +11,11 @@ public class JumpingCreature : MonoBehaviour
     [SerializeField] private LineRenderer lRenderer;
     [SerializeField] private GameObject landingPointIdecator;
 
+    [SerializeField] private Gradient successfulJumpGradiant;
+    [SerializeField] private Gradient unsuccessfulJumpGradiant;
+
+    private Camera cam;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -19,6 +24,8 @@ public class JumpingCreature : MonoBehaviour
             Debug.LogWarning("Controller not attached to jumping creature! on " + gameObject.name);
             enabled = false;
         }
+
+        cam = Camera.main;
 
         if (landingPointIdecator != null) landingPointIdecator.SetActive(true);
     }
@@ -35,11 +42,12 @@ public class JumpingCreature : MonoBehaviour
                 {
                     selectingJump = true;
                     startCurve = transform.position;
-                    endCurve = startCurve;
-                    endCursor = endCurve;
+                    endCurve = startCurve + transform.forward;
+                    endCursor = endCurve + transform.forward;
                     validJump = true;
                     curveMovement = -1;
 
+                    MoveJumpCursor(Vector3.zero);
                     lRenderer.enabled = true;
                     if(landingPointIdecator != null) landingPointIdecator.SetActive(true);
                 }
@@ -90,6 +98,8 @@ public class JumpingCreature : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W)) MoveJumpCursor(-transform.right);
         if (Input.GetKeyDown(KeyCode.S)) MoveJumpCursor(transform.right);
 
+        ClickInput();
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             curveMovement = 0;
@@ -101,6 +111,21 @@ public class JumpingCreature : MonoBehaviour
         }
     }
 
+    private void ClickInput()
+    {
+        Ray mouseRay = cam.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if(Physics.Raycast(mouseRay,out hit,float.MaxValue,groundMask) && hit.normal.x < 0.5f && hit.normal.z < 0.5f)
+        {
+            Vector3 targetPoint = controller.SnapToTileXZ(hit.point);
+            //targetPoint.y = controller.CorrectYPos(targetPoint.y);
+
+            AdjustCursor(targetPoint);
+            UpdateLineRenderer();
+        }
+    }
+
     private void MoveJumpCursor(Vector3 offset)
     {
         endCursor += offset;
@@ -108,31 +133,49 @@ public class JumpingCreature : MonoBehaviour
         endCursor.y = transform.position.y + (maxJumpDistance / 2);
         bool didHit = Physics.Raycast(endCursor, Vector3.down, out hit, float.MaxValue, groundMask);
         validJump = false;
+        lRenderer.colorGradient = unsuccessfulJumpGradiant;
 
         if (hit.collider != null)
         {
-            float dist = Vector3.Distance(transform.position, hit.point);
-            if (dist <= maxJumpDistance)
+            AdjustCursor(hit.point);
+        }
+        else
+        {
+            endCurve.x = endCursor.x;
+            endCurve.z = endCursor.z;
+
+            if (landingPointIdecator != null)
             {
-                endCurve = hit.point;
-                endCurve.y = controller.CorrectYPos(endCurve.y);
-                validJump = true;
-
-                handle = (startCurve + endCurve) * 0.5f;
-                handle.y += Mathf.Min(1, maxJumpDistance - dist);
-
-                //Set landing poing indecator to right place
-                if (landingPointIdecator != null)
-                {
-                    landingPointIdecator.transform.position = hit.point;
-                }
+                landingPointIdecator.transform.position = endCurve;
             }
+        }
+
+        UpdateLineRenderer();
+    }
+
+    private void AdjustCursor(Vector3 hitPoint)
+    {
+        endCurve = hitPoint;
+        endCurve.y = controller.CorrectYPos(endCurve.y);
+
+        float dist = Vector3.Distance(transform.position, hitPoint);
+        if (dist <= maxJumpDistance)
+        {
+            validJump = true;
 
             handle = (startCurve + endCurve) * 0.5f;
-            handle.y += 8;
-
-            UpdateLineRenderer();
+            handle.y += Mathf.Min(1, maxJumpDistance - dist);
+            lRenderer.colorGradient = successfulJumpGradiant;
         }
+
+        //Set landing poing indecator to right place
+        if (landingPointIdecator != null)
+        {
+            landingPointIdecator.transform.position = hitPoint;
+        }
+
+        handle = (startCurve + endCurve) * 0.5f;
+        handle.y += 8;
     }
 
     private Vector3[] lineRendererPoints = new Vector3[16];
