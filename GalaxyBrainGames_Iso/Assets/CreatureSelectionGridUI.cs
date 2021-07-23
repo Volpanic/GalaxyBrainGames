@@ -8,19 +8,21 @@ public class CreatureSelectionGridUI : MonoBehaviour
 {
     [SerializeField] private HorizontalLayoutGroup layoutGroup;
     [SerializeField] private GameObject creatureUIBlockPrefab;
-    [SerializeField] private CreatureManager manager;
+    [SerializeField] private CreatureData creatureData;
 
     private float initalYPos = 0;
     private GameObject[] creatureUIIcons;
 
     private void OnEnable()
     {
-        manager.OnSelectedChanged += SelectedChanged;
+        if (creatureData == null || creatureData.CreatureManager == null) return;
+        creatureData.CreatureManager.OnSelectedChanged += SelectedChanged;
     }
 
     private void OnDisable()
     {
-        manager.OnSelectedChanged -= SelectedChanged;
+        if (creatureData == null || creatureData.CreatureManager == null) return;
+        creatureData.CreatureManager.OnSelectedChanged -= SelectedChanged;
     }
 
     private void SelectedChanged(int index)
@@ -29,10 +31,10 @@ public class CreatureSelectionGridUI : MonoBehaviour
 
         Vector3 pos;
 
-        for(int i = 0; i < creatureUIIcons.Length; i++)
+        for (int i = 0; i < creatureUIIcons.Length; i++)
         {
             pos = ((RectTransform)creatureUIIcons[i].transform).position;
-            if(i == index)
+            if (i == index)
             {
                 pos.y = initalYPos;
             }
@@ -47,8 +49,10 @@ public class CreatureSelectionGridUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        OnEnable();
+
         //Make sure we have a creature manager
-        if (manager != null && creatureUIBlockPrefab != null && layoutGroup != null)
+        if (creatureData != null && creatureUIBlockPrefab != null && layoutGroup != null)
         {
             //Get text base from prefab
             Text textBase = creatureUIBlockPrefab.GetComponentInChildren<Text>();
@@ -56,19 +60,19 @@ public class CreatureSelectionGridUI : MonoBehaviour
 
 
             //Edit the prefabs text and instantiate it
-            for (int i = 0; i < manager.GetCreatureCount(); i++)
+            for (int i = 0; i < creatureData.GetCreatureCount(); i++)
             {
-                PlayerController creature = manager.GetCreature(i);
-                if(creature != null)
+                PlayerController creature = creatureData.GetCreature(i);
+                if (creature != null)
                 {
                     textBase.text = creature.gameObject.name;
-                    lastObject.Add(Instantiate(creatureUIBlockPrefab,layoutGroup.transform));
+                    lastObject.Add(Instantiate(creatureUIBlockPrefab, layoutGroup.transform));
                 }
             }
 
             LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)layoutGroup.transform);
 
-            if(lastObject.Count >= 0 && lastObject[0] != null) initalYPos = ((RectTransform)lastObject[0].transform).position.y;
+            if (lastObject.Count >= 0 && lastObject[0] != null) initalYPos = ((RectTransform)lastObject[0].transform).position.y;
             creatureUIIcons = lastObject.ToArray();
 
             layoutGroup.enabled = false;

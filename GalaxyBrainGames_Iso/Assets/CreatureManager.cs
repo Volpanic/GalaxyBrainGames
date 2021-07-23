@@ -5,21 +5,25 @@ using UnityEngine;
 
 public class CreatureManager : MonoBehaviour
 {
-    [SerializeField] private List<PlayerController> CreaturesInLevel;
+    [SerializeField] private CreatureData creatureData;
     private int selectedCreature;
-
     public event Action<int> OnSelectedChanged;
+
+    private void Awake()
+    {
+        creatureData.LogManager(this);
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        if (CreaturesInLevel != null && CreaturesInLevel.Count != 0)
+        if (creatureData.CreaturesInLevel != null && creatureData.CreaturesInLevel.Count != 0)
         {
-            for (int i = 1; i < CreaturesInLevel.Count; i++)
+            for (int i = 1; i < creatureData.CreaturesInLevel.Count; i++)
             {
-                CreaturesInLevel[i].Selected = false;
+                creatureData.CreaturesInLevel[i].Selected = false;
             }
-            CreaturesInLevel[0].Selected = true;
+            creatureData.CreaturesInLevel[0].Selected = true;
             if (OnSelectedChanged != null) OnSelectedChanged.Invoke(selectedCreature);
         }
     }
@@ -33,11 +37,11 @@ public class CreatureManager : MonoBehaviour
 
     public void SelectCreature(int newSelection)
     {
-        if (CreaturesInLevel != null && CreaturesInLevel.Count != 0)
+        if (creatureData.CreaturesInLevel != null && creatureData.CreaturesInLevel.Count != 0)
         {
-            CreaturesInLevel[selectedCreature].Selected = false;
-            selectedCreature = WrapNumber(newSelection, 0, CreaturesInLevel.Count);
-            CreaturesInLevel[selectedCreature].Selected = true;
+            creatureData.CreaturesInLevel[selectedCreature].Selected = false;
+            selectedCreature = WrapNumber(newSelection, 0, creatureData.CreaturesInLevel.Count);
+            creatureData.CreaturesInLevel[selectedCreature].Selected = true;
             if (OnSelectedChanged != null) OnSelectedChanged.Invoke(selectedCreature);
         }
     }
@@ -47,28 +51,5 @@ public class CreatureManager : MonoBehaviour
         int _mod = (current - min) % (max - min);
         if (_mod < 0) return _mod + max; 
         else return _mod + min;
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (CreaturesInLevel != null && CreaturesInLevel.Count != 0)
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawSphere(CreaturesInLevel[selectedCreature].transform.position, 0.2f);
-        }
-    }
-
-    public int GetCreatureCount()
-    {
-        if (CreaturesInLevel == null) { return 0; }
-
-        return CreaturesInLevel.Count;
-    }
-
-    public PlayerController GetCreature(int index)
-    {
-        if (CreaturesInLevel == null && CreaturesInLevel.Count <= 0) { return null; }
-
-        return CreaturesInLevel[index];
     }
 }

@@ -10,6 +10,8 @@ public class JumpingCreature : MonoBehaviour
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private LineRenderer lRenderer;
     [SerializeField] private GameObject landingPointIdecator;
+    [SerializeField] private CreatureData creatureData;
+
 
     [SerializeField] private Gradient successfulJumpGradiant;
     [SerializeField] private Gradient unsuccessfulJumpGradiant;
@@ -28,6 +30,8 @@ public class JumpingCreature : MonoBehaviour
         cam = Camera.main;
 
         if (landingPointIdecator != null) landingPointIdecator.SetActive(true);
+
+        creatureData.LogCreature(controller);
     }
 
     // Update is called once per frame
@@ -100,7 +104,7 @@ public class JumpingCreature : MonoBehaviour
 
         ClickInput();
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && validJump)
         {
             curveMovement = 0;
             controller.ManualMove = false;
@@ -121,6 +125,8 @@ public class JumpingCreature : MonoBehaviour
             Vector3 targetPoint = controller.SnapToTileXZ(hit.point);
             //targetPoint.y = controller.CorrectYPos(targetPoint.y);
 
+            validJump = false;
+            lRenderer.colorGradient = unsuccessfulJumpGradiant;
             AdjustCursor(targetPoint);
             UpdateLineRenderer();
         }

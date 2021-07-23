@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField, Min(0)] private float delayBetweenMovement = 0.1f;
@@ -74,7 +75,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //If we should be in free fall
-        if (ManualMove && !CheckFloorBelow(Vector3.zero, castDownDistance) && AnchordToo == null)
+        if (ManualMove && !CheckFloorBelow(Vector3.zero, castDownDistance*0.5f) && AnchordToo == null)
         {
             freeFall = true;
         }

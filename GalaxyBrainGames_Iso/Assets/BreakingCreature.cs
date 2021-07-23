@@ -8,11 +8,12 @@ public class BreakingCreature : MonoBehaviour
     [SerializeField] private PlayerController controller;
     [SerializeField] private LayerMask breakableMask;
     [SerializeField] private Collider myCollider;
+    [SerializeField] private CreatureData creatureData;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-
+        creatureData.LogCreature(controller);
     }
 
     // Update is called once per frame
