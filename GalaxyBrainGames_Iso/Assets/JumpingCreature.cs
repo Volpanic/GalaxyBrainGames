@@ -96,6 +96,7 @@ public class JumpingCreature : MonoBehaviour
             controller.ManualMove = false;
             controller.DetachAnchorPoint();
             if (landingPointIdecator != null) landingPointIdecator.SetActive(false);
+            selectingJump = false;
 
         }
     }
@@ -188,7 +189,7 @@ public class JumpingCreature : MonoBehaviour
         return p;
     }
 
-    public void OnDrawGizmos()
+    public void OnDrawGizmosSelected()
     {
 
         Gizmos.DrawSphere(startCurve, 0.25f);
@@ -198,16 +199,5 @@ public class JumpingCreature : MonoBehaviour
         Gizmos.DrawSphere(handle, 0.25f);
 
         Gizmos.color = Color.blue;
-
-        if (validJump)
-        {
-            //float incr = 1.0f / 8.0f;
-            //float cur = 0;
-            //for (var i = 0; i < 8; i++)
-            //{
-            //    Gizmos.DrawLine(BezierCurve(cur), BezierCurve(cur + incr));
-            //    cur += incr;
-            //}
-        }
     }
 }
