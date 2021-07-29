@@ -8,6 +8,8 @@ public class CreatureData : ScriptableObject
     public List<PlayerController> CreaturesInLevel = new List<PlayerController>();
     public CreatureManager CreatureManager;
 
+    public Dictionary<string, bool> PlayerInventory;
+
     private void OnEnable()
     {
         Debug.Log("DataEnable");
@@ -37,5 +39,21 @@ public class CreatureData : ScriptableObject
     public void LogManager(CreatureManager manger)
     {
         CreatureManager = manger;
+    }
+
+    public void AddItemToInventory(string item)
+    {
+        PlayerInventory.Add(item, true);
+    }
+
+    public bool CheckAndComsumeItem(string item)
+    {
+        if(PlayerInventory.ContainsKey(item))
+        {
+            PlayerInventory.Remove(item);
+            return true;
+        }
+
+        return false;
     }
 }
