@@ -11,6 +11,8 @@ public class JumpingCreature : MonoBehaviour
     [SerializeField] private LineRenderer lRenderer;
     [SerializeField] private GameObject landingPointIdecator;
     [SerializeField] private CreatureData creatureData;
+    [SerializeField] private Collider myCollider;
+    [SerializeField] private LayerMask touchableLayer;
 
 
     [SerializeField] private Gradient successfulJumpGradiant;
@@ -86,11 +88,27 @@ public class JumpingCreature : MonoBehaviour
             curveMovement += Time.deltaTime;
             controller.transform.position = BezierCurve(curveMovement);
 
+            CheckTouchable();
+
             if (curveMovement > 1)
             {
                 curveMovement = -1;
                 controller.CheckAndAttachToAnchorPoint(Vector3.zero, true);
                 controller.ManualMove = true;
+            }
+        }
+    }
+
+    private void CheckTouchable()
+    {
+        Collider[] colliders = Physics.OverlapBox(myCollider.bounds.center, myCollider.bounds.extents,transform.rotation,touchableLayer);
+
+        if (colliders != null && colliders.Length != 0)
+        {
+            for(int i = 0; i < colliders.Length; i++)
+            {
+                Touchable touch = colliders[i].gameObject.GetComponent<Touchable>();
+                if (touch != null) touch.OnTouch.Invoke();
             }
         }
     }

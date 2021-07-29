@@ -27,8 +27,8 @@ public class Controller3D : MonoBehaviour
 
         Vector2 vel = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
-        velocity.x = vel.x;
-        velocity.z = vel.y;
+        velocity.x = vel.x*0.2f;
+        velocity.z = vel.y*0.2f;
 
         CheckCollisions();
     }
@@ -53,28 +53,25 @@ public class Controller3D : MonoBehaviour
         // Horizontal
         if (Physics.BoxCast(center, extents, new Vector3(Mathf.Sign(velocity.x),0,0), out hit, transform.rotation, Mathf.Abs(velocity.x),groundMask))
         {
-            positon.x = hit.point.x + (Mathf.Abs(hit.normal.x) * extents.x);
+            positon.x = hit.point.x + (Mathf.Sign(hit.normal.x) * extents.x);
             velocity.x = 0;
         }
-        else positon.x += velocity.x;
 
         // Vertical
         if (Physics.BoxCast(center, extents, new Vector3(0, Mathf.Sign(velocity.y), 0), out hit, transform.rotation,Mathf.Abs(velocity.y), groundMask))
         {
-            positon.y = hit.point.y + (Mathf.Abs(hit.normal.y) * extents.y);
+            positon.y = hit.point.y + (Mathf.Sign(hit.normal.y) * extents.y);
             velocity.y = 0;
         }
-        else positon.y += velocity.y;
 
         // Depth
         if (Physics.BoxCast(center, extents, new Vector3(0, 0, Mathf.Sign(velocity.z)), out hit, transform.rotation, Mathf.Abs(velocity.z), groundMask))
         {
-            positon.z = hit.point.z + (Mathf.Abs(hit.normal.z) * extents.z);
+            positon.z = hit.point.z + (Mathf.Sign(hit.normal.z) * extents.z);
             velocity.z = 0;
         }
-        else positon.z += velocity.z;
 
-        transform.position = positon;
+        transform.position = positon + velocity;
     }
 
     private void ApplyGravity()
