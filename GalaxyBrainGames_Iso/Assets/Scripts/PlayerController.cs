@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
+[SelectionBase]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField, Min(0)] private float delayBetweenMovement = 0.1f;
