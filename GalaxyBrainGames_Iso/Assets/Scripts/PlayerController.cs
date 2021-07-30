@@ -7,7 +7,7 @@ using UnityEngine;
 [SelectionBase]
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField, Min(0)] private float delayBetweenMovement = 0.1f;
+    [SerializeField, Min(0)] public float delayBetweenMovement = 0.1f;
     [SerializeField] private Collider myCollider;
 
     [Header("Masks")]

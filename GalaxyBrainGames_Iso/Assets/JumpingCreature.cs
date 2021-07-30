@@ -155,7 +155,7 @@ public class JumpingCreature : MonoBehaviour
     {
         endCursor += offset;
         RaycastHit hit;
-        endCursor.y = transform.position.y + (maxJumpDistance / 2);
+        endCursor.y = transform.position.y + (maxJumpDistance);
         bool didHit = Physics.Raycast(endCursor, Vector3.down, out hit, float.MaxValue, groundMask);
         validJump = false;
         lRenderer.colorGradient = unsuccessfulJumpGradiant;

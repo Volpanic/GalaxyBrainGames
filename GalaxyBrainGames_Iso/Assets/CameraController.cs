@@ -41,7 +41,7 @@ public class CameraController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, zoomOutOrthoSize, Time.deltaTime * 5f);
+            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, zoomOutOrthoSize, Time.deltaTime * 3f);
         }
         else
         {

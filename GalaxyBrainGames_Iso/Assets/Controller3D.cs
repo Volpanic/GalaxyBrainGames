@@ -101,7 +101,8 @@ public class Controller3D : MonoBehaviour
 
             if (anchor != null)
             {
-                if (anchor.AttemptAttach(gameObject, new Vector3(0, myCollider.bounds.extents.y, 0)))
+                //if (anchor.AttemptAttach(gameObject, new Vector3(0, myCollider.bounds.extents.y, 0)))
+                if (anchor.AttemptAttach(gameObject, new Vector3(0, 0, 0)))
                 {
                     anchorToo = anchor;
                     velocity = Vector3.zero;
