@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class CreatureAnchorPoint : MonoBehaviour
 {
-    private PlayerController attachedCreature;
+    private GameObject attachedCreature;
 
 
-    public bool AttemptAttach(PlayerController toAttach,Vector3 offsetFromAttachPoint)
+    public bool AttemptAttach(GameObject toAttach,Vector3 offsetFromAttachPoint)
     {
         if(attachedCreature == null)
         {
@@ -16,7 +16,6 @@ public class CreatureAnchorPoint : MonoBehaviour
             //Attach the gosh darn thing
             attachedCreature.transform.parent = this.transform;
             attachedCreature.transform.localPosition = offsetFromAttachPoint;
-            attachedCreature.AnchordToo = this;
 
             return true;
         }
@@ -29,7 +28,6 @@ public class CreatureAnchorPoint : MonoBehaviour
         if (attachedCreature != null)
         {
             attachedCreature.transform.parent = null;
-            attachedCreature.AnchordToo = null;
         }
 
         attachedCreature = null;

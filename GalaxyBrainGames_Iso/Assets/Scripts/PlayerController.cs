@@ -63,7 +63,10 @@ public class PlayerController : MonoBehaviour
 
                 if (toAttach)
                 {
-                    toAttach.AttemptAttach(this, new Vector3(0, myCollider.bounds.extents.y, 0));
+                    if (toAttach.AttemptAttach(gameObject, new Vector3(0, myCollider.bounds.extents.y, 0)))
+                    {
+                        AnchordToo = toAttach;
+                    }
                     toAttach = null;
                 }
             }
@@ -99,6 +102,7 @@ public class PlayerController : MonoBehaviour
             doMovement = true;
 
             if(AnchordToo) AnchordToo.DetachCurrent();
+            AnchordToo = null;
 
             CheckAndAttachToAnchorPoint(offset);
         }
@@ -122,7 +126,10 @@ public class PlayerController : MonoBehaviour
         {
             if (toAttach)
             {
-                toAttach.AttemptAttach(this, new Vector3(0, myCollider.bounds.extents.y, 0));
+                if(toAttach.AttemptAttach(gameObject, new Vector3(0, myCollider.bounds.extents.y, 0)))
+                {
+                    AnchordToo = toAttach;
+                }
                 toAttach = null;
             }
         }
@@ -227,8 +234,8 @@ public class PlayerController : MonoBehaviour
 
     public Vector3 SnapToTileXZ(Vector3 value)
     {
-        value.x = (Mathf.RoundToInt(value.x / tileOffset.x) * tileOffset.x) + 0.5f;
-        value.z = (Mathf.RoundToInt(value.z / tileOffset.z) * tileOffset.z) + 0.5f;
+        value.x = (Mathf.RoundToInt(value.x));
+        value.z = (Mathf.RoundToInt(value.z));
 
         return value;
     }

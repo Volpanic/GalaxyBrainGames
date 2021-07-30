@@ -9,6 +9,18 @@ public class CreatureManager : MonoBehaviour
     private int selectedCreature;
     public event Action<int> OnSelectedChanged;
 
+    public PlayerController SelectedCreature
+    {
+        get
+        {
+            if(creatureData != null)
+            {
+                return creatureData.GetCreature(selectedCreature);
+            }
+            return null;
+        }
+    }
+
     private void Awake()
     {
         creatureData.LogManager(this);
