@@ -5,11 +5,12 @@ using UnityEngine;
 public class SwimingCreature : MonoBehaviour
 {
     [SerializeField] private CreatureData creatureData;
-    [SerializeField] private PlayerController controller;
+    [SerializeField] private FreeMoveController controller;
     [SerializeField] private Collider myCollider;
     [SerializeField] private LayerMask waterMask;
     [SerializeField] private float FastSpeed = 0.1f;
     [SerializeField] private float SlowSpeed = 0.2f;
+    [SerializeField] private GameObject waterParticles;
 
     private void Awake()
     {
@@ -20,11 +21,13 @@ public class SwimingCreature : MonoBehaviour
     {
         if(Physics.CheckBox(myCollider.bounds.center + (Vector3.down * 0.2f), myCollider.bounds.extents,transform.rotation,waterMask))
         {
-            controller.delayBetweenMovement = FastSpeed;
+            controller.Speed = FastSpeed;
+            if (waterParticles != null) waterParticles.SetActive(true);
         }
         else
         {
-            controller.delayBetweenMovement = SlowSpeed;
+            controller.Speed = SlowSpeed;
+            if(waterParticles != null) waterParticles.SetActive(false);
         }
     }
 }

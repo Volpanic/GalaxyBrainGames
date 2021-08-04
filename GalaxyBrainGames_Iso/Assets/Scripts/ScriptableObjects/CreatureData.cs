@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu]
 public class CreatureData : ScriptableObject
 {
-    public List<PlayerController> CreaturesInLevel = new List<PlayerController>();
+    public List<FreeMoveController> CreaturesInLevel = new List<FreeMoveController>();
     public CreatureManager CreatureManager;
 
     public Dictionary<string, bool> PlayerInventory;
@@ -13,7 +13,7 @@ public class CreatureData : ScriptableObject
     private void OnEnable()
     {
         Debug.Log("DataEnable");
-        CreaturesInLevel = new List<PlayerController>();
+        CreaturesInLevel = new List<FreeMoveController>();
     }
 
     public int GetCreatureCount()
@@ -23,16 +23,16 @@ public class CreatureData : ScriptableObject
         return CreaturesInLevel.Count;
     }
 
-    public PlayerController GetCreature(int index)
+    public FreeMoveController GetCreature(int index)
     {
         if (CreaturesInLevel == null && CreaturesInLevel.Count <= 0) { return null; }
 
         return CreaturesInLevel[index];
     }
 
-    public void LogCreature(PlayerController creature)
+    public void LogCreature(FreeMoveController creature)
     {
-        if (CreaturesInLevel == null) CreaturesInLevel = new List<PlayerController>();
+        if (CreaturesInLevel == null) CreaturesInLevel = new List<FreeMoveController>();
         CreaturesInLevel.Add(creature);
     }
 

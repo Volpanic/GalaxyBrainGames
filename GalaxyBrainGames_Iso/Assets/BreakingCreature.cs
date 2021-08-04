@@ -5,49 +5,54 @@ using UnityEngine;
 
 public class BreakingCreature : MonoBehaviour
 {
-    [SerializeField] private PlayerController controller;
+    [SerializeField] private FreeMoveController controller;
     [SerializeField] private LayerMask breakableMask;
     [SerializeField] private Collider myCollider;
     [SerializeField] private CreatureData creatureData;
+    [SerializeField] private float breakRange = 3f;
+
+    private Camera cam;
 
     // Start is called before the first frame update
     void Awake()
     {
         creatureData.LogCreature(controller);
+        cam = Camera.main;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (controller.SelectedAndNotMoving)
+        if (controller.Selected)
         {
             //Jumping mode
-            if (Input.GetKey(KeyCode.LeftControl))
+            if (Input.GetMouseButton(0))
             {
-                UpdateBreakControl();
+                BreakBreakable();
             }
         }
     }
 
-    private void UpdateBreakControl()
-    {
-        if (Input.GetKeyDown(KeyCode.D)) BreakBreakable(transform.forward);
-        if (Input.GetKeyDown(KeyCode.A)) BreakBreakable(-transform.forward);
-        if (Input.GetKeyDown(KeyCode.W)) BreakBreakable(-transform.right);
-        if (Input.GetKeyDown(KeyCode.S)) BreakBreakable(transform.right);
-    }
-
-    public void BreakBreakable(Vector3 offset)
+    public void BreakBreakable()
     {
         //Scan for breakable objects
-        Collider[] breakableColliders = Physics.OverlapBox(myCollider.bounds.center, myCollider.bounds.extents, transform.rotation, breakableMask);
+        Ray mouseRay = cam.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
 
-        //If we did find one
-        if (breakableColliders != null && breakableColliders.Length != 0)
+        if (Physics.Raycast(mouseRay, out hit, float.MaxValue, breakableMask))
         {
-            //DO THE BREAK THING!!!!
-            Breakable breakable = breakableColliders[0].gameObject.GetComponent<Breakable>();
-            breakable.Break();
+            //If we did find one
+            if (hit.collider != null)
+            {
+                float dist = Vector3.Distance(transform.position, hit.point);
+
+                if (dist <= breakRange)
+                {
+                    //DO THE BREAK THING!!!!
+                    Breakable breakable = hit.collider.gameObject.GetComponent<Breakable>();
+                    breakable.Break();
+                }
+            }
         }
     }
 }

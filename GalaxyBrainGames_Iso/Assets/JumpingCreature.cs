@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerController))]
+[RequireComponent(typeof(FreeMoveController))]
 public class JumpingCreature : MonoBehaviour
 {
-    [SerializeField] private PlayerController controller;
+    [SerializeField] private FreeMoveController controller;
     [SerializeField] private float maxJumpDistance = 4;
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private LineRenderer lRenderer;
     [SerializeField] private GameObject landingPointIdecator;
     [SerializeField] private CreatureData creatureData;
-    [SerializeField] private Collider myCollider;
+    [SerializeField] private CharacterController myCollider;
     [SerializeField] private LayerMask touchableLayer;
 
 
@@ -20,7 +20,7 @@ public class JumpingCreature : MonoBehaviour
 
     private Camera cam;
 
-    // Start is called before the first frame update
+    //Start is called before the first frame update
     void Awake()
     {
         if (controller == null)
@@ -39,34 +39,32 @@ public class JumpingCreature : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (controller.SelectedAndNotMoving)
+        if (controller.Selected)
         {
             //Jumping mode
-            if (Input.GetKey(KeyCode.LeftControl) && curveMovement < 0)
+            if ((Input.GetMouseButton(1) || Input.GetMouseButtonUp(1)) || curveMovement < 0)
             {
                 if (!selectingJump)
                 {
                     selectingJump = true;
-                    startCurve = transform.position;
                     endCurve = startCurve + transform.forward;
                     endCursor = endCurve + transform.forward;
                     validJump = true;
                     curveMovement = -1;
 
-                    MoveJumpCursor(Vector3.zero);
                     lRenderer.enabled = true;
-                    if(landingPointIdecator != null) landingPointIdecator.SetActive(true);
+                    if (landingPointIdecator != null) landingPointIdecator.SetActive(true);
                 }
 
-                ControlJumpCursor();
-
+                startCurve = transform.position;
+                ClickInput();
             }
             else if (curveMovement < 0)
             {
                 selectingJump = false;
 
                 lRenderer.enabled = false;
-                if(landingPointIdecator != null) landingPointIdecator.SetActive(false);
+                if (landingPointIdecator != null) landingPointIdecator.SetActive(false);
 
             }
             else
@@ -86,26 +84,44 @@ public class JumpingCreature : MonoBehaviour
         {
             lRenderer.enabled = true;
             curveMovement += Time.deltaTime;
-            controller.transform.position = BezierCurve(curveMovement);
+            controller.AttemptMove(BezierCurve(curveMovement));
 
-            CheckTouchable();
+            CheckForBottom();
 
-            if (curveMovement > 1)
+            if (curveMovement >= 1)
             {
                 curveMovement = -1;
-                controller.CheckAndAttachToAnchorPoint(Vector3.zero, true);
-                controller.ManualMove = true;
+            }
+
+            CheckTouchable();
+        }
+        else
+        {
+            curveMovement = -1;
+        }
+    }
+
+    private void CheckForBottom()
+    {
+        Collider[] cols = Physics.OverlapBox(myCollider.bounds.center,myCollider.bounds.extents*1.1f,transform.rotation,groundMask);
+
+        foreach(Collider col in cols)
+        {
+            if(controller.AttemptAttachToCarry(col.gameObject))
+            {
+                curveMovement = -1;
+                break;
             }
         }
     }
 
     private void CheckTouchable()
     {
-        Collider[] colliders = Physics.OverlapBox(myCollider.bounds.center, myCollider.bounds.extents,transform.rotation,touchableLayer);
+        Collider[] colliders = Physics.OverlapBox(myCollider.bounds.center, myCollider.bounds.extents, transform.rotation, touchableLayer);
 
         if (colliders != null && colliders.Length != 0)
         {
-            for(int i = 0; i < colliders.Length; i++)
+            for (int i = 0; i < colliders.Length; i++)
             {
                 Touchable touch = colliders[i].gameObject.GetComponent<Touchable>();
                 if (touch != null) touch.OnTouch.Invoke();
@@ -113,32 +129,12 @@ public class JumpingCreature : MonoBehaviour
         }
     }
 
-    private void ControlJumpCursor()
-    {
-        if (Input.GetKeyDown(KeyCode.D)) MoveJumpCursor(transform.forward);
-        if (Input.GetKeyDown(KeyCode.A)) MoveJumpCursor(-transform.forward);
-        if (Input.GetKeyDown(KeyCode.W)) MoveJumpCursor(-transform.right);
-        if (Input.GetKeyDown(KeyCode.S)) MoveJumpCursor(transform.right);
-
-        ClickInput();
-
-        if (Input.GetKeyDown(KeyCode.Space) && validJump)
-        {
-            curveMovement = 0;
-            controller.ManualMove = false;
-            controller.DetachAnchorPoint();
-            if (landingPointIdecator != null) landingPointIdecator.SetActive(false);
-            selectingJump = false;
-
-        }
-    }
-
     private void ClickInput()
     {
-        Ray mouseRay = cam.ScreenPointToRay(Input.mousePosition,Camera.MonoOrStereoscopicEye.Mono);
+        Ray mouseRay = cam.ScreenPointToRay(Input.mousePosition, Camera.MonoOrStereoscopicEye.Mono);
         RaycastHit hit;
 
-        if(Physics.Raycast(mouseRay,out hit,float.MaxValue,groundMask) && hit.normal.x < 0.5f && hit.normal.z < 0.5f)
+        if (Physics.Raycast(mouseRay, out hit, float.MaxValue, groundMask) && hit.normal.x < 0.5f && hit.normal.z < 0.5f)
         {
             //Vector3 targetPoint = controller.SnapToTileXZ(hit.point);
             Vector3 targetPoint = hit.point;
@@ -148,34 +144,14 @@ public class JumpingCreature : MonoBehaviour
             lRenderer.colorGradient = unsuccessfulJumpGradiant;
             AdjustCursor(targetPoint);
             UpdateLineRenderer();
-        }
-    }
 
-    private void MoveJumpCursor(Vector3 offset)
-    {
-        endCursor += offset;
-        RaycastHit hit;
-        endCursor.y = transform.position.y + (maxJumpDistance);
-        bool didHit = Physics.Raycast(endCursor, Vector3.down, out hit, float.MaxValue, groundMask);
-        validJump = false;
-        lRenderer.colorGradient = unsuccessfulJumpGradiant;
-
-        if (hit.collider != null)
-        {
-            AdjustCursor(hit.point);
-        }
-        else
-        {
-            endCurve.x = endCursor.x;
-            endCurve.z = endCursor.z;
-
-            if (landingPointIdecator != null)
+            if(validJump && Input.GetMouseButtonUp(2) && (myCollider.isGrounded || controller.IsBeingCarried()))
             {
-                landingPointIdecator.transform.position = endCurve;
+                curveMovement = 0;
+                lRenderer.enabled = false;
+                controller.DetachCarry();
             }
         }
-
-        UpdateLineRenderer();
     }
 
     private void AdjustCursor(Vector3 hitPoint)
@@ -193,7 +169,7 @@ public class JumpingCreature : MonoBehaviour
             lRenderer.colorGradient = successfulJumpGradiant;
         }
 
-        //Set landing poing indecator to right place
+        //Set landing point indecator to right place
         if (landingPointIdecator != null)
         {
             landingPointIdecator.transform.position = hitPoint;

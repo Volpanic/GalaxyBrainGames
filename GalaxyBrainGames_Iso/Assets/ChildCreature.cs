@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ChildCreature : MonoBehaviour
 {
-    [SerializeField] private PlayerController controller;
+    [SerializeField] private FreeMoveController controller;
     [SerializeField] private LayerMask keyMask;
     [SerializeField] private CreatureData creatureData;
 
