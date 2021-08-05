@@ -5,12 +5,10 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [System.Serializable]
-[SelectionBase]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField,Min(0.1f)] private float movementSpeed = 1;
     [SerializeField] private Controller3D controller;
-    [SerializeField] private NavMeshAgent navAgent;
 
     public bool Selected = false;
 
@@ -20,12 +18,14 @@ public class PlayerController : MonoBehaviour
     }
 
     private Camera cam;
-    private NavMeshPath path;
+    private bool moving = false;
+    private Vector3 targetPos = Vector3.zero;
+    private Vector3 startPos = Vector3.zero;
+    private float moveTimer = 0;
 
     private void Awake()
     {
         cam = Camera.main;
-        path = new NavMeshPath();
     }
 
     private void FixedUpdate()
@@ -33,22 +33,49 @@ public class PlayerController : MonoBehaviour
         Vector3 direction = new Vector3(Input.GetAxis("Horizontal"),0,Input.GetAxis("Vertical"));
         direction = transform.TransformDirection(direction);
 
-        controller.SimpleMove(direction * movementSpeed);
+        if(moving)
+        {
+            moveTimer += Time.deltaTime * movementSpeed;
+            Vector3 movemenmt = Vector3.Lerp(startPos,targetPos,moveTimer) - transform.position;
+            controller.SimpleMove(movemenmt);
+        }
+
+        //controller.SimpleMove(direction * movementSpeed);
     }
 
     private void Update()
     {
-        if (Selected && Input.GetMouseButtonDown(0)) ClickInput();
+        if (Selected) Movement();
     }
 
-    private void ClickInput()
+    private void Movement()
     {
-        RaycastHit hit;
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        if(Input.GetKeyDown(KeyCode.W)) StartMove(transform.position +  transform.forward);
+        if(Input.GetKeyDown(KeyCode.A)) StartMove(transform.position + -transform.right  );
+        if(Input.GetKeyDown(KeyCode.D)) StartMove(transform.position +  transform.right  );
+        if(Input.GetKeyDown(KeyCode.S)) StartMove(transform.position + -transform.forward);
+    }
 
-        if(Physics.Raycast(ray, out hit, float.MaxValue))
+    private void StartMove(Vector3 target)
+    {
+        target.y = transform.position.y;
+        Vector3 movement = target - transform.position;
+
+        Ray dirRay = new Ray(controller.CCollider.bounds.center, movement.normalized);
+        RaycastHit hit;
+
+        //Direction cast from center to check if space is free
+        if (!Physics.Raycast(dirRay, 1f, controller.GroundLayer))
         {
-            navAgent.SetDestination(hit.point);
+            //Down from that point to find ground
+            Ray downRay = new Ray(controller.CCollider.bounds.center + movement.normalized, Vector3.down);
+            if (Physics.Raycast(downRay, out hit, 1.1f, controller.GroundLayer))
+            {
+                targetPos = new Vector3(hit.point.x, CorrectYPos(hit.point.y), hit.point.z);
+                startPos = transform.position;
+                moveTimer = 0f;
+                moving = true;
+            }
         }
     }
 
@@ -59,10 +86,10 @@ public class PlayerController : MonoBehaviour
 
     public bool AttemptMove(Vector3 targetPos)
     {
-        navAgent.isStopped = true;
-        Vector3 movement = targetPos - transform.position;
-        controller.SimpleMove(movement);
-        controller.PauseGravityForFrame = true;
+        
+        //Vector3 movement = targetPos - transform.position;
+        //controller.SimpleMove(movement);
+        //controller.PauseGravityForFrame = true;
 
         return true;
     }

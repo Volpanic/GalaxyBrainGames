@@ -18,6 +18,11 @@ public class Controller3D : MonoBehaviour
     [SerializeField] private bool smooth = false;
     [SerializeField] private float smoothSpeed = 10f;
 
+    public LayerMask GroundLayer
+    {
+        get { return groundLayer; }
+    }
+
     public bool PauseGravityForFrame
     {
         get { return preventGravity; }
@@ -59,7 +64,7 @@ public class Controller3D : MonoBehaviour
         //Move using the accumulated velocity.
         Vector3 vel = new Vector3(accumulatedVelocity.x, accumulatedVelocity.y, accumulatedVelocity.z);
 
-        transform.position += vel * Time.fixedDeltaTime;
+        transform.position += vel;
         accumulatedVelocity = Vector3.zero;
     }
 
@@ -69,7 +74,7 @@ public class Controller3D : MonoBehaviour
         if(grounded == false)
         {
             //Subtract gravity until max gravity is reached
-            velocity.y = Mathf.Clamp(velocity.y - gravity, -maxGravity, float.MaxValue);
+            velocity.y = Mathf.Clamp(velocity.y - gravity, -maxGravity, float.MaxValue) * Time.deltaTime;
         }
     }
     
