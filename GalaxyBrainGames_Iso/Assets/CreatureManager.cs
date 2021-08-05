@@ -9,7 +9,7 @@ public class CreatureManager : MonoBehaviour
     private int selectedCreature;
     public event Action<int> OnSelectedChanged;
 
-    public FreeMoveController SelectedCreature
+    public PlayerController SelectedCreature
     {
         get
         {

@@ -62,7 +62,7 @@ public class CreatureSelectionGridUI : MonoBehaviour
             //Edit the prefabs text and instantiate it
             for (int i = 0; i < creatureData.GetCreatureCount(); i++)
             {
-                FreeMoveController creature = creatureData.GetCreature(i);
+                PlayerController creature = creatureData.GetCreature(i);
                 if (creature != null)
                 {
                     textBase.text = creature.gameObject.name;

@@ -12,6 +12,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Controller3D controller;
     [SerializeField] private NavMeshAgent navAgent;
 
+    public bool Selected = false;
+
+    public bool Grounded
+    {
+        get { return controller.Grounded; }
+    }
+
     private Camera cam;
     private NavMeshPath path;
 
@@ -31,7 +38,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0)) ClickInput();
+        if (Selected && Input.GetMouseButtonDown(0)) ClickInput();
     }
 
     private void ClickInput()
@@ -43,5 +50,20 @@ public class PlayerController : MonoBehaviour
         {
             navAgent.SetDestination(hit.point);
         }
+    }
+
+    public float CorrectYPos(float y)
+    {
+        return y + controller.CCollider.bounds.extents.y;
+    }
+
+    public bool AttemptMove(Vector3 targetPos)
+    {
+        navAgent.isStopped = true;
+        Vector3 movement = targetPos - transform.position;
+        controller.SimpleMove(movement);
+        controller.PauseGravityForFrame = true;
+
+        return true;
     }
 }

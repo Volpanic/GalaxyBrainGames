@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BreakingCreature : MonoBehaviour
 {
-    [SerializeField] private FreeMoveController controller;
+    [SerializeField] private PlayerController controller;
     [SerializeField] private LayerMask breakableMask;
     [SerializeField] private Collider myCollider;
     [SerializeField] private CreatureData creatureData;

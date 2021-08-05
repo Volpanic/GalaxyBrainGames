@@ -18,6 +18,22 @@ public class Controller3D : MonoBehaviour
     [SerializeField] private bool smooth = false;
     [SerializeField] private float smoothSpeed = 10f;
 
+    public bool PauseGravityForFrame
+    {
+        get { return preventGravity; }
+        set { preventGravity = value; }
+    }
+
+    public bool Grounded
+    {
+        get { return grounded; }
+    }
+
+    public CapsuleCollider CCollider
+    {
+        get { return myCollider; }
+    }
+
     //Movement
     private Vector3 accumulatedVelocity;
     private Vector3 move;
@@ -25,14 +41,17 @@ public class Controller3D : MonoBehaviour
     private bool grounded;
     private float currentGravity = 0;
     private Vector3 vel;
+    private bool preventGravity = false;
 
     public void SimpleMove(Vector3 movement)
     {
         accumulatedVelocity += movement;
-        ApplyGravity(ref accumulatedVelocity);
+        if(!preventGravity) ApplyGravity(ref accumulatedVelocity);
         FinalMove();
         GroundCheck();
         CollisionCheck();
+
+        preventGravity = false;
     }
 
     private void FinalMove()
@@ -61,7 +80,7 @@ public class Controller3D : MonoBehaviour
         RaycastHit temp;
 
         //Raycast down significant distance to do basic ground check.
-        if(Physics.SphereCast(ray,myCollider.radius,out temp,20f,groundLayer))
+        if(Physics.SphereCast(ray,myCollider.radius,out temp,myCollider.bounds.size.y * 1.2f,groundLayer))
         {
             GroundConfirm(temp);
         }
