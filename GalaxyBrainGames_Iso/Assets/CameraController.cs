@@ -29,7 +29,7 @@ public class CameraController : MonoBehaviour
         }
         else if(creatureData != null)
         {
-            if (creatureData.CreatureManager != null)
+            if (creatureData.CreatureManager != null && creatureData.CreatureManager.SelectedCreature != null)
             {
                 Vector3 target = creatureData.CreatureManager.SelectedCreature.transform.position;
                 transform.position = Vector3.Lerp(transform.position, target + offset, Time.deltaTime * 5f);

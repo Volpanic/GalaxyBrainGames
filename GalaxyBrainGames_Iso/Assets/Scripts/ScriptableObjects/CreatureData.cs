@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,6 +35,20 @@ public class CreatureData : ScriptableObject
     {
         if (CreaturesInLevel == null) CreaturesInLevel = new List<PlayerController>();
         CreaturesInLevel.Add(creature);
+
+        CleanCreatureData();
+    }
+
+    private void CleanCreatureData()
+    {
+        for(int i = 0; i < CreaturesInLevel.Count; i++)
+        {
+            if(CreaturesInLevel[i] == null)
+            {
+                CreaturesInLevel.RemoveAt(i);
+                i--;
+            }
+        }
     }
 
     public void LogManager(CreatureManager manger)

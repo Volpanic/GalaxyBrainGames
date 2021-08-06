@@ -138,7 +138,7 @@ public class JumpingCreature : MonoBehaviour
         Ray mouseRay = cam.ScreenPointToRay(Input.mousePosition,Camera.MonoOrStereoscopicEye.Mono);
         RaycastHit hit;
 
-        if(Physics.Raycast(mouseRay,out hit,float.MaxValue,groundMask) && hit.normal.x < 0.5f && hit.normal.z < 0.5f)
+        if(Physics.Raycast(mouseRay,out hit,float.MaxValue,groundMask,QueryTriggerInteraction.Ignore) && hit.normal.x < 0.5f && hit.normal.z < 0.5f)
         {
             //Vector3 targetPoint = controller.SnapToTileXZ(hit.point);
             Vector3 targetPoint = hit.point;

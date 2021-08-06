@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] Fade fadeManager;
+    [SerializeField,Min(0)] int targetScene = 1;
 
     private bool shouldChangeScene;
 
@@ -13,7 +14,7 @@ public class MainMenu : MonoBehaviour
     {
         if(shouldChangeScene && fadeManager.FadeDone)
         {
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(targetScene);
         }
     }
 
