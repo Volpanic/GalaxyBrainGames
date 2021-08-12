@@ -7,24 +7,18 @@ public class MainMenu : MonoBehaviour
 {
     [SerializeField] Fade fadeManager;
     [SerializeField,Min(0)] int targetScene = 1;
+    [SerializeField] GameEvent changeScene;
 
-    private bool shouldChangeScene;
+    private bool shouldChangeScene = true;
 
-    private void Update()
-    {
-        if(shouldChangeScene && fadeManager.FadeDone)
-        {
-            SceneManager.LoadScene(targetScene);
-        }
-    }
 
     //Triggered by button on click event, starts fadeout.
     public void PlayGame()
     {
-        if(fadeManager.FadeDone)
+        if (shouldChangeScene)
         {
-            fadeManager.FadeOut();
-            shouldChangeScene = true;
+            changeScene?.Raise();
+            shouldChangeScene = false;
         }
     }
 
