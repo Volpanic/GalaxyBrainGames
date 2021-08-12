@@ -50,10 +50,10 @@ public class PlayerController : MonoBehaviour
 
     private void Movement()
     {
-        if(Input.GetKeyDown(KeyCode.W)) controller.SimpleMove( transform.forward);
-        if(Input.GetKeyDown(KeyCode.A)) controller.SimpleMove(-transform.right  );
-        if(Input.GetKeyDown(KeyCode.D)) controller.SimpleMove( transform.right  );
-        if(Input.GetKeyDown(KeyCode.S)) controller.SimpleMove(-transform.forward);
+        if(Input.GetKey(KeyCode.W)) controller.SimpleMove( transform.forward * Time.fixedDeltaTime);
+        if(Input.GetKey(KeyCode.A)) controller.SimpleMove(-transform.right   * Time.fixedDeltaTime);
+        if(Input.GetKey(KeyCode.D)) controller.SimpleMove( transform.right   * Time.fixedDeltaTime);
+        if(Input.GetKey(KeyCode.S)) controller.SimpleMove(-transform.forward * Time.fixedDeltaTime);
     }
 
     private void StartMove(Vector3 target)

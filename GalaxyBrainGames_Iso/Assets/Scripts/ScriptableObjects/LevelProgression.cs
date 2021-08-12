@@ -31,6 +31,11 @@ public class LevelProgression : ScriptableObject
         }
     }
 
+    public void NewGame()
+    {
+        currentScene = 0;
+    }
+
     public int GetCurrentScene()
     {
         return ScenesInOrder[currentScene];
