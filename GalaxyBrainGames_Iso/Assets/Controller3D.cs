@@ -13,6 +13,7 @@ public class Controller3D : MonoBehaviour
     [Header("References")]
     [SerializeField] private CapsuleCollider myCollider;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private SceneTriggerData triggerData;
 
     [Header("Smoothing")]
     [SerializeField] private bool smooth = false;
@@ -55,6 +56,8 @@ public class Controller3D : MonoBehaviour
         FinalMove();
         GroundCheck();
         CollisionCheck();
+
+        if (triggerData != null) triggerData.TriggerDetection(myCollider);
 
         preventGravity = false;
     }
