@@ -50,10 +50,10 @@ public class PlayerController : MonoBehaviour
 
     private void Movement()
     {
-        if(Input.GetKeyDown(KeyCode.W)) StartMove(transform.position +  transform.forward);
-        if(Input.GetKeyDown(KeyCode.A)) StartMove(transform.position + -transform.right  );
-        if(Input.GetKeyDown(KeyCode.D)) StartMove(transform.position +  transform.right  );
-        if(Input.GetKeyDown(KeyCode.S)) StartMove(transform.position + -transform.forward);
+        if(Input.GetKeyDown(KeyCode.W)) controller.SimpleMove( transform.forward);
+        if(Input.GetKeyDown(KeyCode.A)) controller.SimpleMove(-transform.right  );
+        if(Input.GetKeyDown(KeyCode.D)) controller.SimpleMove( transform.right  );
+        if(Input.GetKeyDown(KeyCode.S)) controller.SimpleMove(-transform.forward);
     }
 
     private void StartMove(Vector3 target)
