@@ -32,18 +32,6 @@ public class SceneTriggerData : ScriptableObject
     private void OnEnable()
     {
         CleanData();
-        SceneManager.activeSceneChanged += SceneChanged;
-    }
-
-    private void OnDisable()
-    {
-        SceneManager.activeSceneChanged -= SceneChanged;
-    }
-
-    //Resets the stored data when scene is restarted
-    private void SceneChanged(Scene arg0, Scene arg1)
-    {
-        //CleanData();
     }
 
     private void CleanData()
