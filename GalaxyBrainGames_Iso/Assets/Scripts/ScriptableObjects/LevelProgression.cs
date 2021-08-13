@@ -18,7 +18,11 @@ public class LevelProgression : ScriptableObject
     {
         currentScene = 0;
         SceneManager.sceneLoaded += FindCanvasRoot;
-        FindCanvasRoot(SceneManager.GetActiveScene(), LoadSceneMode.Single);
+
+        if (Application.isPlaying)
+        {
+            FindCanvasRoot(SceneManager.GetActiveScene(), LoadSceneMode.Single);
+        }
     }
 
     private void FindCanvasRoot(Scene arg0, LoadSceneMode arg1)
