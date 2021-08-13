@@ -86,5 +86,7 @@ public class SaveData : ScriptableObject
                 return;
             }
         }
+
+        SaveGame();
     }
 }

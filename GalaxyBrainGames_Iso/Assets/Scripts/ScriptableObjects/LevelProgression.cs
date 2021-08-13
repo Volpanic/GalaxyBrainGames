@@ -16,7 +16,7 @@ public class LevelProgression : ScriptableObject
 
     private void OnEnable()
     {
-        currentScene = 0;
+        currentScene = -1;
         SceneManager.sceneLoaded += FindCanvasRoot;
 
         if (Application.isPlaying)
@@ -38,7 +38,7 @@ public class LevelProgression : ScriptableObject
 
     public void NewGame()
     {
-        currentScene = 0;
+        currentScene = -1;
     }
 
     public int GetCurrentScene()
