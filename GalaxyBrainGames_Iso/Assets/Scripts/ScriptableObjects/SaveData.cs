@@ -44,6 +44,11 @@ public class SaveData : ScriptableObject
         }
     }
 
+    private void OnDisable()
+    {
+        LoadSave();
+    }
+
 
     [ContextMenu("Reset Save Data")]
     public void ResetSave()
@@ -66,6 +71,20 @@ public class SaveData : ScriptableObject
             string fileContents = File.ReadAllText(FilePath);
 
             Data = JsonUtility.FromJson<GameData>(fileContents);
+        }
+    }
+
+    public void MarkLevelComplete(LevelProgression progression)
+    {
+        int currentIndex = SceneManager.GetActiveScene().buildIndex;
+
+        for(int i = Data.MaxLevelCompleted+1; i < progression.ScenesInOrder.Count; i++)
+        {
+            if(progression.ScenesInOrder[i] == currentIndex)
+            {
+                Data.MaxLevelCompleted = i;
+                return;
+            }
         }
     }
 }

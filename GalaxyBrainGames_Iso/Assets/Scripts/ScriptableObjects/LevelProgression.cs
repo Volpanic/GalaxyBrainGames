@@ -11,7 +11,7 @@ public class LevelProgression : ScriptableObject
 
     public GameObject SceneTransition;
 
-    private int currentScene = 0;
+    private int currentScene = -1;
     private Transform canvasRoot;
 
     private void OnEnable()
@@ -43,7 +43,13 @@ public class LevelProgression : ScriptableObject
 
     public int GetCurrentScene()
     {
+        if (currentScene < 0) currentScene = 0;
         return ScenesInOrder[currentScene];
+    }
+
+    public void SetCurrentScene(int index)
+    {
+        currentScene = index;
     }
 
     public void IncrementCurrentScene()

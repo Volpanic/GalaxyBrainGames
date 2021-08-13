@@ -13,7 +13,6 @@ public class CreatureData : ScriptableObject
 
     private void OnEnable()
     {
-        Debug.Log("DataEnable");
         CreaturesInLevel = new List<PlayerController>();
     }
 
