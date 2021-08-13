@@ -11,7 +11,6 @@ public class MainMenu : MonoBehaviour
 
     private bool shouldChangeScene = true;
 
-
     //Triggered by button on click event, starts fadeout.
     public void PlayGame()
     {
