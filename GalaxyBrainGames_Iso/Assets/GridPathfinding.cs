@@ -18,6 +18,7 @@ public class GridPathfinding : MonoBehaviour
     private List<Vector3> path;
     private Transform owner;
     private Vector3 gridOffset;
+    private bool viablePath = false;
 
     private Dictionary<Vector3, Node> nodeGrid = new Dictionary<Vector3, Node>();
 
@@ -49,6 +50,12 @@ public class GridPathfinding : MonoBehaviour
         return false;
     }
 
+    //Makes it so the path is non viable, meaning it cant be used for the mean time
+    public void ForceUnvialblePath()
+    {
+        viablePath = false;
+    }
+
     public void SetOwner(Transform newOwner)
     {
         owner = newOwner;
@@ -76,7 +83,7 @@ public class GridPathfinding : MonoBehaviour
 
     public List<Vector3> GetPath()
     {
-        return path;
+        return (viablePath)? path : null;
     }
 
     #region Grid
@@ -198,6 +205,8 @@ public class GridPathfinding : MonoBehaviour
 
     private List<Node> FindPath(Vector3 p1, Vector3 p2)
     {
+        viablePath = false;
+
         List<Node> openList = new List<Node>();
         HashSet<Node> closedList = new HashSet<Node>();
 
@@ -211,6 +220,7 @@ public class GridPathfinding : MonoBehaviour
             Debug.Log("No!!! NOOOO");
             return null;
         }
+
 
         while (openList.Count > 0)
         {
@@ -269,6 +279,7 @@ public class GridPathfinding : MonoBehaviour
         }
 
         finalPath.Reverse();
+        viablePath = true;
 
         return finalPath;
     }

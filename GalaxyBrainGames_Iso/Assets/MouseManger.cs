@@ -33,7 +33,12 @@ public class MouseManger : MonoBehaviour
         RaycastHit selectedObject;
         if (Physics.Raycast(cameraRay, out selectedObject, float.MaxValue))
         {
-            if (interaction != null && interaction.LookForInteractables(selectedObject)) return; 
+            if (interaction != null && interaction.LookForInteractables(selectedObject))
+            {
+                pathfinding.ForceUnvialblePath();
+                return;
+            }
+            
             if (pathfinding != null && pathfinding.LookForPath(selectedObject)) return;
         }
     }
