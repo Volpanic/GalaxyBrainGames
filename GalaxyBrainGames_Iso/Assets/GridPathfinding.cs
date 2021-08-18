@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[SelectionBase]
 public class GridPathfinding : MonoBehaviour
 {
     [SerializeField] LayerMask groundMask;
@@ -49,7 +50,7 @@ public class GridPathfinding : MonoBehaviour
 
         if (hasHit && hit.normal == Vector3.up)
         {
-            if(ToGridPos(hit.point + new Vector3(0,0.1f,0)) != lastArea)
+            if (ToGridPos(hit.point + new Vector3(0, 0.1f, 0)) != lastArea)
             {
                 //Convert to grid position
                 lastArea = ToGridPos(hit.point + new Vector3(0, 0.1f, 0));
@@ -75,7 +76,7 @@ public class GridPathfinding : MonoBehaviour
             for (int i = 0; i < nodePath.Count; i++)
             {
                 pathRenderer.positionCount = nodePath.Count;
-                pathRenderer.SetPosition(i, nodePath[i].Position - new Vector3(0, 0.48f, 0));
+                pathRenderer.SetPosition(i, nodePath[i].TemporalPosition);
 
                 path.Add(nodePath[i].Position);
             }
@@ -136,25 +137,25 @@ public class GridPathfinding : MonoBehaviour
         if (nodeGrid.ContainsKey(pos)) return nodeGrid[pos];
 
         //Check for wall
-        bool wall = (Physics.OverlapBox(pos, new Vector3(0.1f, 0.1f, 0.1f), Quaternion.identity, groundMask).Length > 0);
-        bool ground = false;
+        bool wall = (Physics.OverlapBox(pos, new Vector3(0.45f, 0.45f, 0.45f), Quaternion.identity, groundMask).Length > 0);
+
+        //Check if top of cell is blocked, could be a slope if it isn't
+        bool canBeSlope = (Physics.OverlapBox(pos + new Vector3(0,0.45f,0), new Vector3(0.045f, 0.045f, 0.045f), Quaternion.identity, groundMask).Length == 0);
+
+        //Add the node
+        Node node = new Node(pos, wall, false, pos - new Vector3(0, 0.45f, 0));
 
         RaycastHit hit;
 
-        //Checks if hit a slope, should repleace it with more comprehensive code later
-        ground = Physics.Raycast(new Ray(pos + new Vector3(0, 0.45f, 0), Vector3.down), out hit, .6f, groundMask);
-        if (ground && hit.normal != Vector3.up)
+        if (canBeSlope)
         {
-            wall = false;
-            ground = true;
-        }
-        else
-        {
-            ground = false;
+            bool didHit = Physics.Raycast(new Ray(pos + new Vector3(0, 0.48f, 0), Vector3.down), out hit, 1.5f, groundMask);
+            if (didHit && Mathf.Abs(Vector3.Dot(hit.point, Vector3.up)) > 0.2f)
+            {
+                node = new Node(pos, false, true, hit.point + new Vector3(0, 0.05f, 0));
+            }
         }
 
-        //Add the node
-        Node node = new Node(pos, wall, ground);
         nodeGrid[pos] = node;
 
         return node;
@@ -183,8 +184,19 @@ public class GridPathfinding : MonoBehaviour
         if (nodeGrid.ContainsKey(ToGridPos(pos + Vector3.forward))) adjacentNode.Add(nodeGrid[ToGridPos(pos + Vector3.forward)]);
         if (nodeGrid.ContainsKey(ToGridPos(pos + Vector3.back))) adjacentNode.Add(nodeGrid[ToGridPos(pos + Vector3.back)]);
 
-        if (nodeGrid.ContainsKey(ToGridPos(pos + Vector3.up))) adjacentNode.Add(nodeGrid[ToGridPos(pos + Vector3.up)]);
-        if (nodeGrid.ContainsKey(ToGridPos(pos + Vector3.down))) adjacentNode.Add(nodeGrid[ToGridPos(pos + Vector3.down)]);
+        //Up Slope Check
+        if (nodeGrid.ContainsKey(ToGridPos(pos + Vector3.right + Vector3.up))) adjacentNode.Add(nodeGrid[ToGridPos(pos + Vector3.right + Vector3.up)]);
+        if (nodeGrid.ContainsKey(ToGridPos(pos + Vector3.left + Vector3.up))) adjacentNode.Add(nodeGrid[ToGridPos(pos + Vector3.left + Vector3.up)]);
+
+        if (nodeGrid.ContainsKey(ToGridPos(pos + Vector3.forward + Vector3.up))) adjacentNode.Add(nodeGrid[ToGridPos(pos + Vector3.forward + Vector3.up)]);
+        if (nodeGrid.ContainsKey(ToGridPos(pos + Vector3.back + Vector3.up))) adjacentNode.Add(nodeGrid[ToGridPos(pos + Vector3.back + Vector3.up)]);
+
+        //Down Slope Check
+        if (nodeGrid.ContainsKey(ToGridPos(pos + Vector3.right + Vector3.down))) adjacentNode.Add(nodeGrid[ToGridPos(pos + Vector3.right + Vector3.down)]);
+        if (nodeGrid.ContainsKey(ToGridPos(pos + Vector3.left + Vector3.down))) adjacentNode.Add(nodeGrid[ToGridPos(pos + Vector3.left + Vector3.down)]);
+
+        if (nodeGrid.ContainsKey(ToGridPos(pos + Vector3.forward + Vector3.down))) adjacentNode.Add(nodeGrid[ToGridPos(pos + Vector3.forward + Vector3.down)]);
+        if (nodeGrid.ContainsKey(ToGridPos(pos + Vector3.back + Vector3.down))) adjacentNode.Add(nodeGrid[ToGridPos(pos + Vector3.back + Vector3.down)]);
 
         return adjacentNode;
     }
@@ -209,12 +221,12 @@ public class GridPathfinding : MonoBehaviour
             return null;
         }
 
-        while(openList.Count > 0)
+        while (openList.Count > 0)
         {
             Node current = openList[0];
-            for(int i = 1; i < openList.Count; i++)
+            for (int i = 1; i < openList.Count; i++)
             {
-                if(openList[i].FCost < current.FCost || openList[i].FCost == current.FCost && openList[i].hCost < current.hCost)
+                if (openList[i].FCost < current.FCost || openList[i].FCost == current.FCost && openList[i].hCost < current.hCost)
                 {
                     current = openList[i];
                 }
@@ -223,27 +235,27 @@ public class GridPathfinding : MonoBehaviour
             openList.Remove(current);
             closedList.Add(current);
 
-            if(current == targetNode)
+            if (current == targetNode)
             {
-                return GetFinalPath(startNode,targetNode);
+                return GetFinalPath(startNode, targetNode);
             }
 
-            foreach(Node neighborNode in GetNeighborNodes(current))
+            foreach (Node neighborNode in GetNeighborNodes(current))
             {
-                if((neighborNode.IsWall && !neighborNode.IsGround) || closedList.Contains(neighborNode))
+                if (neighborNode.IsWall || !neighborNode.IsGround || closedList.Contains(neighborNode))
                 {
                     continue;
                 }
 
                 float moveCost = current.gCost + GetManhattenDistance(current, neighborNode);
 
-                if(moveCost < neighborNode.gCost || !openList.Contains(neighborNode))
+                if (moveCost < neighborNode.gCost || !openList.Contains(neighborNode))
                 {
                     neighborNode.gCost = moveCost;
-                    neighborNode.hCost = GetManhattenDistance(neighborNode,targetNode);
+                    neighborNode.hCost = GetManhattenDistance(neighborNode, targetNode);
                     neighborNode.Parent = current;
 
-                    if(!openList.Contains(neighborNode))
+                    if (!openList.Contains(neighborNode))
                     {
                         openList.Add(neighborNode);
                     }
@@ -259,7 +271,7 @@ public class GridPathfinding : MonoBehaviour
         List<Node> finalPath = new List<Node>();
         Node currentNode = targetNode;
 
-        while(currentNode != startNode)
+        while (currentNode != startNode)
         {
             finalPath.Add(currentNode);
             currentNode = currentNode.Parent;

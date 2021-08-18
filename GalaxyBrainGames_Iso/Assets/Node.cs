@@ -22,4 +22,12 @@ public class Node
         IsWall = isWall;
         IsGround = isGround;
     }
+
+    public Node(Vector3 gridPos, bool isWall, bool isGround, Vector3 temporalPositon)
+    {
+        Position = gridPos;
+        IsWall = isWall;
+        IsGround = isGround;
+        TemporalPosition = temporalPositon;
+    }
 }

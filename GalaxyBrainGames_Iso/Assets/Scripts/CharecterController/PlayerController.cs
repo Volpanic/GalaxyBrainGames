@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-[System.Serializable]
+[System.Serializable,SelectionBase]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField,Min(0.1f)] private float movementSpeed = 1;
@@ -19,8 +19,6 @@ public class PlayerController : MonoBehaviour
         get { return controller.isGrounded; }
     }
 
-    public float SCREAM = 0;
-
     private Camera cam;
     private bool moving = false;
     private Vector3 targetPos = Vector3.zero;
@@ -34,6 +32,17 @@ public class PlayerController : MonoBehaviour
         cam = Camera.main;
 
         transform.position = pathfinding.ToGridPos(transform.position);
+
+        if(pathfinding != null && controller != null)
+        {
+            controller.enabled = false;
+
+            Vector3 gridPos = pathfinding.ToGridPos(transform.position);
+            transform.position = new Vector3(gridPos.x, transform.position.y , gridPos.z);
+
+            controller.enabled = true;
+
+        }
     }
 
     private void FixedUpdate()
@@ -106,7 +115,7 @@ public class PlayerController : MonoBehaviour
 
         if (unormalizedTime == 0) return path[0];
         if (min == path.Count - 1) return path[path.Count - 1];
-        SCREAM = unormalizedTime;
+
         return Vector3.Lerp(path[min], path[min+1], unormalizedTime % 1f);
     }
 
