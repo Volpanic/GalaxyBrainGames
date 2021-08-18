@@ -5,7 +5,6 @@ using UnityEngine.Events;
 
 public class GameEventTrigger : MonoBehaviour
 {
-    public Collider TriggerCollider;
 
     [SerializeField] private bool onlyOnce = true;
 

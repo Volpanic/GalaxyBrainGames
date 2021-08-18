@@ -26,29 +26,9 @@ public class GridPathfinding : MonoBehaviour
         cam = Camera.main;
     }
 
-    public void LookForPath()
+    public bool LookForPath(RaycastHit hit)
     {
-        FindMousePoint();
-    }
-
-    public void SetOwner(Transform newOwner)
-    {
-        owner = newOwner;
-    }
-
-    public void SetOffset(Vector3 offset)
-    {
-        gridOffset = offset;
-    }
-
-    private void FindMousePoint()
-    {
-        Ray camRay = cam.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        hasHit = Physics.Raycast(camRay, out hit, 100f, groundMask);
-
-        if (hasHit && hit.normal == Vector3.up)
+        if (hit.normal == Vector3.up)
         {
             if (ToGridPos(hit.point + new Vector3(0, 0.1f, 0)) != lastArea)
             {
@@ -63,9 +43,20 @@ public class GridPathfinding : MonoBehaviour
                 UpdateLineRenderer(nodePath);
 
             }
-
             lastArea = ToGridPos(hit.point + Vector3.up);
+            return true;
         }
+        return false;
+    }
+
+    public void SetOwner(Transform newOwner)
+    {
+        owner = newOwner;
+    }
+
+    public void SetOffset(Vector3 offset)
+    {
+        gridOffset = offset;
     }
 
     private void UpdateLineRenderer(List<Node> nodePath)

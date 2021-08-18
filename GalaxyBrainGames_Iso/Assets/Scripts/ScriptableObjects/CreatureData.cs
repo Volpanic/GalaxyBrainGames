@@ -30,6 +30,13 @@ public class CreatureData : ScriptableObject
         return CreaturesInLevel[index];
     }
 
+    public PlayerController GetSelectedCreature()
+    {
+        if (CreaturesInLevel == null && CreaturesInLevel.Count <= 0) { return null; }
+
+        return CreatureManager?.SelectedCreature;
+    }
+
     public void LogCreature(PlayerController creature)
     {
         if (CreaturesInLevel == null) CreaturesInLevel = new List<PlayerController>();

@@ -92,7 +92,6 @@ public class PlayerController : MonoBehaviour
         if (pathfinding == null) return;
 
         pathfinding.SetOwner(transform);
-        pathfinding.LookForPath();
 
         if (Input.GetMouseButtonDown(0))
         {
