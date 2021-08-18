@@ -115,6 +115,15 @@ public class PlayerController : MonoBehaviour
         return y + controller.bounds.extents.y;
     }
 
+    private void OnDrawGizmos()
+    {
+        if(pathfinding != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireCube(pathfinding.ToGridPos(transform.position),Vector3.one);
+        }
+    }
+
     public bool AttemptMove(Vector3 targetPos)
     {
         

@@ -8,8 +8,6 @@ public class GridPathfinding : MonoBehaviour
     [SerializeField] LayerMask groundMask;
     [SerializeField] LineRenderer pathRenderer;
 
-    [SerializeField] Vector3 gridOffset;
-
     [SerializeField, Range(0f, 1f)] private float sampleMovement = 0.5f;
 
     private Vector3 lastArea;
@@ -18,6 +16,7 @@ public class GridPathfinding : MonoBehaviour
 
     private List<Vector3> path;
     private Transform owner;
+    private Vector3 gridOffset;
 
     private Dictionary<Vector3, Node> nodeGrid = new Dictionary<Vector3, Node>();
 
@@ -34,6 +33,11 @@ public class GridPathfinding : MonoBehaviour
     public void SetOwner(Transform newOwner)
     {
         owner = newOwner;
+    }
+
+    public void SetOffset(Vector3 offset)
+    {
+        gridOffset = offset;
     }
 
     private void FindMousePoint()
@@ -92,7 +96,7 @@ public class GridPathfinding : MonoBehaviour
         float ypoint = ((worldPos.y + 1 / 2) / 1);
         float zpoint = ((worldPos.z + 1 / 2) / 1);
 
-        return new Vector3(Mathf.Round(xpoint), Mathf.Round(ypoint), Mathf.Round(zpoint));
+        return new Vector3(Mathf.Round(xpoint), Mathf.Round(ypoint), Mathf.Round(zpoint)) + gridOffset;
     }
 
     // Since the grid is stored in a dictionary instead of a 
