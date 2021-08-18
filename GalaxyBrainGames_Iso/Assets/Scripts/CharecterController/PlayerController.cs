@@ -9,10 +9,11 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField,Min(0.1f)] private float movementSpeed = 1;
     [SerializeField] private CharacterController controller;
+    [SerializeField] private ActionPointData actionPointData;
 
     [SerializeField] GridPathfinding pathfinding;
 
-    public bool Selected = false;
+    [HideInInspector] public bool Selected = false;
 
     public bool Grounded
     {
@@ -101,6 +102,7 @@ public class PlayerController : MonoBehaviour
                 moving = true;
                 moveMaxTime = movementSpeed * path.Count;
                 moveTimer = 0;
+                actionPointData?.SubtractActionPoint();
             }
         }
     }

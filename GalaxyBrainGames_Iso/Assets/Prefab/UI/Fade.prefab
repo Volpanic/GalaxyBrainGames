@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 3775871440883900022}
   - component: {fileID: 3775871440883900021}
   - component: {fileID: 4389305361544752402}
+  - component: {fileID: -8066762257197398593}
   - component: {fileID: 1920103120505013950}
   m_Layer: 5
   m_Name: Fade
@@ -160,6 +161,34 @@ MonoBehaviour:
       - m_Target: {fileID: 1920103120505013950}
         m_TargetAssemblyTypeName: ChangeScene, Assembly-CSharp
         m_MethodName: Changescene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &-8066762257197398593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3775871440883900016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9308b88d6cffad419f5bb69ee8a6e5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 671af10d82af7bc41b29b177e72001d2, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1920103120505013950}
+        m_TargetAssemblyTypeName: ChangeScene, Assembly-CSharp
+        m_MethodName: ResetScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

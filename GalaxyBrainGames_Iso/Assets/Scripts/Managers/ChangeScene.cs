@@ -26,4 +26,19 @@ public class ChangeScene : MonoBehaviour
 
         SceneManager.LoadScene(targetIndex);
     }
+
+    private void ResetSceneAfterFade()
+    {
+        targetIndex = SceneManager.GetActiveScene().buildIndex;
+
+        SceneManager.LoadScene(targetIndex);
+    }
+
+    public void ResetScene()
+    {
+        if (fade.FadeDone)
+        {
+            fade.FadeOut(ResetSceneAfterFade);
+        }
+    }
 }
