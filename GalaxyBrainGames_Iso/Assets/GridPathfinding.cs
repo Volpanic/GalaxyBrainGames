@@ -8,6 +8,7 @@ public class GridPathfinding : MonoBehaviour
 {
     [SerializeField] LayerMask groundMask;
     [SerializeField] LineRenderer pathRenderer;
+    [SerializeField] bool diagonals = true;
 
     [SerializeField, Range(0f, 1f)] private float sampleMovement = 0.5f;
 
@@ -176,25 +177,19 @@ public class GridPathfinding : MonoBehaviour
 
         Vector3 pos = current.Position;
 
-        if (nodeGrid.ContainsKey(ToGridPos(pos + Vector3.right))) adjacentNode.Add(nodeGrid[ToGridPos(pos + Vector3.right)]);
-        if (nodeGrid.ContainsKey(ToGridPos(pos + Vector3.left))) adjacentNode.Add(nodeGrid[ToGridPos(pos + Vector3.left)]);
-
-        if (nodeGrid.ContainsKey(ToGridPos(pos + Vector3.forward))) adjacentNode.Add(nodeGrid[ToGridPos(pos + Vector3.forward)]);
-        if (nodeGrid.ContainsKey(ToGridPos(pos + Vector3.back))) adjacentNode.Add(nodeGrid[ToGridPos(pos + Vector3.back)]);
-
-        //Up Slope Check
-        if (nodeGrid.ContainsKey(ToGridPos(pos + Vector3.right + Vector3.up))) adjacentNode.Add(nodeGrid[ToGridPos(pos + Vector3.right + Vector3.up)]);
-        if (nodeGrid.ContainsKey(ToGridPos(pos + Vector3.left + Vector3.up))) adjacentNode.Add(nodeGrid[ToGridPos(pos + Vector3.left + Vector3.up)]);
-
-        if (nodeGrid.ContainsKey(ToGridPos(pos + Vector3.forward + Vector3.up))) adjacentNode.Add(nodeGrid[ToGridPos(pos + Vector3.forward + Vector3.up)]);
-        if (nodeGrid.ContainsKey(ToGridPos(pos + Vector3.back + Vector3.up))) adjacentNode.Add(nodeGrid[ToGridPos(pos + Vector3.back + Vector3.up)]);
-
-        //Down Slope Check
-        if (nodeGrid.ContainsKey(ToGridPos(pos + Vector3.right + Vector3.down))) adjacentNode.Add(nodeGrid[ToGridPos(pos + Vector3.right + Vector3.down)]);
-        if (nodeGrid.ContainsKey(ToGridPos(pos + Vector3.left + Vector3.down))) adjacentNode.Add(nodeGrid[ToGridPos(pos + Vector3.left + Vector3.down)]);
-
-        if (nodeGrid.ContainsKey(ToGridPos(pos + Vector3.forward + Vector3.down))) adjacentNode.Add(nodeGrid[ToGridPos(pos + Vector3.forward + Vector3.down)]);
-        if (nodeGrid.ContainsKey(ToGridPos(pos + Vector3.back + Vector3.down))) adjacentNode.Add(nodeGrid[ToGridPos(pos + Vector3.back + Vector3.down)]);
+        //Get adjacent Nodes
+        for(float xx = pos.x - 1; xx <= pos.x + 1;xx++)
+        {
+            for (float yy = pos.y - 1; yy <= pos.y + 1; yy++)
+            {
+                for (float zz = pos.z - 1; zz <= pos.z + 1; zz++)
+                {
+                    Vector3 offset = new Vector3(xx,yy,zz);
+                    if (offset == pos) continue;
+                    if (nodeGrid.ContainsKey(ToGridPos(offset))) adjacentNode.Add(nodeGrid[ToGridPos(offset)]);
+                }
+            }
+        }
 
         return adjacentNode;
     }
