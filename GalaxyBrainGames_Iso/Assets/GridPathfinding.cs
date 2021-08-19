@@ -141,26 +141,37 @@ public class GridPathfinding : MonoBehaviour
 
     private Node CheckNodeConditions(Node node)
     {
-
         //Check for wall
         bool wall = (Physics.OverlapBox(node.Position, new Vector3(0.45f, 0.45f, 0.45f), Quaternion.identity, groundMask).Length > 0);
-
-        //Check if top of cell is blocked, could be a slope if it isn't
-        bool canBeSlope = (Physics.OverlapBox(node.Position + new Vector3(0, 0.45f, 0), new Vector3(0.045f, 0.045f, 0.045f), Quaternion.identity, groundMask).Length == 0);
 
         //Add the node
         node.IsWall = wall;
         node.IsGround = false;
-        node.TemporalPosition = -new Vector3(0, 0.45f, 0);
+        node.TemporalPosition = node.Position - new Vector3(0, 0.45f, 0);
 
         RaycastHit hit;
 
-        if (canBeSlope)
+        //Check if ground
+        if(!wall)
         {
-            bool didHit = Physics.Raycast(new Ray(node.Position + new Vector3(0, 0.48f, 0), Vector3.down), out hit, 1.5f, groundMask);
-            if (didHit && Mathf.Abs(Vector3.Dot(hit.point, Vector3.up)) > 0.2f)
+            if(Physics.Raycast(new Ray(node.Position,Vector3.down),out hit,0.6f,groundMask))
             {
-                node = new Node(node.Position, false, true, hit.point + new Vector3(0, 0.05f, 0));
+                node.IsGround = true;
+                node.TemporalPosition = node.Position - new Vector3(0, 0.45f, 0);
+            }
+        }
+
+        //Check if slope
+        if(!node.IsGround)
+        {
+            if (Physics.Raycast(new Ray(node.Position + new Vector3(0,0.45f,0), Vector3.down), out hit, 1f, groundMask))
+            {
+                if (hit.normal != Vector3.up)
+                {
+                    node.IsGround = true;
+                    node.IsWall = false;
+                    node.TemporalPosition = hit.point + new Vector3(0, 0.05f, 0);
+                }
             }
         }
 
