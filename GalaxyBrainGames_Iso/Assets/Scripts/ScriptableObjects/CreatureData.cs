@@ -6,8 +6,14 @@ using UnityEngine;
 [CreateAssetMenu]
 public class CreatureData : ScriptableObject
 {
+    [ReadOnly]
     public List<PlayerController> CreaturesInLevel = new List<PlayerController>();
+
+    [ReadOnly]
     public CreatureManager CreatureManager;
+
+    [ReadOnly]
+    public GridPathfinding pathfinding;
 
     public Dictionary<string, bool> PlayerInventory;
 

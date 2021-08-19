@@ -3,6 +3,7 @@ using UnityEngine.Events;
 
 public class Interactalbe : MonoBehaviour
 {
+    [HideInInspector] public PlayerController lastInteractedWithCreature = null;
 
     [SerializeField] private bool onlyOnce = true;
 
@@ -13,6 +14,7 @@ public class Interactalbe : MonoBehaviour
 
     public void OnInteract(PlayerController creature)
     {
+        lastInteractedWithCreature = creature;
         if (onlyOnce && activated) return;
         OnInteractedEvent?.Raise();
         OnInteracted.Invoke();

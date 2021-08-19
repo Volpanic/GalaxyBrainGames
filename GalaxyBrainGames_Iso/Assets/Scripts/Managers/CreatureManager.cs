@@ -6,6 +6,8 @@ using UnityEngine;
 public class CreatureManager : MonoBehaviour
 {
     [SerializeField] private CreatureData creatureData;
+    [SerializeField] private GridPathfinding pathfinding;
+
     private int selectedCreature;
     public event Action<int> OnSelectedChanged;
 
@@ -24,6 +26,7 @@ public class CreatureManager : MonoBehaviour
     private void Awake()
     {
         creatureData.LogManager(this);
+        creatureData.pathfinding = pathfinding;
     }
 
     // Start is called before the first frame update

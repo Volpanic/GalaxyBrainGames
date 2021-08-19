@@ -43,7 +43,6 @@ public class GridPathfinding : MonoBehaviour
 
                 //Visualization
                 UpdateLineRenderer(nodePath);
-
             }
             lastArea = ToGridPos(hit.point + Vector3.up);
             return true;
@@ -84,7 +83,7 @@ public class GridPathfinding : MonoBehaviour
 
     public List<Vector3> GetPath()
     {
-        return (viablePath)? path : null;
+        return (viablePath) ? path : null;
     }
 
     #region Grid
@@ -135,31 +134,67 @@ public class GridPathfinding : MonoBehaviour
     {
         if (nodeGrid.ContainsKey(pos)) return nodeGrid[pos];
 
+        nodeGrid[pos] = CheckNodeConditions(new Node(pos, false, false));
+
+        return nodeGrid[pos];
+    }
+
+    private Node CheckNodeConditions(Node node)
+    {
+
         //Check for wall
-        bool wall = (Physics.OverlapBox(pos, new Vector3(0.45f, 0.45f, 0.45f), Quaternion.identity, groundMask).Length > 0);
+        bool wall = (Physics.OverlapBox(node.Position, new Vector3(0.45f, 0.45f, 0.45f), Quaternion.identity, groundMask).Length > 0);
 
         //Check if top of cell is blocked, could be a slope if it isn't
-        bool canBeSlope = (Physics.OverlapBox(pos + new Vector3(0,0.45f,0), new Vector3(0.045f, 0.045f, 0.045f), Quaternion.identity, groundMask).Length == 0);
+        bool canBeSlope = (Physics.OverlapBox(node.Position + new Vector3(0, 0.45f, 0), new Vector3(0.045f, 0.045f, 0.045f), Quaternion.identity, groundMask).Length == 0);
 
         //Add the node
-        Node node = new Node(pos, wall, false, pos - new Vector3(0, 0.45f, 0));
+        node.IsWall = wall;
+        node.IsGround = false;
+        node.TemporalPosition = -new Vector3(0, 0.45f, 0);
 
         RaycastHit hit;
 
         if (canBeSlope)
         {
-            bool didHit = Physics.Raycast(new Ray(pos + new Vector3(0, 0.48f, 0), Vector3.down), out hit, 1.5f, groundMask);
+            bool didHit = Physics.Raycast(new Ray(node.Position + new Vector3(0, 0.48f, 0), Vector3.down), out hit, 1.5f, groundMask);
             if (didHit && Mathf.Abs(Vector3.Dot(hit.point, Vector3.up)) > 0.2f)
             {
-                node = new Node(pos, false, true, hit.point + new Vector3(0, 0.05f, 0));
+                node = new Node(node.Position, false, true, hit.point + new Vector3(0, 0.05f, 0));
             }
         }
-
-        nodeGrid[pos] = node;
 
         return node;
     }
 
+    public void UpdateNodeCells(Vector3 minArea, Vector3 maxArea)
+    {
+        Vector3 minGrid = ToGridPos(minArea - Vector3.one);
+        Vector3 maxGrid = ToGridPos(maxArea + Vector3.one);
+
+        for (float xx = minGrid.x; xx <= maxGrid.x; xx++)
+        {
+            for (float yy = minGrid.y; yy <= maxGrid.y; yy++)
+            {
+                for (float zz = minGrid.z; zz <= maxGrid.z; zz++)
+                {
+                    UpdateGridCell(new Vector3(xx, yy, zz));
+                }
+            }
+        }
+    }
+
+    private void UpdateGridCell(Vector3 positon)
+    {
+        if (nodeGrid.ContainsKey(positon))
+        {
+            nodeGrid[positon] = CheckNodeConditions(nodeGrid[positon]);
+        }
+        else
+        {
+            CreateAndStoreNode(positon);
+        }
+    }
 
     float GetManhattenDistance(Node nodeA, Node nodeB)
     {
@@ -178,13 +213,13 @@ public class GridPathfinding : MonoBehaviour
         Vector3 pos = current.Position;
 
         //Get adjacent Nodes
-        for(float xx = pos.x - 1; xx <= pos.x + 1;xx++)
+        for (float xx = pos.x - 1; xx <= pos.x + 1; xx++)
         {
             for (float yy = pos.y - 1; yy <= pos.y + 1; yy++)
             {
                 for (float zz = pos.z - 1; zz <= pos.z + 1; zz++)
                 {
-                    Vector3 offset = new Vector3(xx,yy,zz);
+                    Vector3 offset = new Vector3(xx, yy, zz);
                     if (offset == pos) continue;
                     if (nodeGrid.ContainsKey(ToGridPos(offset))) adjacentNode.Add(nodeGrid[ToGridPos(offset)]);
                 }
