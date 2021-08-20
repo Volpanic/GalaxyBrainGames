@@ -6,6 +6,8 @@ public class Node
 {
     public bool IsWall;
     public bool IsGround;
+    public bool IsSlope = false;
+    public bool IsClimbable = false;
     public Vector3 Position;
     public Vector3 TemporalPosition;
 

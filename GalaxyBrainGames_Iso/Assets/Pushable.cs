@@ -30,7 +30,7 @@ public class Pushable : MonoBehaviour
 
             if(fallingTimer >= 1)
             {
-                transform.position += Vector3.down;
+                transform.position += Vector3.down * 0.5f;
                 fallingOver = false;
                 creatureData.pathfinding.UpdateNodeCells(myCollider.bounds.min,myCollider.bounds.max);
             }

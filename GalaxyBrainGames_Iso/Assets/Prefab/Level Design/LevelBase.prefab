@@ -470,6 +470,8 @@ MonoBehaviour:
   movementSpeed: 0.5
   controller: {fileID: 8722944020839051678}
   actionPointData: {fileID: 11400000, guid: 251e272e2b2af71408bcc724a19bb05b, type: 2}
+  canClimb: 0
+  canSwin: 0
   pathfinding: {fileID: 8722944019302059944}
   Selected: 0
 --- !u!114 &8489134180897291316
@@ -559,6 +561,8 @@ MonoBehaviour:
   movementSpeed: 0.25
   controller: {fileID: 8722944019654189203}
   actionPointData: {fileID: 11400000, guid: 251e272e2b2af71408bcc724a19bb05b, type: 2}
+  canClimb: 0
+  canSwin: 0
   pathfinding: {fileID: 8722944019302059944}
   Selected: 0
 --- !u!114 &8489134181068076577
@@ -5461,8 +5465,10 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 17
+  climbableMask:
+    serializedVersion: 2
+    m_Bits: 512
   pathRenderer: {fileID: 8722944020809297047}
-  diagonals: 1
   sampleMovement: 0.5
 --- !u!1 &8722944019424231990
 GameObject:
@@ -5513,6 +5519,8 @@ MonoBehaviour:
   movementSpeed: 0.25
   controller: {fileID: 8722944019424231984}
   actionPointData: {fileID: 11400000, guid: 251e272e2b2af71408bcc724a19bb05b, type: 2}
+  canClimb: 1
+  canSwin: 0
   pathfinding: {fileID: 8722944019302059944}
   Selected: 0
 --- !u!114 &8722944019424231987

@@ -11,6 +11,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CharacterController controller;
     [SerializeField] private ActionPointData actionPointData;
 
+    [Header("Abilities")]
+    [SerializeField] bool canClimb;
+    [SerializeField] bool canSwin;
+
     [SerializeField] GridPathfinding pathfinding;
 
     [HideInInspector] public bool Selected = false;
@@ -91,7 +95,7 @@ public class PlayerController : MonoBehaviour
         controller.SimpleMove(Vector3.zero);
         if (pathfinding == null) return;
 
-        pathfinding.SetOwner(transform);
+        pathfinding.SetOwner(transform,canClimb);
 
         if (Input.GetMouseButtonDown(0))
         {
