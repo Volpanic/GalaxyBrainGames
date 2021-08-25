@@ -6,8 +6,14 @@ using UnityEngine;
 [CreateAssetMenu]
 public class CreatureData : ScriptableObject
 {
+    [ReadOnly]
     public List<PlayerController> CreaturesInLevel = new List<PlayerController>();
+
+    [ReadOnly]
     public CreatureManager CreatureManager;
+
+    [ReadOnly]
+    public GridPathfinding pathfinding;
 
     public Dictionary<string, bool> PlayerInventory;
 
@@ -28,6 +34,13 @@ public class CreatureData : ScriptableObject
         if (CreaturesInLevel == null && CreaturesInLevel.Count <= 0) { return null; }
 
         return CreaturesInLevel[index];
+    }
+
+    public PlayerController GetSelectedCreature()
+    {
+        if (CreaturesInLevel == null && CreaturesInLevel.Count <= 0) { return null; }
+
+        return CreatureManager?.SelectedCreature;
     }
 
     public void LogCreature(PlayerController creature)

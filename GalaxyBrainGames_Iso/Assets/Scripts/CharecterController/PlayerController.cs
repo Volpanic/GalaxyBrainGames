@@ -4,17 +4,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-[System.Serializable]
+[System.Serializable,SelectionBase]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField,Min(0.1f)] private float movementSpeed = 1;
-    [SerializeField] private Controller3D controller;
+    [SerializeField] private CharacterController controller;
+    [SerializeField] private ActionPointData actionPointData;
 
-    public bool Selected = false;
+    [Header("Abilities")]
+    [SerializeField] bool canClimb;
+    [SerializeField] bool canSwin;
+
+    [SerializeField] GridPathfinding pathfinding;
+
+    [HideInInspector] public bool Selected = false;
 
     public bool Grounded
     {
-        get { return controller.Grounded; }
+        get { return controller.isGrounded; }
     }
 
     private Camera cam;
@@ -22,10 +29,25 @@ public class PlayerController : MonoBehaviour
     private Vector3 targetPos = Vector3.zero;
     private Vector3 startPos = Vector3.zero;
     private float moveTimer = 0;
+    private float moveMaxTime = 0;
+    private List<Vector3> path;
 
     private void Awake()
     {
         cam = Camera.main;
+
+        transform.position = pathfinding.ToGridPos(transform.position);
+
+        if(pathfinding != null && controller != null)
+        {
+            controller.enabled = false;
+
+            Vector3 gridPos = pathfinding.ToGridPos(transform.position);
+            transform.position = new Vector3(gridPos.x, transform.position.y , gridPos.z);
+
+            controller.enabled = true;
+
+        }
     }
 
     private void FixedUpdate()
@@ -45,43 +67,75 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (Selected) Movement();
-    }
-
-    private void Movement()
-    {
-        if(Input.GetKey(KeyCode.W)) controller.SimpleMove( transform.forward * Time.fixedDeltaTime);
-        if(Input.GetKey(KeyCode.A)) controller.SimpleMove(-transform.right   * Time.fixedDeltaTime);
-        if(Input.GetKey(KeyCode.D)) controller.SimpleMove( transform.right   * Time.fixedDeltaTime);
-        if(Input.GetKey(KeyCode.S)) controller.SimpleMove(-transform.forward * Time.fixedDeltaTime);
-    }
-
-    private void StartMove(Vector3 target)
-    {
-        target.y = transform.position.y;
-        Vector3 movement = target - transform.position;
-
-        Ray dirRay = new Ray(controller.CCollider.bounds.center, movement.normalized);
-        RaycastHit hit;
-
-        //Direction cast from center to check if space is free
-        if (!Physics.Raycast(dirRay, 1f, controller.GroundLayer))
+        if (Selected)
         {
-            //Down from that point to find ground
-            Ray downRay = new Ray(controller.CCollider.bounds.center + movement.normalized, Vector3.down);
-            if (Physics.Raycast(downRay, out hit, 1.1f, controller.GroundLayer))
+            if(!moving) MovementSelection();
+        }
+        if (moving) MoveAlongPath();
+        else controller.SimpleMove(Vector3.zero);
+    }
+
+    private void MoveAlongPath()
+    {
+        moveTimer += Time.deltaTime;
+        Vector3 targetPos = SamplePath(path, moveTimer / moveMaxTime);
+
+        Vector3 velocity = targetPos - transform.position;
+
+        controller.Move(velocity);
+
+        if(moveTimer >= moveMaxTime)
+        {
+            moving = false;
+        }
+    }
+
+    private void MovementSelection()
+    {
+        controller.SimpleMove(Vector3.zero);
+        if (pathfinding == null) return;
+
+        pathfinding.SetOwner(transform,canClimb);
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            path = pathfinding.GetPath();
+            if(path != null)
             {
-                targetPos = new Vector3(hit.point.x, CorrectYPos(hit.point.y), hit.point.z);
-                startPos = transform.position;
-                moveTimer = 0f;
                 moving = true;
+                moveMaxTime = movementSpeed * path.Count;
+                moveTimer = 0;
+                actionPointData?.SubtractActionPoint();
             }
         }
     }
 
+    public Vector3 SamplePath(List<Vector3> path ,float normalizedTime)
+    {
+        if (path == null || path.Count < 1) return transform.position;
+        normalizedTime = Mathf.Clamp01(normalizedTime);
+
+        float unormalizedTime = normalizedTime * (path.Count-1);
+        int min = Mathf.CeilToInt(unormalizedTime);
+
+        if (unormalizedTime == 0) return path[0];
+        if (min == path.Count - 1) return path[path.Count - 1];
+
+        return Vector3.Lerp(path[min], path[min+1], unormalizedTime % 1f);
+    }
+
     public float CorrectYPos(float y)
     {
-        return y + controller.CCollider.bounds.extents.y;
+        return y + controller.bounds.extents.y;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if(pathfinding != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireCube(pathfinding.ToGridPos(transform.position),Vector3.one);
+        }
     }
 
     public bool AttemptMove(Vector3 targetPos)
