@@ -341,7 +341,7 @@ public class GridPathfinding : MonoBehaviour
             foreach (Node neighborNode in GetNeighborNodes(current))
             {
                 //Skip node states
-                if (neighborNode.IsWall || (!neighborNode.IsGround && !neighborNode.IsSlope)
+                if (neighborNode.IsWall || (!neighborNode.IsGround && !neighborNode.IsSlope && !neighborNode.IsClimbable)
                     || closedList.Contains(neighborNode))
                 {
                     continue;
