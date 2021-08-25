@@ -10,6 +10,7 @@ public class Node
     public bool IsClimbable = false;
     public Vector3 Position;
     public Vector3 TemporalPosition;
+    public Vector3 slopeNormal = Vector3.zero;
 
     public Node Parent;
 

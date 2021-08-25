@@ -321,7 +321,7 @@ MonoBehaviour:
   interaction: {fileID: 7795121270826666496}
   defaultLayer:
     serializedVersion: 2
-    m_Bits: 17
+    m_Bits: 1553
 --- !u!1 &8489134179719493392
 GameObject:
   m_ObjectHideFlags: 0
@@ -5468,6 +5468,9 @@ MonoBehaviour:
   climbableMask:
     serializedVersion: 2
     m_Bits: 512
+  slopeMask:
+    serializedVersion: 2
+    m_Bits: 1024
   pathRenderer: {fileID: 8722944020809297047}
   sampleMovement: 0.5
 --- !u!1 &8722944019424231990
