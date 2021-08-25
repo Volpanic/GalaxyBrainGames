@@ -8,6 +8,7 @@ public class GridPathfinding : MonoBehaviour
 {
     [SerializeField] LayerMask groundMask;
     [SerializeField] LayerMask climbableMask;
+    [SerializeField] LayerMask slopeMask;
     [SerializeField] LineRenderer pathRenderer;
 
     [SerializeField, Range(0f, 1f)] private float sampleMovement = 0.5f;
@@ -33,8 +34,9 @@ public class GridPathfinding : MonoBehaviour
     {
         if (owner == null) return false;
 
-        if (hit.normal == Vector3.up)
+        if (true)
         {
+
             if (ToGridPos(hit.point + new Vector3(0, 0.1f, 0)) != lastArea)
             {
                 //Convert to grid position
@@ -76,10 +78,13 @@ public class GridPathfinding : MonoBehaviour
 
         if (pathRenderer != null && nodePath != null && nodePath.Count >= 2)
         {
-            pathRenderer.positionCount = nodePath.Count;
+            pathRenderer.positionCount = nodePath.Count + 1;
+            pathRenderer.SetPosition(0, owner.position - new Vector3(0, 0.48f, 0));
+            path.Add(owner.position);
+
             for (int i = 0; i < nodePath.Count; i++)
             {
-                pathRenderer.SetPosition(i, nodePath[i].TemporalPosition);
+                pathRenderer.SetPosition(i + 1, nodePath[i].TemporalPosition);
 
                 path.Add(nodePath[i].Position);
             }
@@ -147,11 +152,12 @@ public class GridPathfinding : MonoBehaviour
     private Node CheckNodeConditions(Node node)
     {
         //Check for wall
-        bool wall = (Physics.OverlapBox(node.Position, new Vector3(0.45f, 0.45f, 0.45f), Quaternion.identity, groundMask).Length > 0);
+        Collider[] wall = Physics.OverlapBox(node.Position, new Vector3(0.45f, 0.45f, 0.45f), Quaternion.identity, groundMask);
         bool climbable = (Physics.OverlapBox(node.Position, new Vector3(0.75f, 0.45f, 0.75f), Quaternion.identity, climbableMask).Length > 0);
+        bool sloped = (Physics.OverlapBox(node.Position, new Vector3(0.45f, 0.45f, 0.45f), Quaternion.identity, slopeMask).Length > 0);
 
         //Add the node
-        node.IsWall = wall;
+        node.IsWall = wall.Length > 0;
         node.IsGround = false;
         node.IsSlope = false;
         node.TemporalPosition = node.Position - new Vector3(0, 0.45f, 0);
@@ -163,11 +169,11 @@ public class GridPathfinding : MonoBehaviour
             CreateAndStoreNode(node.Position + Vector3.up);
         }
 
-        RaycastHit hit;
 
         //Check if ground
-        if (!wall)
+        if (!sloped && wall.Length == 0)
         {
+            RaycastHit hit;
             if (Physics.Raycast(new Ray(node.Position, Vector3.down), out hit, 0.6f, groundMask))
             {
                 node.IsGround = true;
@@ -176,16 +182,22 @@ public class GridPathfinding : MonoBehaviour
         }
 
         //Check if slope
-        if (wall && !node.IsGround)
+        if (sloped)
         {
-            if (Physics.Raycast(new Ray(node.Position + new Vector3(0, 0.45f, 0), Vector3.down), out hit, 1f, groundMask))
+            RaycastHit hit;
+            node.IsSlope = true;
+            node.IsWall = false;
+            if (Physics.Raycast(new Ray(node.Position + new Vector3(0, 0.5f, 0), Vector3.down), out hit, 1f, slopeMask))
             {
-                if (Vector3.Dot(hit.normal, Vector3.up) > 0.2f)
-                {
-                    node.IsSlope = true;
-                    node.IsWall = false;
-                    node.TemporalPosition = hit.point + new Vector3(0, 0.05f, 0);
-                }
+                node.TemporalPosition = hit.point + new Vector3(0, 0.05f, 0);
+
+                Vector3 slopeDir = new Vector3(0,0,0);
+                if (Mathf.Abs(hit.normal.x) >= 0.5f) slopeDir.x = Mathf.Sign(hit.normal.x);
+                if (Mathf.Abs(hit.normal.z) >= 0.5f) slopeDir.z = Mathf.Sign(hit.normal.z);
+
+                node.slopeNormal = slopeDir;
+                Debug.DrawRay(hit.point, slopeDir * 4, Color.red,55f);
+                Debug.Log(slopeDir.ToString());
             }
         }
 
@@ -237,21 +249,48 @@ public class GridPathfinding : MonoBehaviour
 
         Vector3 pos = current.Position;
 
-        //Get adjacent Nodes
-        for (float xx = pos.x - 1; xx <= pos.x + 1; xx++)
+        //Cardinals
+        if (true)
         {
-            for (float yy = pos.y - 1; yy <= pos.y + 1; yy++)
+            if (nodeGrid.ContainsKey(pos + Vector3.right)) adjacentNode.Add(nodeGrid[pos + Vector3.right]);
+            if (nodeGrid.ContainsKey(pos + Vector3.left)) adjacentNode.Add(nodeGrid[pos + Vector3.left]);
+            if (nodeGrid.ContainsKey(pos + Vector3.forward)) adjacentNode.Add(nodeGrid[pos + Vector3.forward]);
+            if (nodeGrid.ContainsKey(pos + Vector3.back)) adjacentNode.Add(nodeGrid[pos + Vector3.back]);
+
+            //Check for down slope
+            if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.right))   adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.right]);
+            if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.left))    adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.left]);
+            if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.forward)) adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.forward]);
+            if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.back))    adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.back]);
+        }
+
+        //Check for up the slope
+        if(current.IsSlope)
+        {
+            //Make sure we can only go up the slope on it's axis
+            if(current.slopeNormal.x != 0)
             {
-                for (float zz = pos.z - 1; zz <= pos.z + 1; zz++)
-                {
-                    Vector3 offset = new Vector3(xx, yy, zz);
-                    if (offset == pos) continue;
+                if (nodeGrid.ContainsKey(pos + Vector3.right + Vector3.up)) adjacentNode.Add(nodeGrid[pos + Vector3.right + Vector3.up]);
+                if (nodeGrid.ContainsKey(pos + Vector3.left  + Vector3.up)) adjacentNode.Add(nodeGrid[pos + Vector3.left  + Vector3.up]);
 
-
-                    if (nodeGrid.ContainsKey(ToGridPos(offset))) adjacentNode.Add(nodeGrid[ToGridPos(offset)]);
-
-                }
+                if (nodeGrid.ContainsKey(pos + Vector3.right + Vector3.down)) adjacentNode.Add(nodeGrid[pos + Vector3.right + Vector3.down]);
+                if (nodeGrid.ContainsKey(pos + Vector3.left + Vector3.down)) adjacentNode.Add(nodeGrid[pos + Vector3.left + Vector3.down]);
             }
+
+            if (current.slopeNormal.z != 0)
+            {
+                if (nodeGrid.ContainsKey(pos + Vector3.forward + Vector3.up)) adjacentNode.Add(nodeGrid[pos + Vector3.forward + Vector3.up]);
+                if (nodeGrid.ContainsKey(pos + Vector3.back + Vector3.up))    adjacentNode.Add(nodeGrid[pos + Vector3.back + Vector3.up]);
+
+                if (nodeGrid.ContainsKey(pos + Vector3.forward + Vector3.down)) adjacentNode.Add(nodeGrid[pos + Vector3.forward + Vector3.down]);
+                if (nodeGrid.ContainsKey(pos + Vector3.back + Vector3.down)) adjacentNode.Add(nodeGrid[pos + Vector3.back + Vector3.down]);
+            }
+        }
+
+        //climb
+        if(canClimb)
+        {
+            if (nodeGrid.ContainsKey(pos + Vector3.up)) adjacentNode.Add(nodeGrid[pos + Vector3.up]);
         }
 
         return adjacentNode;
@@ -280,7 +319,6 @@ public class GridPathfinding : MonoBehaviour
             return null;
         }
 
-
         while (openList.Count > 0)
         {
             Node current = openList[0];
@@ -303,27 +341,18 @@ public class GridPathfinding : MonoBehaviour
             foreach (Node neighborNode in GetNeighborNodes(current))
             {
                 //Skip node states
-                if (neighborNode.IsWall || closedList.Contains(neighborNode))
+                if (neighborNode.IsWall || (!neighborNode.IsGround && !neighborNode.IsSlope)
+                    || closedList.Contains(neighborNode))
                 {
                     continue;
                 }
 
-                //Prevent from going up block unless it is a slope
-                if (neighborNode.Position.y > current.Position.y && !neighborNode.IsSlope)
+                if(neighborNode.IsClimbable && !neighborNode.IsGround)
                 {
-                    //Climb
-                    if (neighborNode.Position.x == current.Position.x && neighborNode.Position.z == current.Position.z && neighborNode.IsClimbable)
-                    {
-                        canClimb = true;
-                    }
-                    else
-                    {
-                        continue;
-                    }
+                    if (!canClimb) continue;
                 }
 
-                //If the node is comepletly useless
-                if (!neighborNode.IsGround && !neighborNode.IsSlope && !neighborNode.IsGround)
+                if(neighborNode.Position.y < current.Position.y && !neighborNode.IsSlope)
                 {
                     continue;
                 }
@@ -350,13 +379,16 @@ public class GridPathfinding : MonoBehaviour
     private void OnDrawGizmos()
     {
 
-        foreach(KeyValuePair<Vector3, Node> nodePair in nodeGrid)
+        foreach (KeyValuePair<Vector3, Node> nodePair in nodeGrid)
         {
-            if (nodePair.Value.IsGround)    Gizmos.color = Color.gray;
-            if (nodePair.Value.IsSlope)     Gizmos.color = Color.green;
-            if (nodePair.Value.IsClimbable) Gizmos.color = Color.blue;
-            if (nodePair.Value.IsWall)      Gizmos.color = Color.black;
+            Gizmos.color = Color.white;
 
+            //if (nodePair.Value.IsGround) Gizmos.color = Color.gray;
+            if (nodePair.Value.IsSlope) Gizmos.color = Color.green;
+            if (nodePair.Value.IsClimbable) Gizmos.color = Color.blue;
+            //if (nodePair.Value.IsWall) Gizmos.color = Color.black;
+
+            //if (Gizmos.color == Color.white) return;
             Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one);
         }
     }
