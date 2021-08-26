@@ -7,11 +7,19 @@ using UnityEngine.AI;
 [System.Serializable,SelectionBase]
 public class PlayerController : MonoBehaviour
 {
+    public enum PlayerTypes
+    {
+        Child, 
+        Water,
+        Strong
+    }
+
     [SerializeField,Min(0.1f)] private float movementSpeed = 1;
     [SerializeField] private CharacterController controller;
     [SerializeField] private ActionPointData actionPointData;
 
     [Header("Abilities")]
+    [SerializeField] public PlayerTypes PlayerType;
     [SerializeField] bool canClimb;
     [SerializeField] bool canSwin;
 

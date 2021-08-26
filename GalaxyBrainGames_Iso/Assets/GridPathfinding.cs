@@ -378,7 +378,6 @@ public class GridPathfinding : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-
         foreach (KeyValuePair<Vector3, Node> nodePair in nodeGrid)
         {
             Gizmos.color = Color.white;
