@@ -17,6 +17,7 @@ public class SwimingCreature : MonoBehaviour
     private void Awake()
     {
         creatureData.LogCreature(controller);
+        controller.AddAbility(new PushBlockAbility());
     }
 
     //private void Update()

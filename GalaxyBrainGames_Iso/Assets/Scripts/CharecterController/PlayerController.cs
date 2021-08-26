@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
 
     [HideInInspector] public bool Selected = false;
 
+
     public bool Grounded
     {
         get { return controller.isGrounded; }
@@ -39,6 +40,14 @@ public class PlayerController : MonoBehaviour
     private float moveTimer = 0;
     private float moveMaxTime = 0;
     private List<Vector3> path;
+
+    private List<ICreatureAbility> abilites = new List<ICreatureAbility>();
+    private int currentRunningAbility = -1;
+
+    public void AddAbility(ICreatureAbility ability)
+    {
+        if (abilites != null) abilites.Add(ability);
+    }
 
     private void Awake()
     {
@@ -58,29 +67,26 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
-    {
-        Vector3 direction = new Vector3(Input.GetAxis("Horizontal"),0,Input.GetAxis("Vertical"));
-        direction = transform.TransformDirection(direction);
-
-        if(moving)
-        {
-            moveTimer += Time.deltaTime * movementSpeed;
-            Vector3 movemenmt = Vector3.Lerp(startPos,targetPos,moveTimer) - transform.position;
-            controller.SimpleMove(movemenmt);
-        }
-
-        //controller.SimpleMove(direction * movementSpeed);
-    }
-
     private void Update()
     {
-        if (Selected)
+        if (currentRunningAbility < 0)
         {
-            if(!moving) MovementSelection();
+            if (Selected)
+            {
+                if (!moving) MovementSelection();
+            }
+            if (moving) MoveAlongPath();
+            else controller.SimpleMove(Vector3.zero);
         }
-        if (moving) MoveAlongPath();
-        else controller.SimpleMove(Vector3.zero);
+        else
+        {
+            abilites[currentRunningAbility].OnAbilityUpdate();
+            if(abilites[currentRunningAbility].OnAbilityCheckDone())
+            {
+                abilites[currentRunningAbility].OnAbilityEnd();
+                currentRunningAbility = -1;
+            }
+        }
     }
 
     private void MoveAlongPath()
@@ -146,13 +152,36 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public bool AttemptMove(Vector3 targetPos)
+    public void AttemptInteract(Interactalbe interact)
     {
-        
-        //Vector3 movement = targetPos - transform.position;
-        //controller.SimpleMove(movement);
-        //controller.PauseGravityForFrame = true;
+        for(int i = 0; i < abilites.Count; i++)
+        {
+            if(abilites[i].OnAbilityCheckCondition(interact))
+            {
+                Vector3 pos = interact.transform.position;
+                Vector3 pos2 = controller.transform.position;
 
-        return true;
+                pos.y  = 0;
+                pos2.y = 0;
+
+                Vector3 interactDirection = (pos - pos2).normalized;
+                abilites[i].OnAbilityStart(this,interact,MakeCardinal(interactDirection));
+                currentRunningAbility = i;
+                break;
+            }
+        }
+    }
+
+    private Vector3 MakeCardinal(Vector3 direction)
+    {
+        float absX = Mathf.Abs(direction.x);
+        float absY = Mathf.Abs(direction.y);
+        float absZ = Mathf.Abs(direction.z);
+
+        if (absX > absY && absX > absZ) return new Vector3(Mathf.Sign(direction.x), 0, 0);
+        if (absY > absX && absY > absZ) return new Vector3(0, Mathf.Sign(direction.y), 0);
+        if (absZ > absX && absZ > absY) return new Vector3(0, 0, Mathf.Sign(direction.z));
+
+        return Vector3.zero;
     }
 }

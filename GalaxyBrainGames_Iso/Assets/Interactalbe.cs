@@ -17,9 +17,9 @@ public class Interactalbe : MonoBehaviour
     {
         if (requiredType == creature.PlayerType)
         {
-            lastInteractedWithCreature = creature;
             if (onlyOnce && activated) return;
-            OnInteractedEvent?.Raise();
+            creature.AttemptInteract(this);
+            lastInteractedWithCreature = creature;
             OnInteracted.Invoke();
             activated = true;
         }
