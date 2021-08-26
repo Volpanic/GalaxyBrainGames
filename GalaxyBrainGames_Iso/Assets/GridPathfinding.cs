@@ -197,7 +197,6 @@ public class GridPathfinding : MonoBehaviour
 
                 node.slopeNormal = slopeDir;
                 Debug.DrawRay(hit.point, slopeDir * 4, Color.red,55f);
-                Debug.Log(slopeDir.ToString());
             }
         }
 
