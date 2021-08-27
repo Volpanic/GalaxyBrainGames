@@ -36,7 +36,6 @@ public class GridPathfinding : MonoBehaviour
 
         if (true)
         {
-
             if (ToGridPos(hit.point + new Vector3(0, 0.1f, 0)) != lastArea)
             {
                 //Convert to grid position
@@ -123,6 +122,9 @@ public class GridPathfinding : MonoBehaviour
             Mathf.Max(startPos.y, endPos.y),
             Mathf.Max(startPos.z, endPos.z));
 
+        min -= Vector3.one;
+        max += Vector3.one;
+
         //Make sure final node exist
         Vector3 lastPos = new Vector3(0, 0, 0);
 
@@ -134,6 +136,7 @@ public class GridPathfinding : MonoBehaviour
                 {
                     lastPos = new Vector3(xx, yy, zz);
                     CreateAndStoreNode(lastPos);
+                    CreateAndStoreNode(lastPos + Vector3.up);
                 }
             }
         }
@@ -152,7 +155,7 @@ public class GridPathfinding : MonoBehaviour
     private Node CheckNodeConditions(Node node)
     {
         //Check for wall
-        Collider[] wall = Physics.OverlapBox(node.Position, new Vector3(0.45f, 0.45f, 0.45f), Quaternion.identity, groundMask);
+        Collider[] wall = Physics.OverlapBox(node.Position, new Vector3(0.33f, 0.33f, 0.33f), Quaternion.identity, groundMask);
         bool climbable = (Physics.OverlapBox(node.Position, new Vector3(0.75f, 0.45f, 0.75f), Quaternion.identity, climbableMask).Length > 0);
         bool sloped = (Physics.OverlapBox(node.Position, new Vector3(0.45f, 0.45f, 0.45f), Quaternion.identity, slopeMask).Length > 0);
 
@@ -381,13 +384,18 @@ public class GridPathfinding : MonoBehaviour
         {
             Gizmos.color = Color.white;
 
-            //if (nodePair.Value.IsGround) Gizmos.color = Color.gray;
-            if (nodePair.Value.IsSlope) Gizmos.color = Color.green;
-            if (nodePair.Value.IsClimbable) Gizmos.color = Color.blue;
-            //if (nodePair.Value.IsWall) Gizmos.color = Color.black;
+            if (nodePair.Value.IsGround)
+            {
+                Gizmos.color = Color.gray;
+                Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one * 0.9f);
+            }
 
-            //if (Gizmos.color == Color.white) return;
-            Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one);
+            if (nodePair.Value.IsWall)
+            {
+                Gizmos.color = Color.black;
+                Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one*0.9f);
+            }
+
         }
     }
 

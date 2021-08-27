@@ -18,6 +18,7 @@ public class BreakingCreature : MonoBehaviour
     {
         creatureData.LogCreature(controller);
         controller.AddAbility(new PushBlockAbility());
+        controller.AddAbility(new KnockOverPillarAbility());
         cam = Camera.main;
     }
 

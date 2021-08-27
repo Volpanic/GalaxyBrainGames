@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[SelectionBase]
 public class Pushable : MonoBehaviour
 {
     [SerializeField] private Interactalbe interactalbe;
@@ -23,46 +24,40 @@ public class Pushable : MonoBehaviour
 
     private void Update()
     {
-        if(fallingOver)
+        if (fallingOver)
         {
             fallingTimer += Time.deltaTime;
-            transform.rotation = Quaternion.Lerp(initalRotation,targetRotation,fallingTimer);
+            transform.rotation = Quaternion.Lerp(initalRotation, targetRotation, fallingTimer);
 
-            if(fallingTimer >= 1)
+            if (fallingTimer >= 1)
             {
-                transform.position += Vector3.down * 0.5f;
+                transform.position += Vector3.down * 0.6f;
                 fallingOver = false;
-                creatureData.pathfinding.UpdateNodeCells(myCollider.bounds.min,myCollider.bounds.max);
+                fallingTimer = 1;
+            }
+        }
+        else
+        {
+            //Delay falling timer briefly
+            if (fallingTimer >= 1) fallingTimer += Time.deltaTime;
+            if (fallingTimer >= 1.5f && fallingTimer < 2f)
+            {
+                creatureData.pathfinding.UpdateNodeCells(myCollider.bounds.min, myCollider.bounds.max);
+                Debug.DrawLine(myCollider.bounds.min - Vector3.one, myCollider.bounds.max + Vector3.one, Color.magenta, 100);
+                fallingTimer = 2;
             }
         }
     }
 
-    public void Push()
+    public void Push(Vector3 pushDirection)
     {
-        if (interactalbe == null || interactalbe.lastInteractedWithCreature == null) return;
-
-        Vector3 pushDirection = MakeCardinal(-(interactalbe.lastInteractedWithCreature.transform.position - transform.position));
-        Debug.DrawLine(transform.position, transform.position + (pushDirection * 4f),Color.red,1);
         if (pushDirection == Vector3.zero) return;
 
         Vector3 target = initalRotation.eulerAngles;
         target += pushDirection * 90;
 
-        targetRotation.SetFromToRotation(Vector3.up,pushDirection);
+        targetRotation.SetFromToRotation(Vector3.up, pushDirection);
         fallingOver = true;
-        pushedOver  = true;
-    }
-
-    private Vector3 MakeCardinal(Vector3 direction)
-    {
-        float absX = Mathf.Abs(direction.x);
-        float absY = Mathf.Abs(direction.y);
-        float absZ = Mathf.Abs(direction.z);
-
-        if (absX > absY && absX > absZ) return new Vector3(Mathf.Sign(direction.x), 0, 0);
-        if (absY > absX && absY > absZ) return new Vector3(0, Mathf.Sign(direction.y), 0);
-        if (absZ > absX && absZ > absY) return new Vector3(0, 0, Mathf.Sign(direction.z));
-
-        return Vector3.zero;
+        pushedOver = true;
     }
 }
