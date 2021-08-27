@@ -17,6 +17,7 @@ public class BreakingCreature : MonoBehaviour
     void Awake()
     {
         creatureData.LogCreature(controller);
+        controller.AddAbility(new PushBlockAbility());
         cam = Camera.main;
     }
 

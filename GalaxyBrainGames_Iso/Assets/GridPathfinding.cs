@@ -76,7 +76,7 @@ public class GridPathfinding : MonoBehaviour
     {
         path = new List<Vector3>();
 
-        if (pathRenderer != null && nodePath != null && nodePath.Count >= 2)
+        if (pathRenderer != null && nodePath != null && nodePath.Count > 0)
         {
             pathRenderer.positionCount = nodePath.Count + 1;
             pathRenderer.SetPosition(0, owner.position - new Vector3(0, 0.48f, 0));
