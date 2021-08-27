@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0.99999905, b: 0.99999905, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -225,6 +225,22 @@ PrefabInstance:
     - target: {fileID: 8722944020632010957, guid: 9a36639567d8d8a4b9c7a227f9759ef4, type: 3}
       propertyPath: m_Name
       value: LevelBase
+      objectReference: {fileID: 0}
+    - target: {fileID: 8722944020809297047, guid: 9a36639567d8d8a4b9c7a227f9759ef4, type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.r
+      value: 0.28109956
+      objectReference: {fileID: 0}
+    - target: {fileID: 8722944020809297047, guid: 9a36639567d8d8a4b9c7a227f9759ef4, type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.b
+      value: 0.41037738
+      objectReference: {fileID: 0}
+    - target: {fileID: 8722944020809297047, guid: 9a36639567d8d8a4b9c7a227f9759ef4, type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.g
+      value: 0.8065459
+      objectReference: {fileID: 0}
+    - target: {fileID: 8722944020809297047, guid: 9a36639567d8d8a4b9c7a227f9759ef4, type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9116594218909838492, guid: 9a36639567d8d8a4b9c7a227f9759ef4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1616,7 +1632,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &686952470
 Light:
   m_ObjectHideFlags: 0
@@ -1700,6 +1716,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6602982793405062117, guid: 4a4a3c21f0b8ce445b9e76c8e27193e5, type: 3}
+      propertyPath: m_ClearFlags
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6602982793405062117, guid: 4a4a3c21f0b8ce445b9e76c8e27193e5, type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0.11320752
+      objectReference: {fileID: 0}
+    - target: {fileID: 6602982793405062117, guid: 4a4a3c21f0b8ce445b9e76c8e27193e5, type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0.047552675
+      objectReference: {fileID: 0}
+    - target: {fileID: 6602982793405062117, guid: 4a4a3c21f0b8ce445b9e76c8e27193e5, type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0.010145954
+      objectReference: {fileID: 0}
     - target: {fileID: 6602982793405062118, guid: 4a4a3c21f0b8ce445b9e76c8e27193e5, type: 3}
       propertyPath: m_Name
       value: Main Camera

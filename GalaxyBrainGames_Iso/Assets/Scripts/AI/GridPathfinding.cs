@@ -77,15 +77,44 @@ public class GridPathfinding : MonoBehaviour
 
         if (pathRenderer != null && nodePath != null && nodePath.Count > 0)
         {
-            pathRenderer.positionCount = nodePath.Count + 1;
-            pathRenderer.SetPosition(0, owner.position - new Vector3(0, 0.48f, 0));
+            pathRenderer.SetPosition(0, owner.position);
             path.Add(owner.position);
 
             for (int i = 0; i < nodePath.Count; i++)
             {
-                pathRenderer.SetPosition(i + 1, nodePath[i].TemporalPosition);
+                //pathRenderer.SetPosition(i + 1, nodePath[i].TemporalPosition);
 
-                path.Add(nodePath[i].Position);
+                Node node = nodePath[i];
+
+
+                if(node.IsSlope)
+                {
+                    Vector3 oldPos = path[path.Count - 1];
+                    Vector3 dir = (node.Position - oldPos) * 0.5f;
+
+                    dir.y = 0;
+                    dir = dir.normalized;
+
+                    path.Add(new Vector3(node.Position.x, oldPos.y, node.Position.z)-(dir*0.5f));
+
+                    //path.Add(node.Position);
+
+                    if (i+1 < nodePath.Count)
+                    {
+                        Node nextNode = nodePath[i+1];
+                        path.Add(new Vector3(node.Position.x, nextNode.Position.y, node.Position.z)+(dir*0.5f));
+                    }
+                }
+                else
+                {
+                    path.Add(node.Position);
+                }
+            }
+
+            pathRenderer.positionCount = path.Count;
+            for (int i = 0; i < path.Count; i++)
+            {
+                pathRenderer.SetPosition(i, path[i] + new Vector3(0,-0.45f,0));
             }
         }
     }
@@ -359,6 +388,24 @@ public class GridPathfinding : MonoBehaviour
                     continue;
                 }
 
+                //Make sure we go on the slope the correct way
+                if(neighborNode.IsSlope)
+                {
+                    Vector3 dir = (neighborNode.Position - current.Position);
+                    dir.y = 0;
+                    dir = dir.normalized;
+                    if (dir != neighborNode.slopeNormal && dir != -neighborNode.slopeNormal) continue;
+                }
+
+                //Make sure we get off the slope the correct way
+                if (current.IsSlope)
+                {
+                    Vector3 dir = (neighborNode.Position - current.Position);
+                    dir.y = 0;
+                    dir = dir.normalized;
+                    if (dir != current.slopeNormal && dir != -current.slopeNormal) continue;
+                }
+
                 float moveCost = current.gCost + GetManhattenDistance(current, neighborNode);
 
                 if (moveCost < neighborNode.gCost || !openList.Contains(neighborNode))
@@ -395,7 +442,6 @@ public class GridPathfinding : MonoBehaviour
                 Gizmos.color = Color.black;
                 Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one*0.9f);
             }
-
         }
     }
 
