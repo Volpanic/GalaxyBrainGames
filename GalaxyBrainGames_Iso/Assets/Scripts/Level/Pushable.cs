@@ -34,17 +34,7 @@ public class Pushable : MonoBehaviour
                 transform.position += Vector3.down * 0.6f;
                 fallingOver = false;
                 fallingTimer = 1;
-            }
-        }
-        else
-        {
-            //Delay falling timer briefly
-            if (fallingTimer >= 1) fallingTimer += Time.deltaTime;
-            if (fallingTimer >= 1.5f && fallingTimer < 2f)
-            {
                 creatureData.pathfinding.UpdateNodeCells(myCollider.bounds.min, myCollider.bounds.max);
-                Debug.DrawLine(myCollider.bounds.min - Vector3.one, myCollider.bounds.max + Vector3.one, Color.magenta, 100);
-                fallingTimer = 2;
             }
         }
     }

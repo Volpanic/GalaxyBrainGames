@@ -66,8 +66,14 @@ public class PushBlock : MonoBehaviour
         if((pushTimer >= 0.2f && (controller.collisionFlags & CollisionFlags.CollidedSides) != 0) || !Physics.BoxCast(controller.bounds.center, controller.bounds.extents*0.98f, Vector3.down, Quaternion.identity, 0.1f))
         {
             moving = false;
-            //Put snap to tile code here...
 
+            //Put snap to tile code here...
+            Vector3 targetSnap = creatureData.pathfinding.ToGridPos(transform.position);
+            targetSnap.y = transform.position.y;
+
+            controller.enabled = false;
+            transform.position = targetSnap;
+            controller.enabled = true;
         }
 
         if(pushTimer >= 1)

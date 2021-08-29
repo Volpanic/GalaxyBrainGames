@@ -36,7 +36,7 @@ public class GridPathfinding : MonoBehaviour
 
         if (true)
         {
-            if (ToGridPos(hit.point + new Vector3(0, 0.1f, 0)) != lastArea)
+            if (ToGridPos(hit.point + new Vector3(0, 0.5f, 0)) != lastArea)
             {
                 //Convert to grid position
                 lastArea = ToGridPos(hit.point + new Vector3(0, 0.1f, 0));
@@ -46,7 +46,7 @@ public class GridPathfinding : MonoBehaviour
                 List<Node> nodePath = FindPath(ToGridPos(owner.position), lastArea);
 
                 //Visualization
-                UpdateLineRenderer(nodePath);
+                UpdatePath(nodePath);
             }
             lastArea = ToGridPos(hit.point + Vector3.up);
             return true;
@@ -71,13 +71,12 @@ public class GridPathfinding : MonoBehaviour
         gridOffset = offset;
     }
 
-    private void UpdateLineRenderer(List<Node> nodePath)
+    private void UpdatePath(List<Node> nodePath)
     {
         path = new List<Vector3>();
 
-        if (pathRenderer != null && nodePath != null && nodePath.Count > 0)
+        if (nodePath != null && nodePath.Count > 0)
         {
-            pathRenderer.SetPosition(0, owner.position);
             path.Add(owner.position);
 
             for (int i = 0; i < nodePath.Count; i++)
@@ -110,11 +109,20 @@ public class GridPathfinding : MonoBehaviour
                     path.Add(node.Position);
                 }
             }
+        }
 
+        UpdateLineRenderer();
+    }
+
+    private void UpdateLineRenderer()
+    {
+
+        if (pathRenderer != null)
+        {
             pathRenderer.positionCount = path.Count;
             for (int i = 0; i < path.Count; i++)
             {
-                pathRenderer.SetPosition(i, path[i] + new Vector3(0,-0.45f,0));
+                pathRenderer.SetPosition(i, path[i] + new Vector3(0, -0.45f, 0));
             }
         }
     }
@@ -165,7 +173,6 @@ public class GridPathfinding : MonoBehaviour
                 {
                     lastPos = new Vector3(xx, yy, zz);
                     CreateAndStoreNode(lastPos);
-                    CreateAndStoreNode(lastPos + Vector3.up);
                 }
             }
         }
@@ -184,7 +191,7 @@ public class GridPathfinding : MonoBehaviour
     private Node CheckNodeConditions(Node node)
     {
         //Check for wall
-        Collider[] wall = Physics.OverlapBox(node.Position, new Vector3(0.33f, 0.33f, 0.33f), Quaternion.identity, groundMask);
+        Collider[] wall = Physics.OverlapBox(node.Position + new Vector3(0,0.25f,0), new Vector3(0.33f, 0.11f, 0.33f), Quaternion.identity, groundMask);
         bool climbable = (Physics.OverlapBox(node.Position, new Vector3(0.75f, 0.45f, 0.75f), Quaternion.identity, climbableMask).Length > 0);
         bool sloped = (Physics.OverlapBox(node.Position, new Vector3(0.45f, 0.45f, 0.45f), Quaternion.identity, slopeMask).Length > 0);
 
@@ -206,7 +213,7 @@ public class GridPathfinding : MonoBehaviour
         if (!sloped && wall.Length == 0)
         {
             RaycastHit hit;
-            if (Physics.Raycast(new Ray(node.Position, Vector3.down), out hit, 0.6f, groundMask))
+            if (Physics.Raycast(new Ray(node.Position, Vector3.down), out hit, 0.8f, groundMask))
             {
                 node.IsGround = true;
                 node.TemporalPosition = node.Position - new Vector3(0, 0.45f, 0);
@@ -246,6 +253,7 @@ public class GridPathfinding : MonoBehaviour
             {
                 for (float zz = minGrid.z; zz <= maxGrid.z; zz++)
                 {
+                    Debug.DrawRay(new Vector3(xx,yy,zz),Vector3.up*0.5f,Color.yellow,100);
                     UpdateGridCell(new Vector3(xx, yy, zz));
                 }
             }
@@ -435,13 +443,32 @@ public class GridPathfinding : MonoBehaviour
             {
                 Gizmos.color = Color.gray;
                 Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one * 0.9f);
+                continue;
             }
 
             if (nodePair.Value.IsWall)
             {
                 Gizmos.color = Color.black;
-                Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one*0.9f);
+                Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one * 0.9f);
+                continue;
             }
+
+            if (nodePair.Value.IsSlope)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one * 0.9f);
+                continue;
+            }
+
+            if (nodePair.Value.IsClimbable)
+            {
+                Gizmos.color = Color.blue;
+                Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one * 0.9f);
+                continue;
+            }
+
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one * 0.9f);
         }
     }
 
