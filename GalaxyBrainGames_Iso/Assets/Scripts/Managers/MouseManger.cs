@@ -28,6 +28,11 @@ public class MouseManger : MonoBehaviour
 
     private void MouseControl()
     {
+        if (cam == null)
+        {
+            cam = Camera.main;
+            return;
+        }
         Ray cameraRay = cam.ScreenPointToRay(Input.mousePosition);
 
         RaycastHit selectedObject;
