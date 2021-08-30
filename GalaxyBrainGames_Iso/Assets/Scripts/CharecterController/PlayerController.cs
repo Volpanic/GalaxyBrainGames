@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
 
     private Camera cam;
     private bool moving = false;
+    [HideInInspector] public bool IsClimbing = false;
     private Vector3 targetPos = Vector3.zero;
     private Vector3 startPos = Vector3.zero;
     private float moveTimer = 0;
@@ -109,7 +110,7 @@ public class PlayerController : MonoBehaviour
         controller.SimpleMove(Vector3.zero);
         if (pathfinding == null) return;
 
-        pathfinding.SetOwner(transform,canClimb);
+        pathfinding.SetOwner(transform,canClimb && IsClimbing);
 
         if (Input.GetMouseButtonDown(0))
         {

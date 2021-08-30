@@ -12,6 +12,7 @@ public class ChildCreature : MonoBehaviour
     void Awake()
     {
         creatureData.LogCreature(controller);
+        controller.AddAbility(new ClimbingAbility());
     }
 
 }
