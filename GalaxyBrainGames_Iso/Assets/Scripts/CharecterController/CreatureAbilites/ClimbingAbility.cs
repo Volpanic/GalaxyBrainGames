@@ -26,6 +26,7 @@ public class ClimbingAbility : ICreatureAbility
     public void OnAbilityStart(PlayerController controller, Interactalbe interactable, Vector3 interactDirection)
     {
         Debug.Log("Climb");
+        if(!controller.IsClimbing)
         controller.IsClimbing = true;
     }
 

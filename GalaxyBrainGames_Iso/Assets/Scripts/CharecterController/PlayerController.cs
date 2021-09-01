@@ -102,6 +102,7 @@ public class PlayerController : MonoBehaviour
         if(moveTimer >= moveMaxTime)
         {
             moving = false;
+            IsClimbing = false;
         }
     }
 

@@ -33,7 +33,7 @@ public class InteractionManager : MonoBehaviour
         if(interactions.ContainsKey(selectedObject.collider.gameObject))
         {
             if(Input.GetMouseButtonDown(0) && 
-                Vector3.Distance(interactions[selectedObject.collider.gameObject].transform.position, selectedCreature.transform.position) < 2f)
+                interactions[selectedObject.collider.gameObject].CheckIfNeaby(selectedCreature.gameObject, 1f))
             {
                 interactions[selectedObject.collider.gameObject].OnInteract(selectedCreature);
             }

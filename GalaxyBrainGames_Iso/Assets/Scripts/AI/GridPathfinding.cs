@@ -9,7 +9,11 @@ public class GridPathfinding : MonoBehaviour
     [SerializeField] LayerMask groundMask;
     [SerializeField] LayerMask climbableMask;
     [SerializeField] LayerMask slopeMask;
+
+    [Header("Visualization")]
     [SerializeField] LineRenderer pathRenderer;
+    [SerializeField] Gradient validPathGradiant;
+    [SerializeField] Gradient nonvalidPathGradiant;
 
     [SerializeField, Range(0f, 1f)] private float sampleMovement = 0.5f;
 
@@ -116,14 +120,17 @@ public class GridPathfinding : MonoBehaviour
 
     private void UpdateLineRenderer()
     {
-
         if (pathRenderer != null)
         {
             pathRenderer.positionCount = path.Count;
             for (int i = 0; i < path.Count; i++)
             {
-                pathRenderer.SetPosition(i, path[i] + new Vector3(0, -0.45f, 0));
+                if(!isClimbing) pathRenderer.SetPosition(i, path[i] + new Vector3(0, -0.45f, 0));
+                else pathRenderer.SetPosition(i, path[i]);
             }
+
+            if (viablePath) pathRenderer.colorGradient = validPathGradiant;
+            else pathRenderer.colorGradient = nonvalidPathGradiant;
         }
     }
 
@@ -192,7 +199,10 @@ public class GridPathfinding : MonoBehaviour
     {
         //Check for wall
         Collider[] wall = Physics.OverlapBox(node.Position + new Vector3(0,0.25f,0), new Vector3(0.33f, 0.11f, 0.33f), Quaternion.identity, groundMask);
-        bool climbable = (Physics.OverlapBox(node.Position, new Vector3(0.75f, 0.45f, 0.75f), Quaternion.identity, climbableMask).Length > 0);
+
+        bool climbable = (Physics.OverlapBox(node.Position, new Vector3(0.75f, 0.75f, 0.75f), Quaternion.identity, climbableMask).Length > 0);
+        bool belowClimbable = (Physics.OverlapBox(node.Position + Vector3.down, new Vector3(0.75f, 0.75f, 0.75f), Quaternion.identity, climbableMask).Length > 0);
+
         bool sloped = (Physics.OverlapBox(node.Position, new Vector3(0.45f, 0.45f, 0.45f), Quaternion.identity, slopeMask).Length > 0);
 
         //Add the node
@@ -200,7 +210,7 @@ public class GridPathfinding : MonoBehaviour
         node.IsGround = false;
         node.IsSlope = false;
         node.TemporalPosition = node.Position - new Vector3(0, 0.45f, 0);
-        node.IsClimbable = climbable;
+        node.IsClimbable = climbable || belowClimbable;
 
         if (climbable)
         {
@@ -330,15 +340,16 @@ public class GridPathfinding : MonoBehaviour
         //climb
         if(isClimbing)
         {
-            for (float xx = pos.x - 1; xx < pos.x + 1; xx++)
+            for (float xx = pos.x - 1; xx <= pos.x + 1; xx++)
             {
-                for (float yy = pos.y - 1; yy < pos.y + 1; yy++)
+                for (float yy = pos.y - 1; yy <= pos.y + 1; yy++)
                 {
-                    for (float zz = pos.z - 1; zz < pos.z + 1; zz++)
+                    for (float zz = pos.z - 1; zz <= pos.z + 1; zz++)
                     {
                         Vector3 newPos = new Vector3(xx, yy, zz);
 
                         if (newPos == pos) continue;
+                        if ((pos - newPos).magnitude > 1) continue;
 
                         if (nodeGrid.ContainsKey(new Vector3(xx,yy,zz)))
                         {
@@ -362,13 +373,14 @@ public class GridPathfinding : MonoBehaviour
     private List<Node> FindPath(Vector3 p1, Vector3 p2)
     {
         viablePath = false;
-        bool isClimbing = false;
 
         List<Node> openList = new List<Node>();
         HashSet<Node> closedList = new HashSet<Node>();
 
         Node startNode = nodeGrid[p1];
         Node targetNode = nodeGrid[p2];
+
+        Debug.DrawRay(targetNode.Position + (Vector3.down*0.5f),Vector3.up*3,Color.yellow,0.1f);
 
         openList.Add(startNode);
 
@@ -399,6 +411,7 @@ public class GridPathfinding : MonoBehaviour
 
             foreach (Node neighborNode in GetNeighborNodes(current))
             {
+                
                 //Skip node states
                 if (neighborNode.IsWall || (!neighborNode.IsGround && !neighborNode.IsSlope && !neighborNode.IsClimbable)
                     || closedList.Contains(neighborNode))
@@ -406,40 +419,49 @@ public class GridPathfinding : MonoBehaviour
                     continue;
                 }
 
-                if(neighborNode.IsClimbable && !neighborNode.IsGround)
+                if (!isClimbing)
                 {
-                    if (!isClimbing) continue;
-                    else
+                    //Don't sample climable blocks if they arent ground level
+                    if (neighborNode.IsClimbable && !neighborNode.IsGround)
                     {
-                        //Only go back onto ground if it's the target
-                        if(neighborNode.IsGround && neighborNode != targetNode)
+                        //Unless we're climbing of course
+                        if (!isClimbing) continue;
+                    }
+
+                    if (neighborNode.Position.y < current.Position.y && !neighborNode.IsSlope)
+                    {
+                        continue;
+                    }
+
+
+                    //Make sure we go on the slope the correct way
+                    if (neighborNode.IsSlope)
+                    {
+                        Vector3 dir = (neighborNode.Position - current.Position);
+                        dir.y = 0;
+                        dir = dir.normalized;
+                        if (dir != neighborNode.slopeNormal && dir != -neighborNode.slopeNormal) continue;
+                    }
+
+                    //Make sure we get off the slope the correct way
+                    if (current.IsSlope)
+                    {
+                        Vector3 dir = (neighborNode.Position - current.Position);
+                        dir.y = 0;
+                        dir = dir.normalized;
+                        if (dir != current.slopeNormal && dir != -current.slopeNormal) continue;
+                    }
+                }
+                else //Climbing
+                {
+                    //Only go from climbing to ground if it's the target node
+                    if(!neighborNode.IsClimbable)
+                    {
+                        if (neighborNode != targetNode || neighborNode.Position.y == startNode.Position.y)
                         {
                             continue;
                         }
                     }
-                }
-
-                if(!isClimbing && neighborNode.Position.y < current.Position.y && !neighborNode.IsSlope)
-                {
-                    continue;
-                }
-
-                //Make sure we go on the slope the correct way
-                if(neighborNode.IsSlope)
-                {
-                    Vector3 dir = (neighborNode.Position - current.Position);
-                    dir.y = 0;
-                    dir = dir.normalized;
-                    if (dir != neighborNode.slopeNormal && dir != -neighborNode.slopeNormal) continue;
-                }
-
-                //Make sure we get off the slope the correct way
-                if (current.IsSlope)
-                {
-                    Vector3 dir = (neighborNode.Position - current.Position);
-                    dir.y = 0;
-                    dir = dir.normalized;
-                    if (dir != current.slopeNormal && dir != -current.slopeNormal) continue;
                 }
 
                 float moveCost = current.gCost + GetManhattenDistance(current, neighborNode);
