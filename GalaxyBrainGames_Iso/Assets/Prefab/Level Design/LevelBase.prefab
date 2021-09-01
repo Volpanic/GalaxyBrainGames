@@ -359,7 +359,7 @@ MonoBehaviour:
   actionPointData: {fileID: 11400000, guid: 251e272e2b2af71408bcc724a19bb05b, type: 2}
   PlayerType: 2
   canClimb: 0
-  canSwin: 0
+  canSwim: 0
   pathfinding: {fileID: 8722944019302059944}
   Selected: 0
   IsClimbing: 0
@@ -452,7 +452,7 @@ MonoBehaviour:
   actionPointData: {fileID: 11400000, guid: 251e272e2b2af71408bcc724a19bb05b, type: 2}
   PlayerType: 1
   canClimb: 0
-  canSwin: 0
+  canSwim: 1
   pathfinding: {fileID: 8722944019302059944}
   Selected: 0
   IsClimbing: 0
@@ -5362,6 +5362,9 @@ MonoBehaviour:
   slopeMask:
     serializedVersion: 2
     m_Bits: 1024
+  waterMask:
+    serializedVersion: 2
+    m_Bits: 16
   pathRenderer: {fileID: 8722944020809297047}
   validPathGradiant:
     serializedVersion: 2
@@ -5473,7 +5476,7 @@ MonoBehaviour:
   actionPointData: {fileID: 11400000, guid: 251e272e2b2af71408bcc724a19bb05b, type: 2}
   PlayerType: 0
   canClimb: 1
-  canSwin: 0
+  canSwim: 0
   pathfinding: {fileID: 8722944019302059944}
   Selected: 0
   IsClimbing: 0

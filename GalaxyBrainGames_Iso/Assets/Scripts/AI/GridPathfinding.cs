@@ -9,6 +9,7 @@ public class GridPathfinding : MonoBehaviour
     [SerializeField] LayerMask groundMask;
     [SerializeField] LayerMask climbableMask;
     [SerializeField] LayerMask slopeMask;
+    [SerializeField] LayerMask waterMask;
 
     [Header("Visualization")]
     [SerializeField] LineRenderer pathRenderer;
@@ -25,7 +26,9 @@ public class GridPathfinding : MonoBehaviour
     private Transform owner;
     private Vector3 gridOffset;
     private bool viablePath = false;
+
     private bool isClimbing = false;
+    private bool canSwim = false;
 
     private Dictionary<Vector3, Node> nodeGrid = new Dictionary<Vector3, Node>();
 
@@ -64,10 +67,11 @@ public class GridPathfinding : MonoBehaviour
         viablePath = false;
     }
 
-    public void SetOwner(Transform newOwner, bool climb = false)
+    public void SetOwner(Transform newOwner, bool climb = false, bool swim = false)
     {
         owner = newOwner;
         isClimbing = climb;
+        canSwim = swim;
     }
 
     public void SetOffset(Vector3 offset)
@@ -204,9 +208,11 @@ public class GridPathfinding : MonoBehaviour
         bool belowClimbable = (Physics.OverlapBox(node.Position + Vector3.down, new Vector3(0.75f, 0.75f, 0.75f), Quaternion.identity, climbableMask).Length > 0);
 
         bool sloped = (Physics.OverlapBox(node.Position, new Vector3(0.45f, 0.45f, 0.45f), Quaternion.identity, slopeMask).Length > 0);
+        bool water = (Physics.OverlapBox(node.Position, new Vector3(0.45f, 0.6f, 0.45f), Quaternion.identity, waterMask).Length > 0);
 
         //Add the node
         node.IsWall = wall.Length > 0;
+        node.IsWater = water && ! node.IsWall;
         node.IsGround = false;
         node.IsSlope = false;
         node.TemporalPosition = node.Position - new Vector3(0, 0.45f, 0);
@@ -457,14 +463,16 @@ public class GridPathfinding : MonoBehaviour
                     //Only go from climbing to ground if it's the target node
                     if(!neighborNode.IsClimbable)
                     {
-                        if (neighborNode != targetNode || neighborNode.Position.y == startNode.Position.y)
+                        if (neighborNode != targetNode)
                         {
                             continue;
                         }
                     }
+                    if (neighborNode.Position.y == startNode.Position.y) continue;
                 }
 
                 float moveCost = current.gCost + GetManhattenDistance(current, neighborNode);
+                if (neighborNode.IsWater && !canSwim) moveCost += 10;
 
                 if (moveCost < neighborNode.gCost || !openList.Contains(neighborNode))
                 {
@@ -489,36 +497,36 @@ public class GridPathfinding : MonoBehaviour
         {
             Gizmos.color = Color.white;
 
-            if (nodePair.Value.IsGround)
-            {
-                Gizmos.color = Color.gray;
-                Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one * 0.9f);
-                continue;
-            }
+            //if (nodePair.Value.IsGround)
+            //{
+            //    Gizmos.color = Color.gray;
+            //    Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one * 0.9f);
+            //    continue;
+            //}
 
-            if (nodePair.Value.IsWall)
-            {
-                Gizmos.color = Color.black;
-                Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one * 0.9f);
-                continue;
-            }
+            //if (nodePair.Value.IsWall)
+            //{
+            //    Gizmos.color = Color.black;
+            //    Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one * 0.9f);
+            //    continue;
+            //}
 
-            if (nodePair.Value.IsSlope)
-            {
-                Gizmos.color = Color.green;
-                Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one * 0.9f);
-                continue;
-            }
+            //if (nodePair.Value.IsSlope)
+            //{
+            //    Gizmos.color = Color.green;
+            //    Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one * 0.9f);
+            //    continue;
+            //}
 
-            if (nodePair.Value.IsClimbable)
+            if (nodePair.Value.IsWater)
             {
                 Gizmos.color = Color.blue;
                 Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one * 0.9f);
                 continue;
             }
 
-            Gizmos.color = Color.white;
-            Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one * 0.9f);
+            //Gizmos.color = Color.white;
+            //Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one * 0.9f);
         }
     }
 
@@ -527,14 +535,17 @@ public class GridPathfinding : MonoBehaviour
         List<Node> finalPath = new List<Node>();
         Node currentNode = targetNode;
 
+        bool viable = true;
+
         while (currentNode != startNode)
         {
             finalPath.Add(currentNode);
             currentNode = currentNode.Parent;
+            if (currentNode.IsWater && !canSwim) viable = false;
         }
 
         finalPath.Reverse();
-        viablePath = true;
+        viablePath = viable;
 
         return finalPath;
     }

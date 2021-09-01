@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     [Header("Abilities")]
     [SerializeField] public PlayerTypes PlayerType;
     [SerializeField] bool canClimb;
-    [SerializeField] bool canSwin;
+    [SerializeField] bool canSwim;
 
     [SerializeField] GridPathfinding pathfinding;
 
@@ -103,7 +103,16 @@ public class PlayerController : MonoBehaviour
         {
             moving = false;
             IsClimbing = false;
+
+            SnapToGridPosition();
         }
+    }
+
+    private void SnapToGridPosition()
+    {
+        Vector3 snapPos = pathfinding.ToGridPos(transform.position);
+
+        controller.Move(transform.position - snapPos);
     }
 
     private void MovementSelection()
@@ -111,7 +120,7 @@ public class PlayerController : MonoBehaviour
         controller.SimpleMove(Vector3.zero);
         if (pathfinding == null) return;
 
-        pathfinding.SetOwner(transform,canClimb && IsClimbing);
+        pathfinding.SetOwner(transform,canClimb && IsClimbing,canSwim);
 
         if (Input.GetMouseButtonDown(0))
         {
