@@ -9,7 +9,12 @@ public class GridPathfinding : MonoBehaviour
     [SerializeField] LayerMask groundMask;
     [SerializeField] LayerMask climbableMask;
     [SerializeField] LayerMask slopeMask;
+    [SerializeField] LayerMask waterMask;
+
+    [Header("Visualization")]
     [SerializeField] LineRenderer pathRenderer;
+    [SerializeField] Gradient validPathGradiant;
+    [SerializeField] Gradient nonvalidPathGradiant;
 
     [SerializeField, Range(0f, 1f)] private float sampleMovement = 0.5f;
 
@@ -21,7 +26,9 @@ public class GridPathfinding : MonoBehaviour
     private Transform owner;
     private Vector3 gridOffset;
     private bool viablePath = false;
-    private bool canClimb = false;
+
+    private bool isClimbing = false;
+    private bool canSwim = false;
 
     private Dictionary<Vector3, Node> nodeGrid = new Dictionary<Vector3, Node>();
 
@@ -60,10 +67,11 @@ public class GridPathfinding : MonoBehaviour
         viablePath = false;
     }
 
-    public void SetOwner(Transform newOwner, bool climb = false)
+    public void SetOwner(Transform newOwner, bool climb = false, bool swim = false)
     {
         owner = newOwner;
-        canClimb = climb;
+        isClimbing = climb;
+        canSwim = swim;
     }
 
     public void SetOffset(Vector3 offset)
@@ -116,14 +124,17 @@ public class GridPathfinding : MonoBehaviour
 
     private void UpdateLineRenderer()
     {
-
         if (pathRenderer != null)
         {
             pathRenderer.positionCount = path.Count;
             for (int i = 0; i < path.Count; i++)
             {
-                pathRenderer.SetPosition(i, path[i] + new Vector3(0, -0.45f, 0));
+                if(!isClimbing) pathRenderer.SetPosition(i, path[i] + new Vector3(0, -0.45f, 0));
+                else pathRenderer.SetPosition(i, path[i]);
             }
+
+            if (viablePath) pathRenderer.colorGradient = validPathGradiant;
+            else pathRenderer.colorGradient = nonvalidPathGradiant;
         }
     }
 
@@ -192,15 +203,20 @@ public class GridPathfinding : MonoBehaviour
     {
         //Check for wall
         Collider[] wall = Physics.OverlapBox(node.Position + new Vector3(0,0.25f,0), new Vector3(0.33f, 0.11f, 0.33f), Quaternion.identity, groundMask);
-        bool climbable = (Physics.OverlapBox(node.Position, new Vector3(0.75f, 0.45f, 0.75f), Quaternion.identity, climbableMask).Length > 0);
+
+        bool climbable = (Physics.OverlapBox(node.Position, new Vector3(0.75f, 0.75f, 0.75f), Quaternion.identity, climbableMask).Length > 0);
+        bool belowClimbable = (Physics.OverlapBox(node.Position + Vector3.down, new Vector3(0.75f, 0.75f, 0.75f), Quaternion.identity, climbableMask).Length > 0);
+
         bool sloped = (Physics.OverlapBox(node.Position, new Vector3(0.45f, 0.45f, 0.45f), Quaternion.identity, slopeMask).Length > 0);
+        bool water = (Physics.OverlapBox(node.Position, new Vector3(0.45f, 0.6f, 0.45f), Quaternion.identity, waterMask).Length > 0);
 
         //Add the node
         node.IsWall = wall.Length > 0;
+        node.IsWater = water && ! node.IsWall;
         node.IsGround = false;
         node.IsSlope = false;
         node.TemporalPosition = node.Position - new Vector3(0, 0.45f, 0);
-        node.IsClimbable = climbable;
+        node.IsClimbable = climbable || belowClimbable;
 
         if (climbable)
         {
@@ -288,48 +304,69 @@ public class GridPathfinding : MonoBehaviour
 
         Vector3 pos = current.Position;
 
-        //Cardinals
-        if (true)
+        //Regular get neighbor nodes.
+        if (!isClimbing)
         {
+            //Cardinals
             if (nodeGrid.ContainsKey(pos + Vector3.right)) adjacentNode.Add(nodeGrid[pos + Vector3.right]);
             if (nodeGrid.ContainsKey(pos + Vector3.left)) adjacentNode.Add(nodeGrid[pos + Vector3.left]);
             if (nodeGrid.ContainsKey(pos + Vector3.forward)) adjacentNode.Add(nodeGrid[pos + Vector3.forward]);
             if (nodeGrid.ContainsKey(pos + Vector3.back)) adjacentNode.Add(nodeGrid[pos + Vector3.back]);
 
             //Check for down slope
-            if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.right))   adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.right]);
-            if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.left))    adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.left]);
+            if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.right)) adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.right]);
+            if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.left)) adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.left]);
             if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.forward)) adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.forward]);
-            if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.back))    adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.back]);
-        }
+            if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.back)) adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.back]);
 
-        //Check for up the slope
-        if(current.IsSlope)
-        {
-            //Make sure we can only go up the slope on it's axis
-            if(current.slopeNormal.x != 0)
+            //Check for up the slope
+            if (current.IsSlope)
             {
-                if (nodeGrid.ContainsKey(pos + Vector3.right + Vector3.up)) adjacentNode.Add(nodeGrid[pos + Vector3.right + Vector3.up]);
-                if (nodeGrid.ContainsKey(pos + Vector3.left  + Vector3.up)) adjacentNode.Add(nodeGrid[pos + Vector3.left  + Vector3.up]);
+                //Make sure we can only go up the slope on it's axis
+                if (current.slopeNormal.x != 0)
+                {
+                    if (nodeGrid.ContainsKey(pos + Vector3.right + Vector3.up)) adjacentNode.Add(nodeGrid[pos + Vector3.right + Vector3.up]);
+                    if (nodeGrid.ContainsKey(pos + Vector3.left + Vector3.up)) adjacentNode.Add(nodeGrid[pos + Vector3.left + Vector3.up]);
 
-                if (nodeGrid.ContainsKey(pos + Vector3.right + Vector3.down)) adjacentNode.Add(nodeGrid[pos + Vector3.right + Vector3.down]);
-                if (nodeGrid.ContainsKey(pos + Vector3.left + Vector3.down)) adjacentNode.Add(nodeGrid[pos + Vector3.left + Vector3.down]);
-            }
+                    if (nodeGrid.ContainsKey(pos + Vector3.right + Vector3.down)) adjacentNode.Add(nodeGrid[pos + Vector3.right + Vector3.down]);
+                    if (nodeGrid.ContainsKey(pos + Vector3.left + Vector3.down)) adjacentNode.Add(nodeGrid[pos + Vector3.left + Vector3.down]);
+                }
 
-            if (current.slopeNormal.z != 0)
-            {
-                if (nodeGrid.ContainsKey(pos + Vector3.forward + Vector3.up)) adjacentNode.Add(nodeGrid[pos + Vector3.forward + Vector3.up]);
-                if (nodeGrid.ContainsKey(pos + Vector3.back + Vector3.up))    adjacentNode.Add(nodeGrid[pos + Vector3.back + Vector3.up]);
+                if (current.slopeNormal.z != 0)
+                {
+                    if (nodeGrid.ContainsKey(pos + Vector3.forward + Vector3.up)) adjacentNode.Add(nodeGrid[pos + Vector3.forward + Vector3.up]);
+                    if (nodeGrid.ContainsKey(pos + Vector3.back + Vector3.up)) adjacentNode.Add(nodeGrid[pos + Vector3.back + Vector3.up]);
 
-                if (nodeGrid.ContainsKey(pos + Vector3.forward + Vector3.down)) adjacentNode.Add(nodeGrid[pos + Vector3.forward + Vector3.down]);
-                if (nodeGrid.ContainsKey(pos + Vector3.back + Vector3.down)) adjacentNode.Add(nodeGrid[pos + Vector3.back + Vector3.down]);
+                    if (nodeGrid.ContainsKey(pos + Vector3.forward + Vector3.down)) adjacentNode.Add(nodeGrid[pos + Vector3.forward + Vector3.down]);
+                    if (nodeGrid.ContainsKey(pos + Vector3.back + Vector3.down)) adjacentNode.Add(nodeGrid[pos + Vector3.back + Vector3.down]);
+                }
             }
         }
 
         //climb
-        if(canClimb)
+        if(isClimbing)
         {
-            if (nodeGrid.ContainsKey(pos + Vector3.up)) adjacentNode.Add(nodeGrid[pos + Vector3.up]);
+            for (float xx = pos.x - 1; xx <= pos.x + 1; xx++)
+            {
+                for (float yy = pos.y - 1; yy <= pos.y + 1; yy++)
+                {
+                    for (float zz = pos.z - 1; zz <= pos.z + 1; zz++)
+                    {
+                        Vector3 newPos = new Vector3(xx, yy, zz);
+
+                        if (newPos == pos) continue;
+                        if ((pos - newPos).magnitude > 1) continue;
+
+                        if (nodeGrid.ContainsKey(new Vector3(xx,yy,zz)))
+                        {
+                            if(nodeGrid[newPos].IsClimbable || nodeGrid[newPos].IsGround)
+                            {
+                                adjacentNode.Add(nodeGrid[newPos]);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         return adjacentNode;
@@ -342,13 +379,14 @@ public class GridPathfinding : MonoBehaviour
     private List<Node> FindPath(Vector3 p1, Vector3 p2)
     {
         viablePath = false;
-        bool isClimbing = false;
 
         List<Node> openList = new List<Node>();
         HashSet<Node> closedList = new HashSet<Node>();
 
         Node startNode = nodeGrid[p1];
         Node targetNode = nodeGrid[p2];
+
+        Debug.DrawRay(targetNode.Position + (Vector3.down*0.5f),Vector3.up*3,Color.yellow,0.1f);
 
         openList.Add(startNode);
 
@@ -379,6 +417,7 @@ public class GridPathfinding : MonoBehaviour
 
             foreach (Node neighborNode in GetNeighborNodes(current))
             {
+                
                 //Skip node states
                 if (neighborNode.IsWall || (!neighborNode.IsGround && !neighborNode.IsSlope && !neighborNode.IsClimbable)
                     || closedList.Contains(neighborNode))
@@ -386,35 +425,54 @@ public class GridPathfinding : MonoBehaviour
                     continue;
                 }
 
-                if(neighborNode.IsClimbable && !neighborNode.IsGround)
+                if (!isClimbing)
                 {
-                    if (!canClimb) continue;
-                }
+                    //Don't sample climable blocks if they arent ground level
+                    if (neighborNode.IsClimbable && !neighborNode.IsGround)
+                    {
+                        //Unless we're climbing of course
+                        if (!isClimbing) continue;
+                    }
 
-                if(neighborNode.Position.y < current.Position.y && !neighborNode.IsSlope)
-                {
-                    continue;
-                }
+                    if (neighborNode.Position.y < current.Position.y && !neighborNode.IsSlope)
+                    {
+                        continue;
+                    }
 
-                //Make sure we go on the slope the correct way
-                if(neighborNode.IsSlope)
-                {
-                    Vector3 dir = (neighborNode.Position - current.Position);
-                    dir.y = 0;
-                    dir = dir.normalized;
-                    if (dir != neighborNode.slopeNormal && dir != -neighborNode.slopeNormal) continue;
-                }
 
-                //Make sure we get off the slope the correct way
-                if (current.IsSlope)
+                    //Make sure we go on the slope the correct way
+                    if (neighborNode.IsSlope)
+                    {
+                        Vector3 dir = (neighborNode.Position - current.Position);
+                        dir.y = 0;
+                        dir = dir.normalized;
+                        if (dir != neighborNode.slopeNormal && dir != -neighborNode.slopeNormal) continue;
+                    }
+
+                    //Make sure we get off the slope the correct way
+                    if (current.IsSlope)
+                    {
+                        Vector3 dir = (neighborNode.Position - current.Position);
+                        dir.y = 0;
+                        dir = dir.normalized;
+                        if (dir != current.slopeNormal && dir != -current.slopeNormal) continue;
+                    }
+                }
+                else //Climbing
                 {
-                    Vector3 dir = (neighborNode.Position - current.Position);
-                    dir.y = 0;
-                    dir = dir.normalized;
-                    if (dir != current.slopeNormal && dir != -current.slopeNormal) continue;
+                    //Only go from climbing to ground if it's the target node
+                    if(!neighborNode.IsClimbable)
+                    {
+                        if (neighborNode != targetNode)
+                        {
+                            continue;
+                        }
+                    }
+                    if (neighborNode.Position.y == startNode.Position.y) continue;
                 }
 
                 float moveCost = current.gCost + GetManhattenDistance(current, neighborNode);
+                if (neighborNode.IsWater && !canSwim) moveCost += 10;
 
                 if (moveCost < neighborNode.gCost || !openList.Contains(neighborNode))
                 {
@@ -439,36 +497,36 @@ public class GridPathfinding : MonoBehaviour
         {
             Gizmos.color = Color.white;
 
-            if (nodePair.Value.IsGround)
-            {
-                Gizmos.color = Color.gray;
-                Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one * 0.9f);
-                continue;
-            }
+            //if (nodePair.Value.IsGround)
+            //{
+            //    Gizmos.color = Color.gray;
+            //    Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one * 0.9f);
+            //    continue;
+            //}
 
-            if (nodePair.Value.IsWall)
-            {
-                Gizmos.color = Color.black;
-                Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one * 0.9f);
-                continue;
-            }
+            //if (nodePair.Value.IsWall)
+            //{
+            //    Gizmos.color = Color.black;
+            //    Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one * 0.9f);
+            //    continue;
+            //}
 
-            if (nodePair.Value.IsSlope)
-            {
-                Gizmos.color = Color.green;
-                Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one * 0.9f);
-                continue;
-            }
+            //if (nodePair.Value.IsSlope)
+            //{
+            //    Gizmos.color = Color.green;
+            //    Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one * 0.9f);
+            //    continue;
+            //}
 
-            if (nodePair.Value.IsClimbable)
+            if (nodePair.Value.IsWater)
             {
                 Gizmos.color = Color.blue;
                 Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one * 0.9f);
                 continue;
             }
 
-            Gizmos.color = Color.white;
-            Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one * 0.9f);
+            //Gizmos.color = Color.white;
+            //Gizmos.DrawWireCube(nodePair.Value.Position, Vector3.one * 0.9f);
         }
     }
 
@@ -477,14 +535,17 @@ public class GridPathfinding : MonoBehaviour
         List<Node> finalPath = new List<Node>();
         Node currentNode = targetNode;
 
+        bool viable = true;
+
         while (currentNode != startNode)
         {
             finalPath.Add(currentNode);
             currentNode = currentNode.Parent;
+            if (currentNode.IsWater && !canSwim) viable = false;
         }
 
         finalPath.Reverse();
-        viablePath = true;
+        viablePath = viable;
 
         return finalPath;
     }

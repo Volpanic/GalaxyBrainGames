@@ -12,7 +12,9 @@ GameObject:
   - component: {fileID: 5410419602364894044}
   - component: {fileID: 6319346580355935026}
   - component: {fileID: 2314183945171686077}
-  m_Layer: 0
+  - component: {fileID: -8646276814198229925}
+  - component: {fileID: -73268156734596676}
+  m_Layer: 9
   m_Name: Climb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,3 +97,34 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-8646276814198229925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6484995974445426520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ea2043751817934a9bdf2638ed7a25e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lastInteractedWithCreature: {fileID: 0}
+  requiredType: 0
+  onlyOnce: 1
+  OnInteractedEvent: {fileID: 0}
+  OnInteracted:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &-73268156734596676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6484995974445426520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8094da1105980fa46a77e0dc107518d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

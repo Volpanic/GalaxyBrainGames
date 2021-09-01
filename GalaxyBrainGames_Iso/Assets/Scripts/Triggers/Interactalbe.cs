@@ -4,6 +4,7 @@ using UnityEngine.Events;
 public class Interactalbe : MonoBehaviour
 {
     [HideInInspector] public PlayerController lastInteractedWithCreature = null;
+    [HideInInspector] public Collider myCollider = null;
 
     [SerializeField] private PlayerController.PlayerTypes requiredType;
     [SerializeField] private bool onlyOnce = true;
@@ -12,6 +13,11 @@ public class Interactalbe : MonoBehaviour
     [SerializeField] private UnityEvent OnInteracted;
 
     private bool activated;
+
+    private void Awake()
+    {
+        if (myCollider == null) myCollider = GetComponent<Collider>();
+    }
 
     public void OnInteract(PlayerController creature)
     {
@@ -23,5 +29,16 @@ public class Interactalbe : MonoBehaviour
             OnInteracted.Invoke();
             activated = true;
         }
+    }
+
+    public bool CheckIfNeaby(GameObject obj, float maxDistance)
+    {
+        Vector3 closestPoint = myCollider.ClosestPoint(obj.transform.position);
+
+        if(Vector3.Distance(closestPoint,obj.transform.position) <= maxDistance)
+        {
+            return true;
+        }
+        return false;
     }
 }

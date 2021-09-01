@@ -12,6 +12,7 @@ public class MouseManger : MonoBehaviour
     [SerializeField] private GridPathfinding pathfinding;
     [SerializeField] private InteractionManager interaction;
     [SerializeField] private LayerMask defaultLayer;
+    [SerializeField] private LayerMask climableLayer;
 
     private Camera cam;
 
@@ -28,6 +29,11 @@ public class MouseManger : MonoBehaviour
 
     private void MouseControl()
     {
+        if (cam == null)
+        {
+            cam = Camera.main;
+            return;
+        }
         Ray cameraRay = cam.ScreenPointToRay(Input.mousePosition);
 
         RaycastHit selectedObject;
@@ -35,11 +41,20 @@ public class MouseManger : MonoBehaviour
         {
             if (interaction != null && interaction.LookForInteractables(selectedObject))
             {
-                pathfinding.ForceUnvialblePath();
-                return;
+                //Make sure we can still path find on climable areas
+                if(!ObjectIsOnLayer(selectedObject.collider.gameObject.layer,climableLayer))
+                {
+                    pathfinding.ForceUnvialblePath();
+                    return;
+                }
             }
             
             if (pathfinding != null && pathfinding.LookForPath(selectedObject)) return;
         }
+    }
+
+    private bool ObjectIsOnLayer(int layer, LayerMask layerMask)
+    {
+        return layerMask == (layerMask | (1 << layer));
     }
 }

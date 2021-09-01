@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     [Header("Abilities")]
     [SerializeField] public PlayerTypes PlayerType;
     [SerializeField] bool canClimb;
-    [SerializeField] bool canSwin;
+    [SerializeField] bool canSwim;
 
     [SerializeField] GridPathfinding pathfinding;
 
@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
 
     private Camera cam;
     private bool moving = false;
+    [HideInInspector] public bool IsClimbing = false;
     private Vector3 targetPos = Vector3.zero;
     private Vector3 startPos = Vector3.zero;
     private float moveTimer = 0;
@@ -101,7 +102,17 @@ public class PlayerController : MonoBehaviour
         if(moveTimer >= moveMaxTime)
         {
             moving = false;
+            IsClimbing = false;
+
+            SnapToGridPosition();
         }
+    }
+
+    private void SnapToGridPosition()
+    {
+        Vector3 snapPos = pathfinding.ToGridPos(transform.position);
+
+        controller.Move(transform.position - snapPos);
     }
 
     private void MovementSelection()
@@ -109,7 +120,7 @@ public class PlayerController : MonoBehaviour
         controller.SimpleMove(Vector3.zero);
         if (pathfinding == null) return;
 
-        pathfinding.SetOwner(transform,canClimb);
+        pathfinding.SetOwner(transform,canClimb && IsClimbing,canSwim);
 
         if (Input.GetMouseButtonDown(0))
         {
