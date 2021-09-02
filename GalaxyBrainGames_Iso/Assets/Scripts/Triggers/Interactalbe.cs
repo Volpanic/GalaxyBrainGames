@@ -16,12 +16,6 @@ namespace GalaxyBrain.Interactables
         [SerializeField] private UnityEvent OnInteracted;
 
         private bool activated;
-
-        private void Awake()
-        {
-            if (myCollider == null) myCollider = GetComponent<Collider>();
-        }
-
         public void OnInteract(PlayerController creature)
         {
             if (requiredType == creature.PlayerType)
@@ -43,6 +37,11 @@ namespace GalaxyBrain.Interactables
                 return true;
             }
             return false;
+        }
+
+        private void Awake()
+        {
+            if (myCollider == null) myCollider = GetComponent<Collider>();
         }
     }
 }

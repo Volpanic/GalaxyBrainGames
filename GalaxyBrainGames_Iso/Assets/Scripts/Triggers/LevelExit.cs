@@ -3,25 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelExit : MonoBehaviour
+namespace GalaxyBrain.Interactables
 {
-    [SerializeField] Fade fadeManger;
-    bool hasFaded = false;
-
-    private void Update()
+    public class LevelExit : MonoBehaviour
     {
-        if (hasFaded && fadeManger.FadeDone)
+        [SerializeField] private Fade fadeManger;
+        private bool hasFaded = false;
+
+        private void Update()
         {
-            SceneManager.LoadScene(0);
+            if (hasFaded && fadeManger.FadeDone)
+            {
+                SceneManager.LoadScene(0);
+            }
         }
-    }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (!hasFaded)
+        private void OnTriggerEnter(Collider other)
         {
-            fadeManger.FadeOut();
-            hasFaded = true;
+            if (!hasFaded)
+            {
+                fadeManger.FadeOut();
+                hasFaded = true;
+            }
         }
     }
 }
