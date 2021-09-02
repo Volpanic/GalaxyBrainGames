@@ -2,36 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Node
+namespace GalaxyBrain.Pathfinding
 {
-    public bool IsWall;
-    public bool IsGround;
-    public bool IsSlope = false;
-    public bool IsClimbable = false;
-    public bool IsWater = false;
-    public Vector3 Position;
-    public Vector3 TemporalPosition;
-    public Vector3 slopeNormal = Vector3.zero;
-
-    public Node Parent;
-
-    public float gCost;
-    public float hCost;
-
-    public float FCost { get { return gCost + hCost; } }
-
-    public Node(Vector3 gridPos,bool isWall, bool isGround)
+    public class Node
     {
-        Position = gridPos;
-        IsWall = isWall;
-        IsGround = isGround;
-    }
+        public bool IsWall;
+        public bool IsGround;
+        public bool IsSlope = false;
+        public bool IsClimbable = false;
+        public bool IsWater = false;
+        public Vector3 Position;
+        public Vector3 TemporalPosition;
+        public Vector3 slopeNormal = Vector3.zero;
 
-    public Node(Vector3 gridPos, bool isWall, bool isGround, Vector3 temporalPositon)
-    {
-        Position = gridPos;
-        IsWall = isWall;
-        IsGround = isGround;
-        TemporalPosition = temporalPositon;
+        public Node Parent;
+
+        public float gCost;
+        public float hCost;
+
+        public float FCost { get { return gCost + hCost; } }
+
+        public Node(Vector3 gridPos, bool isWall, bool isGround)
+        {
+            Position = gridPos;
+            IsWall = isWall;
+            IsGround = isGround;
+        }
+
+        public Node(Vector3 gridPos, bool isWall, bool isGround, Vector3 temporalPositon)
+        {
+            Position = gridPos;
+            IsWall = isWall;
+            IsGround = isGround;
+            TemporalPosition = temporalPositon;
+        }
     }
 }
