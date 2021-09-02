@@ -2,44 +2,47 @@ using GalaxyBrain.Creatures;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Interactalbe : MonoBehaviour
+namespace GalaxyBrain.Interactables
 {
-    [HideInInspector] public PlayerController lastInteractedWithCreature = null;
-    [HideInInspector] public Collider myCollider = null;
-
-    [SerializeField] private PlayerController.PlayerTypes requiredType;
-    [SerializeField] private bool onlyOnce = true;
-
-    [SerializeField] private GameEvent OnInteractedEvent;
-    [SerializeField] private UnityEvent OnInteracted;
-
-    private bool activated;
-
-    private void Awake()
+    public class Interactalbe : MonoBehaviour
     {
-        if (myCollider == null) myCollider = GetComponent<Collider>();
-    }
+        [HideInInspector] public PlayerController lastInteractedWithCreature = null;
+        [HideInInspector] public Collider myCollider = null;
 
-    public void OnInteract(PlayerController creature)
-    {
-        if (requiredType == creature.PlayerType)
+        [SerializeField] private PlayerController.PlayerTypes requiredType;
+        [SerializeField] private bool onlyOnce = true;
+
+        [SerializeField] private GameEvent OnInteractedEvent;
+        [SerializeField] private UnityEvent OnInteracted;
+
+        private bool activated;
+
+        private void Awake()
         {
-            if (onlyOnce && activated) return;
-            creature.AttemptInteract(this);
-            lastInteractedWithCreature = creature;
-            OnInteracted.Invoke();
-            activated = true;
+            if (myCollider == null) myCollider = GetComponent<Collider>();
         }
-    }
 
-    public bool CheckIfNeaby(GameObject obj, float maxDistance)
-    {
-        Vector3 closestPoint = myCollider.ClosestPoint(obj.transform.position);
-
-        if(Vector3.Distance(closestPoint,obj.transform.position) <= maxDistance)
+        public void OnInteract(PlayerController creature)
         {
-            return true;
+            if (requiredType == creature.PlayerType)
+            {
+                if (onlyOnce && activated) return;
+                creature.AttemptInteract(this);
+                lastInteractedWithCreature = creature;
+                OnInteracted.Invoke();
+                activated = true;
+            }
         }
-        return false;
+
+        public bool CheckIfNeaby(GameObject obj, float maxDistance)
+        {
+            Vector3 closestPoint = myCollider.ClosestPoint(obj.transform.position);
+
+            if (Vector3.Distance(closestPoint, obj.transform.position) <= maxDistance)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

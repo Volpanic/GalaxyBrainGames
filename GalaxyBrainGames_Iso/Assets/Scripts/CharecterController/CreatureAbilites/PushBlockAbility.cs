@@ -1,4 +1,5 @@
 using GalaxyBrain.Creatures;
+using GalaxyBrain.Interactables;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

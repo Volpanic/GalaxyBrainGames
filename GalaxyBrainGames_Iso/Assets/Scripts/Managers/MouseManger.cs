@@ -1,3 +1,4 @@
+using GalaxyBrain.Interactables;
 using GalaxyBrain.Pathfinding;
 using System;
 using System.Collections;

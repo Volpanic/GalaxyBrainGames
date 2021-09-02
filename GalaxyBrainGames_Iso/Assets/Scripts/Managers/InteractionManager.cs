@@ -4,42 +4,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractionManager : MonoBehaviour
+namespace GalaxyBrain.Interactables
 {
-    [SerializeField] CreatureData creatureData;
-
-    private Dictionary<GameObject, Interactalbe> interactions = new Dictionary<GameObject, Interactalbe>();
-    private Camera cam;
-
-    // Start is called before the first frame update
-    void Awake()
+    public class InteractionManager : MonoBehaviour
     {
-        cam = Camera.main;
+        [SerializeField] CreatureData creatureData;
 
-        //Cache all interactables on creation for performance
-        Interactalbe[] interacts = FindObjectsOfType<Interactalbe>();
+        private Dictionary<GameObject, Interactalbe> interactions = new Dictionary<GameObject, Interactalbe>();
+        private Camera cam;
 
-        for(int i = 0; i < interacts.Length; i++)
+        // Start is called before the first frame update
+        void Awake()
         {
-            interactions.Add(interacts[i].gameObject, interacts[i]);
-        }
-    }
+            cam = Camera.main;
 
-    public bool LookForInteractables(RaycastHit selectedObject)
-    {
-        if (creatureData == null) return false;
+            //Cache all interactables on creation for performance
+            Interactalbe[] interacts = FindObjectsOfType<Interactalbe>();
 
-        PlayerController selectedCreature = creatureData.GetSelectedCreature();
-
-        if(interactions.ContainsKey(selectedObject.collider.gameObject))
-        {
-            if(Input.GetMouseButtonDown(0) && 
-                interactions[selectedObject.collider.gameObject].CheckIfNeaby(selectedCreature.gameObject, 1.25f))
+            for (int i = 0; i < interacts.Length; i++)
             {
-                interactions[selectedObject.collider.gameObject].OnInteract(selectedCreature);
+                interactions.Add(interacts[i].gameObject, interacts[i]);
             }
-            return true;
         }
-        return false;
+
+        public bool LookForInteractables(RaycastHit selectedObject)
+        {
+            if (creatureData == null) return false;
+
+            PlayerController selectedCreature = creatureData.GetSelectedCreature();
+
+            if (interactions.ContainsKey(selectedObject.collider.gameObject))
+            {
+                if (Input.GetMouseButtonDown(0) &&
+                    interactions[selectedObject.collider.gameObject].CheckIfNeaby(selectedCreature.gameObject, 1.25f))
+                {
+                    interactions[selectedObject.collider.gameObject].OnInteract(selectedCreature);
+                }
+                return true;
+            }
+            return false;
+        }
     }
 }
