@@ -3,36 +3,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClimbingAbility : ICreatureAbility
+namespace GalaxyBrain.Creatures.Abilities
 {
-    private Climbable climb;
-
-    public bool OnAbilityCheckCondition(Interactalbe interactable)
+    public class ClimbingAbility : ICreatureAbility
     {
-        climb = interactable.GetComponent<Climbable>();
+        private Climbable climb;
 
-        return climb != null;
-    }
+        public bool OnAbilityCheckCondition(Interactalbe interactable)
+        {
+            climb = interactable.GetComponent<Climbable>();
 
-    public bool OnAbilityCheckDone()
-    {
-        return climb != null;
-    }
+            return climb != null;
+        }
 
-    public void OnAbilityEnd()
-    {
-        climb = null;
-    }
+        public bool OnAbilityCheckDone()
+        {
+            return climb != null;
+        }
 
-    public void OnAbilityStart(PlayerController controller, Interactalbe interactable, Vector3 interactDirection)
-    {
-        Debug.Log("Climb");
-        if(!controller.IsClimbing)
-        controller.IsClimbing = true;
-    }
+        public void OnAbilityEnd()
+        {
+            climb = null;
+        }
 
-    public void OnAbilityUpdate()
-    {
-        
+        public void OnAbilityStart(PlayerController controller, Interactalbe interactable, Vector3 interactDirection)
+        {
+            if (!controller.IsClimbing)
+                controller.IsClimbing = true;
+        }
+
+        public void OnAbilityUpdate()
+        {
+
+        }
     }
 }

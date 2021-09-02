@@ -1,3 +1,4 @@
+using GalaxyBrain.Creatures.Abilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +10,6 @@ namespace GalaxyBrain.Creatures
     {
         [SerializeField] private PlayerController controller;
         [SerializeField] private CreatureData creatureData;
-
 
         void Awake()
         {
