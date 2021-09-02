@@ -5,43 +5,46 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OptionsMenu : MonoBehaviour
+namespace GalaxyBrain.UI
 {
-    [SerializeField] private SaveData saveData;
-
-    [Header("Option components")]
-    [SerializeField] private Slider musicVolumeSlider;
-    [SerializeField] private Slider soundVolumeSlider;
-    [SerializeField] private Slider ambianceVolumeSlider;
-
-    private bool initilized = false;
-
-    private void Start()
+    public class OptionsMenu : MonoBehaviour
     {
-        SetInitalSliderValues();
-        initilized = true;
-    }
+        [SerializeField] private SaveData saveData;
 
-    private void SetInitalSliderValues()
-    {
-        if (saveData == null) return;
+        [Header("Option components")]
+        [SerializeField] private Slider musicVolumeSlider;
+        [SerializeField] private Slider soundVolumeSlider;
+        [SerializeField] private Slider ambianceVolumeSlider;
 
-        if (musicVolumeSlider != null) musicVolumeSlider.value = saveData.Data.MusicVolume * 100;
-        if (soundVolumeSlider != null) soundVolumeSlider.value = saveData.Data.SoundVolume * 100;
-        if (ambianceVolumeSlider != null) ambianceVolumeSlider.value = saveData.Data.AmbianceVolume * 100;
-    }
+        private bool initilized = false;
 
-    public void OnValueChanged()
-    {
-        if (saveData == null || !initilized) return;
+        private void Start()
+        {
+            SetInitalSliderValues();
+            initilized = true;
+        }
 
-        if (musicVolumeSlider != null) saveData.Data.MusicVolume = musicVolumeSlider.value / 100;
-        if (soundVolumeSlider != null) saveData.Data.SoundVolume = soundVolumeSlider.value / 100;
-        if (ambianceVolumeSlider != null) saveData.Data.AmbianceVolume = ambianceVolumeSlider.value / 100;
-    }
+        private void SetInitalSliderValues()
+        {
+            if (saveData == null) return;
 
-    public void SaveChanges()
-    {
-        saveData.SaveGame();
+            if (musicVolumeSlider != null) musicVolumeSlider.value = saveData.Data.MusicVolume * 100;
+            if (soundVolumeSlider != null) soundVolumeSlider.value = saveData.Data.SoundVolume * 100;
+            if (ambianceVolumeSlider != null) ambianceVolumeSlider.value = saveData.Data.AmbianceVolume * 100;
+        }
+
+        public void OnValueChanged()
+        {
+            if (saveData == null || !initilized) return;
+
+            if (musicVolumeSlider != null) saveData.Data.MusicVolume = musicVolumeSlider.value / 100;
+            if (soundVolumeSlider != null) saveData.Data.SoundVolume = soundVolumeSlider.value / 100;
+            if (ambianceVolumeSlider != null) saveData.Data.AmbianceVolume = ambianceVolumeSlider.value / 100;
+        }
+
+        public void SaveChanges()
+        {
+            saveData.SaveGame();
+        }
     }
 }

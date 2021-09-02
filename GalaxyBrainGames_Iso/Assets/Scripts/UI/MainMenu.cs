@@ -3,27 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenu : MonoBehaviour
+namespace GalaxyBrain.UI
 {
-    [SerializeField] Fade fadeManager;
-    [SerializeField,Min(0)] int targetScene = 1;
-    [SerializeField] GameEvent changeScene;
-
-    private bool shouldChangeScene = true;
-
-    //Triggered by button on click event, starts fadeout.
-    public void PlayGame()
+    public class MainMenu : MonoBehaviour
     {
-        if (shouldChangeScene)
+        [SerializeField] Fade fadeManager;
+        [SerializeField, Min(0)] int targetScene = 1;
+        [SerializeField] GameEvent changeScene;
+
+        private bool shouldChangeScene = true;
+
+        //Triggered by button on click event, starts fadeout.
+        public void PlayGame()
         {
-            changeScene?.Raise();
-            shouldChangeScene = false;
+            if (shouldChangeScene)
+            {
+                changeScene?.Raise();
+                shouldChangeScene = false;
+            }
         }
-    }
 
-    //Triggered by button on click event, quits game.
-    public void ExitGame()
-    {
-        Application.Quit();
+        //Triggered by button on click event, quits game.
+        public void ExitGame()
+        {
+            Application.Quit();
+        }
     }
 }

@@ -5,59 +5,62 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LevelSelectMenu : MonoBehaviour
+namespace GalaxyBrain.UI
 {
-    [Header("Data")]
-    [SerializeField] private SaveData saveData;
-    [SerializeField] private LevelProgression levelProgression;
-    [SerializeField] private GameEvent nextLevelEvent;
-
-    [Header("Reference")]
-    [SerializeField] private GameObject levelIconPrefab;
-    [SerializeField] private GridLayoutGroup layout;
-
-    private void Start()
+    public class LevelSelectMenu : MonoBehaviour
     {
-        if(saveData != null && levelProgression != null)
+        [Header("Data")]
+        [SerializeField] private SaveData saveData;
+        [SerializeField] private LevelProgression levelProgression;
+        [SerializeField] private GameEvent nextLevelEvent;
+
+        [Header("Reference")]
+        [SerializeField] private GameObject levelIconPrefab;
+        [SerializeField] private GridLayoutGroup layout;
+
+        private void Start()
         {
-            if(levelIconPrefab != null)
+            if (saveData != null && levelProgression != null)
             {
-                CreateGridCells();
+                if (levelIconPrefab != null)
+                {
+                    CreateGridCells();
+                }
             }
         }
-    }
 
-    private void CreateGridCells()
-    {
-        if(layout != null)
+        private void CreateGridCells()
         {
-            for(int i = 0; i < levelProgression.ScenesInOrder.Count; i++)
+            if (layout != null)
             {
-                GameObject icon = Instantiate(levelIconPrefab, layout.transform);
-                Button button = icon.GetComponent<Button>();
-                Text text = icon.GetComponentInChildren<Text>();
-
-                //Change name if level is unlocked
-                if (i > saveData.Data.MaxLevelCompleted)
+                for (int i = 0; i < levelProgression.ScenesInOrder.Count; i++)
                 {
-                    text.text = "Locked";
-                }
-                else
-                {
-                    text.text = i.ToString();
+                    GameObject icon = Instantiate(levelIconPrefab, layout.transform);
+                    Button button = icon.GetComponent<Button>();
+                    Text text = icon.GetComponentInChildren<Text>();
 
-                    // Store i in num so it can be used in the delegate
-                    // would return the value i is at the end of loop otherwise
-                    int num = i;
-                    //Set button to go to certain floor
-                    button.onClick.RemoveAllListeners();
-                    button.onClick.AddListener(delegate { levelProgression.SetCurrentScene(num - 1); });
-                    button.onClick.AddListener(delegate { nextLevelEvent.Raise(); });
+                    //Change name if level is unlocked
+                    if (i > saveData.Data.MaxLevelCompleted)
+                    {
+                        text.text = "Locked";
+                    }
+                    else
+                    {
+                        text.text = i.ToString();
+
+                        // Store i in num so it can be used in the delegate
+                        // would return the value i is at the end of loop otherwise
+                        int num = i;
+                        //Set button to go to certain floor
+                        button.onClick.RemoveAllListeners();
+                        button.onClick.AddListener(delegate { levelProgression.SetCurrentScene(num - 1); });
+                        button.onClick.AddListener(delegate { nextLevelEvent.Raise(); });
+                    }
                 }
+
+                LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)layout.transform);
+                layout.enabled = false;
             }
-
-            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)layout.transform);
-            layout.enabled = false;
         }
     }
 }
