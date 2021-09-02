@@ -1,3 +1,4 @@
+using GalaxyBrain.Creatures;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ public class InteractionManager : MonoBehaviour
         if(interactions.ContainsKey(selectedObject.collider.gameObject))
         {
             if(Input.GetMouseButtonDown(0) && 
-                interactions[selectedObject.collider.gameObject].CheckIfNeaby(selectedCreature.gameObject, 1f))
+                interactions[selectedObject.collider.gameObject].CheckIfNeaby(selectedCreature.gameObject, 1.25f))
             {
                 interactions[selectedObject.collider.gameObject].OnInteract(selectedCreature);
             }

@@ -1,3 +1,4 @@
+using GalaxyBrain.Creatures;
 using UnityEngine;
 using UnityEngine.Events;
 

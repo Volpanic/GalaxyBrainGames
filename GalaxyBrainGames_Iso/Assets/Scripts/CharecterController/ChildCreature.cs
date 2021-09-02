@@ -3,16 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChildCreature : MonoBehaviour
+namespace GalaxyBrain.Creatures
 {
-    [SerializeField] private PlayerController controller;
-    [SerializeField] private CreatureData creatureData;
-
-
-    void Awake()
+    public class ChildCreature : MonoBehaviour
     {
-        creatureData.LogCreature(controller);
-        controller.AddAbility(new ClimbingAbility());
-    }
+        [SerializeField] private PlayerController controller;
+        [SerializeField] private CreatureData creatureData;
 
+
+        void Awake()
+        {
+            creatureData.LogCreature(controller);
+            controller.AddAbility(new ClimbingAbility());
+        }
+
+    }
 }

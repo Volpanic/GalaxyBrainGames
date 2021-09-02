@@ -2,34 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CreatureAnchorPoint : MonoBehaviour
+namespace GalaxyBrain.Creatures
 {
-    private GameObject attachedCreature;
-
-
-    public bool AttemptAttach(GameObject toAttach,Vector3 offsetFromAttachPoint)
+    public class CreatureAnchorPoint : MonoBehaviour
     {
-        if(attachedCreature == null)
+        private GameObject attachedCreature;
+
+
+        public bool AttemptAttach(GameObject toAttach, Vector3 offsetFromAttachPoint)
         {
-            attachedCreature = toAttach;
+            if (attachedCreature == null)
+            {
+                attachedCreature = toAttach;
 
-            //Attach the gosh darn thing
-            attachedCreature.transform.parent = this.transform;
-            attachedCreature.transform.localPosition = offsetFromAttachPoint;
+                //Attach the gosh darn thing
+                attachedCreature.transform.parent = this.transform;
+                attachedCreature.transform.localPosition = offsetFromAttachPoint;
 
-            return true;
+                return true;
+            }
+
+            return false;
         }
 
-        return false;
-    }
-
-    public void DetachCurrent()
-    {
-        if (attachedCreature != null)
+        public void DetachCurrent()
         {
-            attachedCreature.transform.parent = null;
-        }
+            if (attachedCreature != null)
+            {
+                attachedCreature.transform.parent = null;
+            }
 
-        attachedCreature = null;
+            attachedCreature = null;
+        }
     }
 }

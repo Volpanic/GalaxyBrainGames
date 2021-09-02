@@ -3,54 +3,57 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ControllerCarry : MonoBehaviour
+namespace GalaxyBrain.Creatures
 {
-    [SerializeField] private CharacterController controller;
-
-    private Dictionary<GameObject, CharacterController> cachedControllers = new Dictionary<GameObject, CharacterController>();
-    [SerializeField, ReadOnly] private List<CharacterController> passengers = new List<CharacterController>();
-
-    private void Start()
+    public class ControllerCarry : MonoBehaviour
     {
-        if (controller == null) enabled = false;
-    }
+        [SerializeField] private CharacterController controller;
 
-    // Update is called once per frame
-    void Update()
-    {
-        FindPassengers();
-        MovePassengers();
-    }
+        private Dictionary<GameObject, CharacterController> cachedControllers = new Dictionary<GameObject, CharacterController>();
+        [SerializeField, ReadOnly] private List<CharacterController> passengers = new List<CharacterController>();
 
-    private void MovePassengers()
-    {
-        if (controller.velocity.magnitude != 0)
+        private void Start()
         {
-            for (int i = 0; i < passengers.Count; i++)
+            if (controller == null) enabled = false;
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            FindPassengers();
+            MovePassengers();
+        }
+
+        private void MovePassengers()
+        {
+            if (controller.velocity.magnitude != 0)
             {
-                passengers[i].Move(controller.velocity * Time.deltaTime);
+                for (int i = 0; i < passengers.Count; i++)
+                {
+                    passengers[i].Move(controller.velocity * Time.deltaTime);
+                }
             }
         }
-    }
 
-    private void FindPassengers()
-    {
-        Collider[] colls = Physics.OverlapBox(controller.bounds.center + (Vector3.up * 0.5f), controller.bounds.extents, transform.rotation);
-        passengers.Clear();
-
-        for (int i = 0; i < colls.Length; i++)
+        private void FindPassengers()
         {
-            if (colls[i].gameObject == gameObject) continue;
+            Collider[] colls = Physics.OverlapBox(controller.bounds.center + (Vector3.up * 0.5f), controller.bounds.extents, transform.rotation);
+            passengers.Clear();
 
-            CharacterController cc = null;
-            if (!cachedControllers.ContainsKey(colls[i].gameObject))
+            for (int i = 0; i < colls.Length; i++)
             {
-                cc = colls[i].GetComponent<CharacterController>();
-                cachedControllers.Add(colls[i].gameObject, cc);
-            }
-            else cc = cachedControllers[colls[i].gameObject];
+                if (colls[i].gameObject == gameObject) continue;
 
-            if (cc != null) passengers.Add(cc);
+                CharacterController cc = null;
+                if (!cachedControllers.ContainsKey(colls[i].gameObject))
+                {
+                    cc = colls[i].GetComponent<CharacterController>();
+                    cachedControllers.Add(colls[i].gameObject, cc);
+                }
+                else cc = cachedControllers[colls[i].gameObject];
+
+                if (cc != null) passengers.Add(cc);
+            }
         }
     }
 }

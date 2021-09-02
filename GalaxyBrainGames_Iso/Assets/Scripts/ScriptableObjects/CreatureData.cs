@@ -1,3 +1,4 @@
+using GalaxyBrain.Creatures;
 using GalaxyBrain.Pathfinding;
 using System;
 using System.Collections;
