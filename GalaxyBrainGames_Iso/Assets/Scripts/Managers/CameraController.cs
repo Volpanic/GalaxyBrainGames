@@ -10,8 +10,10 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float zoomInOrthoSize = 5f;
     [SerializeField] private float zoomOutOrthoSize = 20f;
 
-    private Vector3 originalPosition;
     [SerializeField] private Vector3 offset;
+
+    private Vector3 originalPosition;
+
 
     private void Awake()
     {
@@ -19,7 +21,7 @@ public class CameraController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void LateUpdate()
+    private void LateUpdate()
     {
         CameraZoom();
 

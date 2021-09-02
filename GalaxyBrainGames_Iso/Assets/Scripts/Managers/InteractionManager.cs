@@ -1,31 +1,17 @@
 using GalaxyBrain.Creatures;
+using GalaxyBrain.Interactables;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GalaxyBrain.Interactables
+namespace GalaxyBrain.Managers
 {
     public class InteractionManager : MonoBehaviour
     {
         [SerializeField] CreatureData creatureData;
 
         private Dictionary<GameObject, Interactalbe> interactions = new Dictionary<GameObject, Interactalbe>();
-        private Camera cam;
-
-        // Start is called before the first frame update
-        void Awake()
-        {
-            cam = Camera.main;
-
-            //Cache all interactables on creation for performance
-            Interactalbe[] interacts = FindObjectsOfType<Interactalbe>();
-
-            for (int i = 0; i < interacts.Length; i++)
-            {
-                interactions.Add(interacts[i].gameObject, interacts[i]);
-            }
-        }
 
         public bool LookForInteractables(RaycastHit selectedObject)
         {
@@ -43,6 +29,18 @@ namespace GalaxyBrain.Interactables
                 return true;
             }
             return false;
+        }
+
+        // Start is called before the first frame update
+        private void Awake()
+        {
+            //Cache all interactables on creation for performance
+            Interactalbe[] interacts = FindObjectsOfType<Interactalbe>();
+
+            for (int i = 0; i < interacts.Length; i++)
+            {
+                interactions.Add(interacts[i].gameObject, interacts[i]);
+            }
         }
     }
 }
