@@ -6,84 +6,87 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
-public class CreatureData : ScriptableObject
+namespace GalaxyBrain.Systems
 {
-    [ReadOnly]
-    public List<PlayerController> CreaturesInLevel = new List<PlayerController>();
-
-    [ReadOnly]
-    public CreatureManager CreatureManager;
-
-    [ReadOnly]
-    public GridPathfinding pathfinding;
-
-    public Dictionary<string, bool> PlayerInventory;
-
-    private void OnEnable()
+    [CreateAssetMenu]
+    public class CreatureData : ScriptableObject
     {
-        CreaturesInLevel = new List<PlayerController>();
-    }
+        [ReadOnly]
+        public List<PlayerController> CreaturesInLevel = new List<PlayerController>();
 
-    public int GetCreatureCount()
-    {
-        if (CreaturesInLevel == null) { return 0; }
+        [ReadOnly]
+        public CreatureManager CreatureManager;
 
-        return CreaturesInLevel.Count;
-    }
+        [ReadOnly]
+        public GridPathfinding pathfinding;
 
-    public PlayerController GetCreature(int index)
-    {
-        if (CreaturesInLevel == null && CreaturesInLevel.Count <= 0) { return null; }
+        public Dictionary<string, bool> PlayerInventory;
 
-        return CreaturesInLevel[index];
-    }
-
-    public PlayerController GetSelectedCreature()
-    {
-        if (CreaturesInLevel == null && CreaturesInLevel.Count <= 0) { return null; }
-
-        return CreatureManager?.SelectedCreature;
-    }
-
-    public void LogCreature(PlayerController creature)
-    {
-        if (CreaturesInLevel == null) CreaturesInLevel = new List<PlayerController>();
-        CreaturesInLevel.Add(creature);
-
-        CleanCreatureData();
-    }
-
-    private void CleanCreatureData()
-    {
-        for(int i = 0; i < CreaturesInLevel.Count; i++)
+        private void OnEnable()
         {
-            if(CreaturesInLevel[i] == null)
+            CreaturesInLevel = new List<PlayerController>();
+        }
+
+        public int GetCreatureCount()
+        {
+            if (CreaturesInLevel == null) { return 0; }
+
+            return CreaturesInLevel.Count;
+        }
+
+        public PlayerController GetCreature(int index)
+        {
+            if (CreaturesInLevel == null && CreaturesInLevel.Count <= 0) { return null; }
+
+            return CreaturesInLevel[index];
+        }
+
+        public PlayerController GetSelectedCreature()
+        {
+            if (CreaturesInLevel == null && CreaturesInLevel.Count <= 0) { return null; }
+
+            return CreatureManager?.SelectedCreature;
+        }
+
+        public void LogCreature(PlayerController creature)
+        {
+            if (CreaturesInLevel == null) CreaturesInLevel = new List<PlayerController>();
+            CreaturesInLevel.Add(creature);
+
+            CleanCreatureData();
+        }
+
+        private void CleanCreatureData()
+        {
+            for (int i = 0; i < CreaturesInLevel.Count; i++)
             {
-                CreaturesInLevel.RemoveAt(i);
-                i--;
+                if (CreaturesInLevel[i] == null)
+                {
+                    CreaturesInLevel.RemoveAt(i);
+                    i--;
+                }
             }
         }
-    }
 
-    public void LogManager(CreatureManager manger)
-    {
-        CreatureManager = manger;
-    }
-
-    public void AddItemToInventory(string item)
-    {
-        PlayerInventory.Add(item, true);
-    }
-
-    public bool CheckAndComsumeItem(string item)
-    {
-        if(PlayerInventory.ContainsKey(item))
+        public void LogManager(CreatureManager manger)
         {
-            PlayerInventory.Remove(item);
-            return true;
+            CreatureManager = manger;
         }
 
-        return false;
+        public void AddItemToInventory(string item)
+        {
+            PlayerInventory.Add(item, true);
+        }
+
+        public bool CheckAndComsumeItem(string item)
+        {
+            if (PlayerInventory.ContainsKey(item))
+            {
+                PlayerInventory.Remove(item);
+                return true;
+            }
+
+            return false;
+        }
     }
 }
