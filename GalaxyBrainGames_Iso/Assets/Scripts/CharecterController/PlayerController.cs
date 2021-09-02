@@ -111,6 +111,7 @@ public class PlayerController : MonoBehaviour
     private void SnapToGridPosition()
     {
         Vector3 snapPos = pathfinding.ToGridPos(transform.position);
+        snapPos.y = transform.position.y;
 
         controller.Move(transform.position - snapPos);
     }
@@ -141,7 +142,7 @@ public class PlayerController : MonoBehaviour
         normalizedTime = Mathf.Clamp01(normalizedTime);
 
         float unormalizedTime = normalizedTime * (path.Count-1);
-        int min = Mathf.CeilToInt(unormalizedTime);
+        int min = Mathf.FloorToInt(unormalizedTime);
 
         if (unormalizedTime == 0) return path[0];
         if (min == path.Count - 1) return path[path.Count - 1];

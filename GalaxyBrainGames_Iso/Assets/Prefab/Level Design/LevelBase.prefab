@@ -302,6 +302,7 @@ GameObject:
   - component: {fileID: 8722944020839051678}
   - component: {fileID: 8489134180897291323}
   - component: {fileID: 8489134180897291316}
+  - component: {fileID: 9023734656012644898}
   m_Layer: 2
   m_Name: Large Creature
   m_TagString: Player
@@ -382,6 +383,20 @@ MonoBehaviour:
   myCollider: {fileID: 0}
   creatureData: {fileID: 11400000, guid: 7c514ea391c56834799b9fb50443484e, type: 2}
   breakRange: 3
+--- !u!114 &9023734656012644898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8489134180897291321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dbcb3b501a4d5a4db2364c1d1239751, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 8722944020839051678}
+  passengers: []
 --- !u!1 &8489134181068076582
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,6 +409,7 @@ GameObject:
   - component: {fileID: 8722944019654189203}
   - component: {fileID: 8722944019988859023}
   - component: {fileID: 8489134181068076577}
+  - component: {fileID: 2603931490016016559}
   m_Layer: 2
   m_Name: Medium Creature
   m_TagString: Player
@@ -428,13 +444,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1
+  m_Height: 0.3
   m_Radius: 0.4
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: -0.1, z: 0}
 --- !u!114 &8722944019988859023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -477,6 +493,20 @@ MonoBehaviour:
   FastSpeed: 4.5
   SlowSpeed: 3
   waterParticles: {fileID: 8722944020734451665}
+--- !u!114 &2603931490016016559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8489134181068076582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dbcb3b501a4d5a4db2364c1d1239751, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 8722944019654189203}
+  passengers: []
 --- !u!1 &8722944019000441532
 GameObject:
   m_ObjectHideFlags: 0
@@ -5434,8 +5464,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8722944019424231985}
-  - component: {fileID: 8722944019424231986}
   - component: {fileID: 8722944019424231984}
+  - component: {fileID: 8722944019424231986}
   - component: {fileID: 5516191661116780862}
   m_Layer: 2
   m_Name: The Child
@@ -5459,6 +5489,24 @@ Transform:
   m_Father: {fileID: 8722944020858657162}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!143 &8722944019424231984
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8722944019424231990}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 1.5
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0.25, z: 0}
 --- !u!114 &8722944019424231986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5480,24 +5528,6 @@ MonoBehaviour:
   pathfinding: {fileID: 8722944019302059944}
   Selected: 0
   IsClimbing: 0
---- !u!143 &8722944019424231984
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8722944019424231990}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 1.5
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.25, z: 0}
 --- !u!114 &5516191661116780862
 MonoBehaviour:
   m_ObjectHideFlags: 0
