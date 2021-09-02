@@ -14,9 +14,14 @@ public class PlayerController : MonoBehaviour
         Strong
     }
 
+    [Header("Movement")]
     [SerializeField,Min(0.1f)] private float movementSpeed = 1;
+    [SerializeField] private float rotateSpeed = 1;
+
+    [Header("References")]
     [SerializeField] private CharacterController controller;
     [SerializeField] private ActionPointData actionPointData;
+
 
     [Header("Abilities")]
     [SerializeField] public PlayerTypes PlayerType;
@@ -26,24 +31,22 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GridPathfinding pathfinding;
 
     [HideInInspector] public bool Selected = false;
-
+    [HideInInspector] public bool IsClimbing = false;
 
     public bool Grounded
     {
         get { return controller.isGrounded; }
     }
 
-    private Camera cam;
     private bool moving = false;
-    [HideInInspector] public bool IsClimbing = false;
-    private Vector3 targetPos = Vector3.zero;
-    private Vector3 startPos = Vector3.zero;
     private float moveTimer = 0;
     private float moveMaxTime = 0;
     private List<Vector3> path;
 
     private List<ICreatureAbility> abilites = new List<ICreatureAbility>();
     private int currentRunningAbility = -1;
+
+    private Quaternion targetRotation;
 
     public void AddAbility(ICreatureAbility ability)
     {
@@ -52,11 +55,10 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        cam = Camera.main;
-
         transform.position = pathfinding.ToGridPos(transform.position);
+        targetRotation = transform.rotation;
 
-        if(pathfinding != null && controller != null)
+        if (pathfinding != null && controller != null)
         {
             controller.enabled = false;
 
@@ -88,6 +90,24 @@ public class PlayerController : MonoBehaviour
                 currentRunningAbility = -1;
             }
         }
+
+        targetRotation = GetDirectionOfMovement();
+        transform.rotation = UpdateRotation(transform.rotation, targetRotation);
+    }
+
+    private Quaternion UpdateRotation(Quaternion current, Quaternion target)
+    {
+        //Rotate towards target rotation, rotate speed * 1440 (being 360*4)
+        return Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * (rotateSpeed * 1440f));
+    }
+
+    private Quaternion GetDirectionOfMovement()
+    {
+        if (controller.velocity.x == 0 && controller.velocity.z == 0) return targetRotation;
+        Vector3 lookAt = controller.velocity + transform.position;
+        lookAt.y = transform.position.y;
+
+        return Quaternion.LookRotation(lookAt - transform.position);
     }
 
     private void MoveAlongPath()
