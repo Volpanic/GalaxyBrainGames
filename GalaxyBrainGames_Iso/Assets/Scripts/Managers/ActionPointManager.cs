@@ -2,6 +2,7 @@ using GalaxyBrain.Systems;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +12,7 @@ public class ActionPointManager : MonoBehaviour
     [SerializeField, Min(1)] private int actionPointCount = 15;
 
     [Header("UI")]
-    [SerializeField] private Text actionPointTextCount;
+    [SerializeField] private TextMeshProUGUI actionPointTextCount;
 
     // Start is called before the first frame update
     void Awake()
@@ -35,6 +36,6 @@ public class ActionPointManager : MonoBehaviour
         if (actionPointTextCount == null) return;
 
         //Update UI
-        actionPointTextCount.text = "AP - " + currentAmount.ToString();
+        actionPointTextCount.text = currentAmount.ToString();
     }
 }
