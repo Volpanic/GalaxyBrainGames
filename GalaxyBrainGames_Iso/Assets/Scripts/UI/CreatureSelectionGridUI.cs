@@ -3,6 +3,7 @@ using GalaxyBrain.Systems;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,8 +15,7 @@ namespace GalaxyBrain.UI
         [SerializeField] private GameObject creatureUIBlockPrefab;
         [SerializeField] private CreatureData creatureData;
 
-        private float initalYPos = 0;
-        private GameObject[] creatureUIIcons;
+        private CreatureSelectionIcon[] creatureUIIcons;
 
         private void OnEnable()
         {
@@ -29,29 +29,23 @@ namespace GalaxyBrain.UI
             creatureData.CreatureManager.OnSelectedChanged -= SelectedChanged;
         }
 
-        private void SelectedChanged(int index)
+        private void SelectedChanged(int oldIndex, int newIndex)
         {
             if (creatureUIIcons == null) return;
-
-            Vector3 pos;
-
-            for (int i = 0; i < creatureUIIcons.Length; i++)
+            
+            if(oldIndex != -1)
             {
-                pos = ((RectTransform)creatureUIIcons[i].transform).position;
-                if (i == index)
-                {
-                    pos.y = initalYPos;
-                }
-                else
-                {
-                    pos.y = initalYPos - 32;
-                }
-                ((RectTransform)creatureUIIcons[i].transform).position = pos;
+                creatureUIIcons[oldIndex].OnDeselectCreature();
+            }
+
+            if (newIndex != -1)
+            {
+                creatureUIIcons[newIndex].OnSelectCreature();
             }
         }
 
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             OnEnable();
 
@@ -59,8 +53,8 @@ namespace GalaxyBrain.UI
             if (creatureData != null && creatureUIBlockPrefab != null && layoutGroup != null)
             {
                 //Get text base from prefab
-                Text textBase = creatureUIBlockPrefab.GetComponentInChildren<Text>();
-                List<GameObject> lastObject = new List<GameObject>();
+                TextMeshProUGUI textBase = creatureUIBlockPrefab.GetComponentInChildren<TextMeshProUGUI>();
+                List<CreatureSelectionIcon> lastObject = new List<CreatureSelectionIcon>();
 
 
                 //Edit the prefabs text and instantiate it
@@ -70,13 +64,12 @@ namespace GalaxyBrain.UI
                     if (creature != null)
                     {
                         textBase.text = creature.gameObject.name;
-                        lastObject.Add(Instantiate(creatureUIBlockPrefab, layoutGroup.transform));
+                        lastObject.Add(Instantiate(creatureUIBlockPrefab, layoutGroup.transform).GetComponent<CreatureSelectionIcon>());
                     }
                 }
 
                 LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)layoutGroup.transform);
 
-                if (lastObject.Count >= 0 && lastObject[0] != null) initalYPos = ((RectTransform)lastObject[0].transform).position.y;
                 creatureUIIcons = lastObject.ToArray();
 
                 layoutGroup.enabled = false;
