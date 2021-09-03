@@ -13,7 +13,7 @@ namespace GalaxyBrain.Managers
         [SerializeField] private CreatureData creatureData;
         [SerializeField] private GridPathfinding pathfinding;
 
-        public event Action<int> OnSelectedChanged;
+        public event Action<int,int> OnSelectedChanged;
 
         private int selectedCreature;
 
@@ -33,10 +33,11 @@ namespace GalaxyBrain.Managers
         {
             if (creatureData.CreaturesInLevel != null && creatureData.CreaturesInLevel.Count != 0)
             {
+                int oldCreature = selectedCreature;
                 creatureData.CreaturesInLevel[selectedCreature].Selected = false;
                 selectedCreature = WrapNumber(newSelection, 0, creatureData.CreaturesInLevel.Count);
                 creatureData.CreaturesInLevel[selectedCreature].Selected = true;
-                if (OnSelectedChanged != null) OnSelectedChanged.Invoke(selectedCreature);
+                if (oldCreature != selectedCreature) OnSelectedChanged?.Invoke(oldCreature, selectedCreature);
             }
         }
 
@@ -56,7 +57,7 @@ namespace GalaxyBrain.Managers
                     creatureData.CreaturesInLevel[i].Selected = false;
                 }
                 creatureData.CreaturesInLevel[0].Selected = true;
-                if (OnSelectedChanged != null) OnSelectedChanged.Invoke(selectedCreature);
+                OnSelectedChanged?.Invoke(-1,selectedCreature);
             }
         }
 
@@ -65,6 +66,14 @@ namespace GalaxyBrain.Managers
         {
             if (Input.GetKeyDown(KeyCode.Q)) SelectCreature(selectedCreature - 1);
             if (Input.GetKeyDown(KeyCode.E)) SelectCreature(selectedCreature + 1);
+
+            for (int i = 0; i < creatureData.CreaturesInLevel.Count; i++)
+            {
+                if(Input.GetKeyDown(KeyCode.Alpha0 + (i+1)))
+                {
+                    SelectCreature(i);
+                }
+            }
         }
 
         private int WrapNumber(int current, int min, int max)
