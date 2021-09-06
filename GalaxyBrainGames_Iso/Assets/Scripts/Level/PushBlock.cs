@@ -37,8 +37,8 @@ namespace GalaxyBrain.Interactables
             if (pushBlockRenderer != null)
             {
                 pushBlockRenderer.positionCount = 2;
-                pushBlockRenderer.SetPosition(0, new Vector3(0, -controller.bounds.extents.y, 0));
-                pushBlockRenderer.SetPosition(1, new Vector3(0, -controller.bounds.extents.y, 0));
+                pushBlockRenderer.SetPosition(0, new Vector3(0, -controller.bounds.extents.y * 0.95f, 0));
+                pushBlockRenderer.SetPosition(1, new Vector3(0, -controller.bounds.extents.y * 0.95f, 0));
             }
         }
 
@@ -113,11 +113,11 @@ namespace GalaxyBrain.Interactables
                 Vector3 endPoint = new Vector3(Mathf.Round(hit.x), transform.position.y, Mathf.Round(hit.z)) - transform.position;
                 endPoint.x *= interactionCardinal.normalized.x;
                 endPoint.z *= interactionCardinal.normalized.z;
-                endPoint = Vector3.ClampMagnitude(endPoint, maxPushRange);
+                endPoint = Vector3.ClampMagnitude(endPoint, maxPushRange).magnitude * interactionCardinal;
 
                 if (pushBlockRenderer != null)
                 {
-                    pushBlockRenderer.SetPosition(1, endPoint - new Vector3(0, controller.bounds.extents.y, 0));
+                    pushBlockRenderer.SetPosition(1, endPoint - new Vector3(0, controller.bounds.extents.y * 0.95f, 0));
                 }
 
                 if (Input.GetMouseButtonDown(0))
