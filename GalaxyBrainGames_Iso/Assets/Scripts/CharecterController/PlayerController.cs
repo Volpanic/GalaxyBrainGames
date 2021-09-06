@@ -90,8 +90,11 @@ namespace GalaxyBrain.Creatures
             {
                 if (Selected)
                 {
+                    pathfinding.SetOwner(transform, moving, canClimb && IsClimbing, canSwim);
+
                     if (!moving) MovementSelection();
                 }
+
                 if (moving) MoveAlongPath();
                 else controller.SimpleMove(Vector3.zero);
             }
@@ -154,8 +157,6 @@ namespace GalaxyBrain.Creatures
         {
             controller.SimpleMove(Vector3.zero);
             if (pathfinding == null) return;
-
-            pathfinding.SetOwner(transform, canClimb && IsClimbing, canSwim);
 
             if (Input.GetMouseButtonDown(0))
             {

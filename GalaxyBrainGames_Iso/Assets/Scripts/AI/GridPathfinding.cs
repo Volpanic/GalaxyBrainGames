@@ -28,31 +28,30 @@ namespace GalaxyBrain.Pathfinding
 
         private bool isClimbing = false;
         private bool canSwim = false;
+        private bool ownerMoving = false;
 
         private Dictionary<Vector3, Node> nodeGrid = new Dictionary<Vector3, Node>();
 
         public bool LookForPath(RaycastHit hit)
         {
-            if (owner == null) return false;
+            if (owner == null || ownerMoving) return false;
 
-            if (true)
+            if (ToGridPos(hit.point + new Vector3(0, 0.5f, 0)) != lastArea)
             {
-                if (ToGridPos(hit.point + new Vector3(0, 0.5f, 0)) != lastArea)
-                {
-                    //Convert to grid position
-                    lastArea = ToGridPos(hit.point + new Vector3(0, 0.1f, 0));
+                //Convert to grid position
+                lastArea = ToGridPos(hit.point + new Vector3(0, 0.1f, 0));
 
-                    //Path Finding
-                    FillGrid(ToGridPos(owner.position), lastArea);
-                    List<Node> nodePath = FindPath(ToGridPos(owner.position), lastArea);
+                //Path Finding
+                FillGrid(ToGridPos(owner.position), lastArea);
+                List<Node> nodePath = FindPath(ToGridPos(owner.position), lastArea);
 
-                    //Visualization
-                    UpdatePath(nodePath);
-                }
-                lastArea = ToGridPos(hit.point + Vector3.up);
-                return true;
+                //Visualization
+                UpdatePath(nodePath);
             }
-            return false;
+
+            lastArea = ToGridPos(hit.point + Vector3.up);
+
+            return true;
         }
 
         //Makes it so the path is non viable, meaning it cant be used for the mean time
@@ -61,9 +60,10 @@ namespace GalaxyBrain.Pathfinding
             viablePath = false;
         }
 
-        public void SetOwner(Transform newOwner, bool climb = false, bool swim = false)
+        public void SetOwner(Transform newOwner,bool moving, bool climb = false, bool swim = false)
         {
             owner = newOwner;
+            ownerMoving = moving;
             isClimbing = climb;
             canSwim = swim;
         }
