@@ -38,7 +38,8 @@ namespace GalaxyBrain.UI
             onSwapOffEffects = new EffectBuilder(this);
         }
 
-        private void Start()
+        //Called in CreatureSelectionGridUI
+        public void SetupEffects()
         {
             originalSelectedPosition = rectTransform.position;
             endSelectedPositon = rectTransform.position + selectedOffset;
