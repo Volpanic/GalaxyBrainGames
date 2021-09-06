@@ -1,3 +1,4 @@
+using GalaxyBrain.Attributes;
 using GalaxyBrain.Creatures;
 using GalaxyBrain.Managers;
 using GalaxyBrain.Pathfinding;
