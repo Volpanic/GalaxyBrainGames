@@ -56,7 +56,6 @@ namespace GalaxyBrain.UI
                 TextMeshProUGUI textBase = creatureUIBlockPrefab.GetComponentInChildren<TextMeshProUGUI>();
                 List<CreatureSelectionIcon> lastObject = new List<CreatureSelectionIcon>();
 
-
                 //Edit the prefabs text and instantiate it
                 for (int i = 0; i < creatureData.GetCreatureCount(); i++)
                 {
@@ -69,10 +68,20 @@ namespace GalaxyBrain.UI
                 }
 
                 LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)layoutGroup.transform);
-
                 creatureUIIcons = lastObject.ToArray();
-
                 layoutGroup.enabled = false;
+
+                //Setup icons effects, Done here so positions have updated after layout rebuild
+                PlayerController selected = creatureData.GetSelectedCreature();
+                for (int i = 0; i < lastObject.Count; i++)
+                {
+                    lastObject[i].SetupEffects();
+                    //If this is the currently selected creature
+                    if (lastObject[i] == selected)
+                    {
+                        lastObject[lastObject.Count - 1].OnSelectCreature();
+                    }
+                }
             }
         }
     }

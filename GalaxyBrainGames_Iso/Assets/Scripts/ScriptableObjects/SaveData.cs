@@ -78,7 +78,7 @@ namespace GalaxyBrain.Systems
 
         public void MarkLevelComplete(LevelProgression progression)
         {
-            int currentIndex = SceneManager.GetActiveScene().buildIndex;
+            string currentIndex = SceneManager.GetActiveScene().name;
 
             for (int i = Data.MaxLevelCompleted + 1; i < progression.ScenesInOrder.Count; i++)
             {

@@ -5,7 +5,8 @@ using UnityEngine;
 
 namespace GalaxyBrain.Attributes
 {
-    public class ReadOnlyAttribute : PropertyAttribute
+    [AttributeUsage(AttributeTargets.Field)]
+    public class SceneAttribute : PropertyAttribute
     {
         // Custom Attributes need 2 paths, the Property Attribute
         // and the Property Drawer, This file is empty because 

@@ -1,3 +1,4 @@
+using GalaxyBrain.Attributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +10,8 @@ namespace GalaxyBrain.Systems
     [CreateAssetMenu]
     public class LevelProgression : ScriptableObject
     {
-        public List<int> ScenesInOrder;
+        [Scene]
+        public List<string> ScenesInOrder;
 
         public GameObject SceneTransition;
 
@@ -43,7 +45,7 @@ namespace GalaxyBrain.Systems
             currentScene = -1;
         }
 
-        public int GetCurrentScene()
+        public string GetCurrentScene()
         {
             if (currentScene < 0) currentScene = 0;
             return ScenesInOrder[currentScene];

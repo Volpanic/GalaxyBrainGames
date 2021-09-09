@@ -166,7 +166,7 @@ namespace GalaxyBrain.Creatures
                     moving = true;
                     moveMaxTime = movementSpeed * path.Count;
                     moveTimer = 0;
-                    actionPointData?.SubtractActionPoint();
+                    actionPointData?.SubtractActionPoint(pathfinding.GetPathCount()-1);
                 }
             }
         }

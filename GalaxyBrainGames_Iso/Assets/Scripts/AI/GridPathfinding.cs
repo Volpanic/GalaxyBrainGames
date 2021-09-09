@@ -19,6 +19,8 @@ namespace GalaxyBrain.Pathfinding
         [SerializeField] Gradient validPathGradiant;
         [SerializeField] Gradient nonvalidPathGradiant;
 
+        public event Action OnPathChanged;
+
         private Vector3 lastArea;
 
         private List<Vector3> path;
@@ -50,6 +52,7 @@ namespace GalaxyBrain.Pathfinding
             }
 
             lastArea = ToGridPos(hit.point + Vector3.up);
+            OnPathChanged?.Invoke();
 
             return true;
         }
@@ -68,9 +71,22 @@ namespace GalaxyBrain.Pathfinding
             canSwim = swim;
         }
 
+        //Path info
         public List<Vector3> GetPath()
         {
             return (viablePath) ? path : null;
+        }
+
+        public Vector3 GetPathEndPoint()
+        {
+            if (!viablePath || path.Count <= 0) return owner.position;
+            else return path[path.Count-1];
+        }
+
+        public int GetPathCount()
+        {
+            if (!viablePath || path.Count <= 0) return 0;
+            else return path.Count;
         }
 
         private void UpdatePath(List<Node> nodePath)

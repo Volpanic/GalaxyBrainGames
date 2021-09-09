@@ -13,7 +13,7 @@ namespace GalaxyBrain.Managers
         [SerializeField] private Fade fade;
         [SerializeField] private LevelProgression levelProg;
 
-        private int targetIndex = 0;
+        private string targetIndex = "";
 
         public void Changescene()
         {
@@ -41,7 +41,7 @@ namespace GalaxyBrain.Managers
 
         private void ResetSceneAfterFade()
         {
-            targetIndex = SceneManager.GetActiveScene().buildIndex;
+            targetIndex = SceneManager.GetActiveScene().name;
 
             SceneManager.LoadScene(targetIndex);
         }
