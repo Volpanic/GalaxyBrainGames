@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace GalaxyBrain.UI
@@ -26,6 +27,9 @@ namespace GalaxyBrain.UI
 
         [SerializeField]
         private List<DialougeSequence> playingSequence;
+
+        [SerializeField] private UnityEvent onDialougeComplete;
+
         private byte CharecterAlpha = 0;
         private bool active = true;
 
@@ -106,6 +110,7 @@ namespace GalaxyBrain.UI
                 if (messageCount > playingSequence.Count - 1)
                 {
                     active = false;
+                    onDialougeComplete.Invoke();
                     gameObject.SetActive(false);
                 }
                 else // Set new message info

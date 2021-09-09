@@ -8,7 +8,7 @@ using Volpanic.UITweening;
 namespace GalaxyBrain.UI
 {
     [RequireComponent(typeof(RectTransform))]
-    public class ActionPointText : MonoBehaviour
+    public class ActionsRemainingText : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI actionPointText;
 

@@ -35,7 +35,7 @@ namespace GalaxyBrainEditor.Attributes
 
                     SceneAsset targetScene = (SceneAsset)EditorGUI.ObjectField(topRect, property.displayName, scene, typeof(SceneAsset), false);
 
-                    if (scene != targetScene)
+                    if (scene != targetScene && targetScene != null)
                     {
                         property.stringValue = targetScene.name;
                     }
