@@ -463,6 +463,11 @@ namespace GalaxyBrain.Pathfinding
                 return false;
             }
 
+            if(!canSwim && neighborNode.IsWater)
+            {
+                return false;
+            }
+
             if (!isClimbing)
             {
                 //Don't sample climable blocks if they arent ground level
