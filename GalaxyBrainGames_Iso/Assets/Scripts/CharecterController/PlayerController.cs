@@ -28,7 +28,6 @@ namespace GalaxyBrain.Creatures
         [SerializeField] private CharacterController controller;
         [SerializeField] private ActionPointData actionPointData;
 
-
         [Header("Abilities")]
         [SerializeField] private PlayerTypes playerType;
         [SerializeField] private bool canClimb;
@@ -53,6 +52,7 @@ namespace GalaxyBrain.Creatures
         }
 
         private bool moving = false;
+        private bool canMove = true;
         private float moveTimer = 0;
         private float moveMaxTime = 0;
         private List<Vector3> path;
@@ -95,7 +95,7 @@ namespace GalaxyBrain.Creatures
                     if (!moving) MovementSelection();
                 }
 
-                if (moving) MoveAlongPath();
+                if (moving && canMove) MoveAlongPath();
                 else controller.SimpleMove(Vector3.zero);
             }
             else
@@ -217,6 +217,11 @@ namespace GalaxyBrain.Creatures
                     break;
                 }
             }
+        }
+
+        public void LockMovement()
+        {
+            canMove = false;
         }
 
         private Vector3 MakeCardinal(Vector3 direction)

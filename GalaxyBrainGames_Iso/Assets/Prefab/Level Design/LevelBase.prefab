@@ -906,6 +906,7 @@ GameObject:
   - component: {fileID: 8489134180897291323}
   - component: {fileID: 8489134180897291316}
   - component: {fileID: 9023734656012644898}
+  - component: {fileID: 6749983849354691656}
   m_Layer: 2
   m_Name: Large Creature
   m_TagString: Player
@@ -996,6 +997,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 8722944020839051678}
   passengers: []
+--- !u!114 &6749983849354691656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8489134180897291321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9308b88d6cffad419f5bb69ee8a6e5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 4586dbebaca84c94987aeecd0fffcbac, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8489134180897291323}
+        m_TargetAssemblyTypeName: GalaxyBrain.Creatures.PlayerController, Assembly-CSharp
+        m_MethodName: LockMovement
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8489134181068076582
 GameObject:
   m_ObjectHideFlags: 0
@@ -1009,6 +1038,7 @@ GameObject:
   - component: {fileID: 8722944019988859023}
   - component: {fileID: 8489134181068076577}
   - component: {fileID: 2603931490016016559}
+  - component: {fileID: 5832322545792335535}
   m_Layer: 2
   m_Name: Medium Creature
   m_TagString: Player
@@ -1107,6 +1137,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 8722944019654189203}
   passengers: []
+--- !u!114 &5832322545792335535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8489134181068076582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9308b88d6cffad419f5bb69ee8a6e5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 4586dbebaca84c94987aeecd0fffcbac, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8722944019988859023}
+        m_TargetAssemblyTypeName: GalaxyBrain.Creatures.PlayerController, Assembly-CSharp
+        m_MethodName: LockMovement
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8722944019000441532
 GameObject:
   m_ObjectHideFlags: 0
@@ -6066,6 +6124,7 @@ GameObject:
   - component: {fileID: 8722944019424231984}
   - component: {fileID: 8722944019424231986}
   - component: {fileID: 5516191661116780862}
+  - component: {fileID: 1791971421273688177}
   m_Layer: 2
   m_Name: The Child
   m_TagString: Player
@@ -6142,6 +6201,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 8722944019424231986}
   creatureData: {fileID: 11400000, guid: 7c514ea391c56834799b9fb50443484e, type: 2}
+--- !u!114 &1791971421273688177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8722944019424231990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9308b88d6cffad419f5bb69ee8a6e5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 4586dbebaca84c94987aeecd0fffcbac, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8722944019424231986}
+        m_TargetAssemblyTypeName: GalaxyBrain.Creatures.PlayerController, Assembly-CSharp
+        m_MethodName: LockMovement
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8722944019578752568
 GameObject:
   m_ObjectHideFlags: 0
@@ -6282,7 +6369,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.25
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8722944019611907258
 MonoBehaviour:
@@ -6297,17 +6384,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onlyOnce: 1
-  onTriggerEnter: {fileID: 11400000, guid: 1b0f21220e8df564a952bbf93a1a634e, type: 2}
+  onTriggerEnter: {fileID: 11400000, guid: 4586dbebaca84c94987aeecd0fffcbac, type: 2}
   onTriggerEnterEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: e663067ed542ee74ab8e5a6ecc108d1b, type: 2}
-        m_TargetAssemblyTypeName: SaveData, Assembly-CSharp
+        m_TargetAssemblyTypeName: GalaxyBrain.Systems.SaveData, Assembly-CSharp
         m_MethodName: MarkLevelComplete
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 11400000, guid: bbcc253709fa3a747a1ce434b4c02348, type: 2}
-          m_ObjectArgumentAssemblyTypeName: LevelProgression, Assembly-CSharp
+          m_ObjectArgumentAssemblyTypeName: GalaxyBrain.Systems.LevelProgression,
+            Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -6325,6 +6413,7 @@ GameObject:
   - component: {fileID: 8722944019790777770}
   - component: {fileID: 8722944019790777771}
   - component: {fileID: 8722944019790777768}
+  - component: {fileID: 6997725430276868934}
   m_Layer: 5
   m_Name: Level UI
   m_TagString: Untagged
@@ -6417,6 +6506,34 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &6997725430276868934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8722944019790777769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9308b88d6cffad419f5bb69ee8a6e5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 4586dbebaca84c94987aeecd0fffcbac, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 279367124301165920}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!1 &8722944020071223830
 GameObject:
   m_ObjectHideFlags: 0
@@ -11639,11 +11756,44 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: onDialougeComplete.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: onDialougeComplete.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: onDialougeComplete.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 11400000, guid: 1b0f21220e8df564a952bbf93a1a634e, type: 2}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: onDialougeComplete.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: onDialougeComplete.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Raise
+      objectReference: {fileID: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: onDialougeComplete.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameEvent, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: onDialougeComplete.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
 --- !u!224 &2115822321060583345 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 748427918047660699, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+  m_PrefabInstance: {fileID: 1674804738419318058}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &279367124301165920 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1503807423637055562, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
   m_PrefabInstance: {fileID: 1674804738419318058}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6803485995881054134
