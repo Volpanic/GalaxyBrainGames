@@ -13,6 +13,7 @@ namespace GalaxyBrain.Pathfinding
         [SerializeField] LayerMask climbableMask;
         [SerializeField] LayerMask slopeMask;
         [SerializeField] LayerMask waterMask;
+        [SerializeField] LayerMask dynamicPathBlockingMask;
 
         [Header("Visualization")]
         [SerializeField] LineRenderer pathRenderer;
@@ -452,6 +453,12 @@ namespace GalaxyBrain.Pathfinding
         {
             //Skip node states
             if (neighborNode.IsWall || (!neighborNode.IsGround && !neighborNode.IsSlope && !neighborNode.IsClimbable))
+            {
+                return false;
+            }
+
+            //Check for dynamic blocks, players etc
+            if(startNode != neighborNode && Physics.CheckBox(neighborNode.Position,Vector3.one*0.5f,Quaternion.identity,dynamicPathBlockingMask))
             {
                 return false;
             }
