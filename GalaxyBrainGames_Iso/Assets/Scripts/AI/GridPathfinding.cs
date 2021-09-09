@@ -13,6 +13,7 @@ namespace GalaxyBrain.Pathfinding
         [SerializeField] LayerMask climbableMask;
         [SerializeField] LayerMask slopeMask;
         [SerializeField] LayerMask waterMask;
+        [SerializeField] LayerMask dynamicPathBlockingMask;
 
         [Header("Visualization")]
         [SerializeField] LineRenderer pathRenderer;
@@ -37,6 +38,7 @@ namespace GalaxyBrain.Pathfinding
         public bool LookForPath(RaycastHit hit)
         {
             if (owner == null || ownerMoving) return false;
+
 
             if (ToGridPos(hit.point + new Vector3(0, 0.5f, 0)) != lastArea)
             {
@@ -235,7 +237,6 @@ namespace GalaxyBrain.Pathfinding
 
             //Add the node
             node.IsWall = wall.Length > 0;
-            node.IsWater = water && !node.IsWall;
             node.IsGround = false;
             node.IsSlope = false;
             node.TemporalPosition = node.Position - new Vector3(0, 0.45f, 0);
@@ -258,6 +259,8 @@ namespace GalaxyBrain.Pathfinding
                     node.TemporalPosition = node.Position - new Vector3(0, 0.45f, 0);
                 }
             }
+
+            node.IsWater = water && !node.IsWall && !node.IsGround;
 
             //Check if slope
             if (sloped)
@@ -456,6 +459,18 @@ namespace GalaxyBrain.Pathfinding
                 return false;
             }
 
+            //Check for dynamic blocks, players etc
+            if(startNode != neighborNode && Physics.CheckBox(neighborNode.Position,Vector3.one*0.5f,Quaternion.identity,dynamicPathBlockingMask))
+            {
+                return false;
+            }
+
+            //Make sure if it's water we can swim
+            if(!canSwim && neighborNode.IsWater)
+            {
+                return false;
+            }
+
             if (!isClimbing)
             {
                 //Don't sample climable blocks if they arent ground level
@@ -465,10 +480,7 @@ namespace GalaxyBrain.Pathfinding
                     if (!isClimbing) return false;
                 }
 
-                if (neighborNode.Position.y < current.Position.y && !neighborNode.IsSlope)
-                {
-                    return false;
-                }
+
 
 
                 //Make sure we go on the slope the correct way
@@ -478,6 +490,13 @@ namespace GalaxyBrain.Pathfinding
                     dir.y = 0;
                     dir = dir.normalized;
                     if (dir != neighborNode.slopeNormal && dir != -neighborNode.slopeNormal) return false;
+                }
+                else
+                {
+                    if (neighborNode.Position.y < current.Position.y && !neighborNode.IsGround)
+                    {
+                        return false;
+                    }
                 }
 
                 //Make sure we get off the slope the correct way
@@ -492,6 +511,7 @@ namespace GalaxyBrain.Pathfinding
             else //Climbing
             {
                 //Only go from climbing to ground if it's the target node
+                CreateAndStoreNode(neighborNode.Position + Vector3.down);
                 if (!neighborNode.IsClimbable && !nodeGrid[neighborNode.Position + Vector3.down].IsClimbable)
                 {
                     if (neighborNode != endNode)

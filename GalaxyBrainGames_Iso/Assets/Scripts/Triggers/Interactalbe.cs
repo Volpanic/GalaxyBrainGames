@@ -15,6 +15,14 @@ namespace GalaxyBrain.Interactables
         [SerializeField] private GameEvent OnInteractedEvent;
         [SerializeField] private UnityEvent OnInteracted;
 
+        public PlayerController.PlayerTypes RequiredType
+        {
+            get
+            {
+                return requiredType;
+            }
+        }
+
         private bool activated;
         public void OnInteract(PlayerController creature)
         {
