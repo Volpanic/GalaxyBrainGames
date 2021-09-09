@@ -492,14 +492,14 @@ namespace GalaxyBrain.Pathfinding
             else //Climbing
             {
                 //Only go from climbing to ground if it's the target node
-                if (!neighborNode.IsClimbable)
+                if (!neighborNode.IsClimbable && !nodeGrid[neighborNode.Position + Vector3.down].IsClimbable)
                 {
                     if (neighborNode != endNode)
                     {
                         return false;
                     }
                 }
-                if (neighborNode.Position.y == startNode.Position.y) return false;
+                if (neighborNode.Position == startNode.Position) return false;
             }
 
             return true;
