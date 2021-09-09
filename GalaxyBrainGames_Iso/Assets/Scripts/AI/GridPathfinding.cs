@@ -39,6 +39,7 @@ namespace GalaxyBrain.Pathfinding
         {
             if (owner == null || ownerMoving) return false;
 
+
             if (ToGridPos(hit.point + new Vector3(0, 0.5f, 0)) != lastArea)
             {
                 //Convert to grid position
@@ -236,7 +237,6 @@ namespace GalaxyBrain.Pathfinding
 
             //Add the node
             node.IsWall = wall.Length > 0;
-            node.IsWater = water && !node.IsWall;
             node.IsGround = false;
             node.IsSlope = false;
             node.TemporalPosition = node.Position - new Vector3(0, 0.45f, 0);
@@ -259,6 +259,8 @@ namespace GalaxyBrain.Pathfinding
                     node.TemporalPosition = node.Position - new Vector3(0, 0.45f, 0);
                 }
             }
+
+            node.IsWater = water && !node.IsWall && !node.IsGround;
 
             //Check if slope
             if (sloped)
@@ -478,10 +480,7 @@ namespace GalaxyBrain.Pathfinding
                     if (!isClimbing) return false;
                 }
 
-                if (neighborNode.Position.y < current.Position.y && !(neighborNode.IsSlope || neighborNode.IsGround))
-                {
-                    return false;
-                }
+
 
 
                 //Make sure we go on the slope the correct way
@@ -491,6 +490,13 @@ namespace GalaxyBrain.Pathfinding
                     dir.y = 0;
                     dir = dir.normalized;
                     if (dir != neighborNode.slopeNormal && dir != -neighborNode.slopeNormal) return false;
+                }
+                else
+                {
+                    if (neighborNode.Position.y < current.Position.y && !neighborNode.IsGround)
+                    {
+                        return false;
+                    }
                 }
 
                 //Make sure we get off the slope the correct way
@@ -505,6 +511,7 @@ namespace GalaxyBrain.Pathfinding
             else //Climbing
             {
                 //Only go from climbing to ground if it's the target node
+                CreateAndStoreNode(neighborNode.Position + Vector3.down);
                 if (!neighborNode.IsClimbable && !nodeGrid[neighborNode.Position + Vector3.down].IsClimbable)
                 {
                     if (neighborNode != endNode)

@@ -22,6 +22,11 @@ namespace GalaxyBrain.Managers
 
             if (interactions.ContainsKey(selectedObject.collider.gameObject))
             {
+                if(interactions[selectedObject.collider.gameObject].RequiredType != selectedCreature.PlayerType)
+                {
+                    return false;
+                }
+
                 if (Input.GetMouseButtonDown(0) &&
                     interactions[selectedObject.collider.gameObject].CheckIfNeaby(selectedCreature.gameObject, 1.25f))
                 {
