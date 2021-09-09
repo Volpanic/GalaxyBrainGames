@@ -463,6 +463,7 @@ namespace GalaxyBrain.Pathfinding
                 return false;
             }
 
+            //Make sure if it's water we can swim
             if(!canSwim && neighborNode.IsWater)
             {
                 return false;
@@ -477,7 +478,7 @@ namespace GalaxyBrain.Pathfinding
                     if (!isClimbing) return false;
                 }
 
-                if (neighborNode.Position.y < current.Position.y && !neighborNode.IsSlope)
+                if (neighborNode.Position.y < current.Position.y && !(neighborNode.IsSlope || neighborNode.IsGround))
                 {
                     return false;
                 }
