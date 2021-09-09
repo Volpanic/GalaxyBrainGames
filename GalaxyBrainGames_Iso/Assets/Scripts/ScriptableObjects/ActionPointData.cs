@@ -21,9 +21,12 @@ namespace GalaxyBrain.Systems
 
         public void SubtractActionPoint(int amount = 1)
         {
-            currentActionPoint = Mathf.Max(0, currentActionPoint - amount);
-            OnActionPointChanged?.Invoke(currentActionPoint);
-            CheckIfOutOfPoints();
+            if (amount > 0)
+            {
+                currentActionPoint = Mathf.Max(0, currentActionPoint - amount);
+                OnActionPointChanged?.Invoke(currentActionPoint);
+                CheckIfOutOfPoints();
+            }
         }
 
         private void CheckIfOutOfPoints()

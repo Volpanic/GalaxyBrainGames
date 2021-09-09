@@ -19,7 +19,7 @@ namespace GalaxyBrain.Creatures.Abilities
 
         public bool OnAbilityCheckDone()
         {
-            return climb != null;
+            return climb == null;
         }
 
         public void OnAbilityEnd()
@@ -30,7 +30,10 @@ namespace GalaxyBrain.Creatures.Abilities
         public void OnAbilityStart(PlayerController controller, Interactalbe interactable, Vector3 interactDirection)
         {
             if (!controller.IsClimbing)
+            {
                 controller.IsClimbing = true;
+            }
+            climb = null;
         }
 
         public void OnAbilityUpdate()
