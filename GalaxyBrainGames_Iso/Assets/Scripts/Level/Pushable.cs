@@ -34,7 +34,6 @@ namespace GalaxyBrain.Interactables
 
                 if (fallingTimer >= 1)
                 {
-                    transform.position += Vector3.down * 0.6f;
                     fallingOver = false;
                     fallingTimer = 1;
                     creatureData.pathfinding.UpdateNodeCells(myCollider.bounds.min, myCollider.bounds.max);
