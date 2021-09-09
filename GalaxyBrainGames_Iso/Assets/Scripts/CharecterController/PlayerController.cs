@@ -51,11 +51,17 @@ namespace GalaxyBrain.Creatures
             }
         }
 
+
+
+        private List<Vector3> path;
+        private bool manualMove = false;
+
+        //Moving Along Path
         private bool moving = false;
         private bool canMove = true;
         private float moveTimer = 0;
         private float moveMaxTime = 0;
-        private List<Vector3> path;
+        private int currentPathIndex = 0;
 
         private List<ICreatureAbility> abilites = new List<ICreatureAbility>();
         private int currentRunningAbility = -1;
@@ -80,7 +86,6 @@ namespace GalaxyBrain.Creatures
                 transform.position = new Vector3(gridPos.x, transform.position.y, gridPos.z);
 
                 controller.enabled = true;
-
             }
         }
 
@@ -96,7 +101,13 @@ namespace GalaxyBrain.Creatures
                 }
 
                 if (moving && canMove) MoveAlongPath();
-                else controller.SimpleMove(Vector3.zero);
+                else
+                {
+                    if (!manualMove)
+                    {
+                        controller.SimpleMove(Vector3.zero);
+                    }
+                }
             }
             else
             {
@@ -108,6 +119,7 @@ namespace GalaxyBrain.Creatures
                 }
             }
 
+            manualMove = false;
             transform.rotation = UpdateRotation(transform.rotation, targetRotation);
         }
 
@@ -128,21 +140,43 @@ namespace GalaxyBrain.Creatures
 
         private void MoveAlongPath()
         {
+            //Move the player along the path
             moveTimer += Time.deltaTime;
-            Vector3 targetPos = SamplePath(path, moveTimer / moveMaxTime);
 
-            Vector3 velocity = targetPos - transform.position;
+            // Get current point and the next point on path
+            Vector3 oldPos = path[currentPathIndex];
+            Vector3 targetPos = path[currentPathIndex + 1];
+
+            //Lerp between the two points
+            Vector3 transitionalPos = Vector3.Lerp(oldPos, targetPos, moveTimer / moveMaxTime);
+
+            //Find how much we need to move to get to that point
+            Vector3 velocity = transitionalPos - transform.position;
 
             controller.Move(velocity);
             targetRotation = GetDirectionOfMovement();
 
             if (moveTimer >= moveMaxTime)
             {
-                moving = false;
-                IsClimbing = false;
+                currentPathIndex++;
+                actionPointData?.SubtractActionPoint(1);
+                moveTimer = 0;
 
-                SnapToGridPosition();
+                if (currentPathIndex + 1 >= path.Count)
+                {
+                    StopMoveAlongPath();
+                }
             }
+        }
+
+        private void StopMoveAlongPath()
+        {
+            moving = false;
+            IsClimbing = false;
+            moveTimer = 0;
+            currentPathIndex = 0;
+
+            SnapToGridPosition();
         }
 
         private void SnapToGridPosition()
@@ -160,29 +194,21 @@ namespace GalaxyBrain.Creatures
 
             if (Input.GetMouseButtonDown(0))
             {
-                path = pathfinding.GetPath();
-                if (path != null)
-                {
-                    moving = true;
-                    moveMaxTime = movementSpeed * path.Count;
-                    moveTimer = 0;
-                    actionPointData?.SubtractActionPoint(pathfinding.GetPathCount()-1);
-                }
+                StartMoveAlongPath(pathfinding.GetPath());
             }
         }
 
-        public Vector3 SamplePath(List<Vector3> path, float normalizedTime)
+        private void StartMoveAlongPath(List<Vector3> path)
         {
-            if (path == null || path.Count < 1) return transform.position;
-            normalizedTime = Mathf.Clamp01(normalizedTime);
-
-            float unormalizedTime = normalizedTime * (path.Count - 1);
-            int min = Mathf.FloorToInt(unormalizedTime);
-
-            if (unormalizedTime == 0) return path[0];
-            if (min == path.Count - 1) return path[path.Count - 1];
-
-            return Vector3.Lerp(path[min], path[min + 1], unormalizedTime % 1f);
+            //Make sure we have a path with 2 points
+            if (path != null && path.Count >= 2)
+            {
+                moving = true;
+                moveMaxTime = movementSpeed;
+                moveTimer = 0;
+                currentPathIndex = 0;
+                this.path = path;
+            }
         }
 
         public float CorrectYPos(float y)
@@ -217,6 +243,14 @@ namespace GalaxyBrain.Creatures
                     break;
                 }
             }
+        }
+
+        public void Move(Vector3 velocity)
+        {
+            controller.SimpleMove(velocity);
+            moving = false;
+            IsClimbing = false;
+            manualMove = true;
         }
 
         public void LockMovement()
