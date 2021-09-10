@@ -183,7 +183,6 @@ namespace GalaxyBrain.Pathfinding
                 {
                     for (float zz = minGrid.z; zz <= maxGrid.z; zz++)
                     {
-                        Debug.DrawRay(new Vector3(xx, yy, zz), Vector3.up * 0.5f, Color.yellow, 100);
                         UpdateGridCell(new Vector3(xx, yy, zz));
                     }
                 }
@@ -244,7 +243,6 @@ namespace GalaxyBrain.Pathfinding
 
             if (climbable)
             {
-                Debug.DrawLine(node.Position, node.Position + Vector3.down, Color.blue, 1f);
                 CreateAndStoreNode(node.Position + Vector3.up);
             }
 
@@ -253,14 +251,14 @@ namespace GalaxyBrain.Pathfinding
             if (!sloped && wall.Length == 0)
             {
                 RaycastHit hit;
-                if (Physics.Raycast(new Ray(node.Position, Vector3.down), out hit, 0.8f, groundMask))
+                if (!water && Physics.Raycast(new Ray(node.Position, Vector3.down), out hit, 0.8f, groundMask))
                 {
                     node.IsGround = true;
                     node.TemporalPosition = node.Position - new Vector3(0, 0.45f, 0);
                 }
             }
 
-            node.IsWater = water && !node.IsWall && !node.IsGround;
+            node.IsWater = water && !node.IsWall;
 
             //Check if slope
             if (sloped)
@@ -277,7 +275,6 @@ namespace GalaxyBrain.Pathfinding
                     if (Mathf.Abs(hit.normal.z) >= 0.5f) slopeDir.z = Mathf.Sign(hit.normal.z);
 
                     node.slopeNormal = slopeDir;
-                    Debug.DrawRay(hit.point, slopeDir * 4, Color.red, 55f);
                 }
             }
 
@@ -454,7 +451,7 @@ namespace GalaxyBrain.Pathfinding
         private bool CheckIfNodeIsViable(Node startNode, Node endNode, Node current,Node neighborNode)
         {
             //Skip node states
-            if (neighborNode.IsWall || (!neighborNode.IsGround && !neighborNode.IsSlope && !neighborNode.IsClimbable))
+            if (neighborNode.IsWall || (!neighborNode.IsGround && !neighborNode.IsSlope && !neighborNode.IsClimbable && !neighborNode.IsWater))
             {
                 return false;
             }

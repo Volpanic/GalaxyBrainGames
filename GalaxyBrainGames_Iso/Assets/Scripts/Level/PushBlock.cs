@@ -2,6 +2,7 @@ using GalaxyBrain.Systems;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace GalaxyBrain.Interactables
@@ -66,7 +67,7 @@ namespace GalaxyBrain.Interactables
             oldMovement = target;
 
             //Check if we hit a wall
-            if ((pushTimer >= 0.2f && (controller.collisionFlags & CollisionFlags.CollidedSides) != 0) || !Physics.BoxCast(controller.bounds.center, controller.bounds.extents * 0.98f, Vector3.down, Quaternion.identity, 0.1f))
+            if (pushTimer >= 0.2f && (PlaceMeeting(movement, 0.9f) || !PlaceMeeting(Vector3.down*0.1f, 0.9f)))
             {
                 moving = false;
 
@@ -83,7 +84,29 @@ namespace GalaxyBrain.Interactables
             {
                 //Disable the controller to allow for manual movement.
                 creatureData.pathfinding.UpdateNodeCells(controller.bounds.min - Vector3.one, controller.bounds.max + Vector3.one);
+
+                creatureData.pathfinding.UpdateNodeCells(startPos - Vector3.one, startPos + Vector3.one);
+                moving = false;
+                SmoothSnapToGrid();
             }
+        }
+
+        public bool PlaceMeeting(Vector3 offset, float sizeScale)
+        {
+            Collider[] colls = Physics.OverlapBox(controller.bounds.center + offset, controller.bounds.extents * sizeScale, Quaternion.identity);
+
+            for (int i = 0; i < colls.Length; i++)
+            {
+                //Skip if it's collider is mine or my childs
+                if(colls[i].gameObject == gameObject || colls[i].transform.IsChildOf(transform))
+                {
+                    continue;
+                }
+
+                return true;
+            }
+
+            return false;
         }
 
         private void SmoothSnapToGrid()
