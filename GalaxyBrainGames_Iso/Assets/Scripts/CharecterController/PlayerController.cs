@@ -51,7 +51,12 @@ namespace GalaxyBrain.Creatures
             }
         }
 
-
+        /// <summary>
+        /// Called when a point in the path has been reached,
+        /// Most likely in the center of a grid cell
+        /// v3 = PreviousGridCellPos, v3 = new nextGridCellpos
+        /// </summary>
+        public event Action<Vector3,Vector3> OnPathInterval;
 
         private List<Vector3> path;
         private bool manualMove = false;
@@ -59,6 +64,7 @@ namespace GalaxyBrain.Creatures
         //Moving Along Path
         private bool moving = false;
         private bool canMove = true;
+        private bool consumeActionPoints = true;
         private float moveTimer = 0;
         private float moveMaxTime = 0;
         private int currentPathIndex = 0;
@@ -67,6 +73,14 @@ namespace GalaxyBrain.Creatures
         private int currentRunningAbility = -1;
 
         private Quaternion targetRotation;
+
+        public Bounds ColliderBounds
+        {
+            get
+            {
+                return controller.bounds;
+            }
+        }
 
         public void AddAbility(ICreatureAbility ability)
         {
@@ -160,14 +174,19 @@ namespace GalaxyBrain.Creatures
             if (moveTimer >= moveMaxTime)
             {
                 currentPathIndex++;
-                actionPointData?.SubtractActionPoint(1);
+                if(consumeActionPoints) actionPointData?.SubtractActionPoint(1);
                 moveTimer = 0;
 
                 // Stop if we wan't to move the player manually
                 // or we've reached the end of the path
                 if (manualMove || currentPathIndex + 1 >= path.Count)
                 {
+                    OnPathInterval?.Invoke(path[currentPathIndex - 1], path[currentPathIndex]);
                     StopMoveAlongPath();
+                }
+                else
+                {
+                    OnPathInterval?.Invoke(path[currentPathIndex - 1], path[currentPathIndex]);
                 }
             }
         }
@@ -201,7 +220,7 @@ namespace GalaxyBrain.Creatures
             }
         }
 
-        private void StartMoveAlongPath(List<Vector3> path)
+        private void StartMoveAlongPath(List<Vector3> path, bool consumeActionPoints = true)
         {
             //Make sure we have a path with 2 points
             if (path != null && path.Count >= 2)
@@ -211,6 +230,7 @@ namespace GalaxyBrain.Creatures
                 moveTimer = 0;
                 currentPathIndex = 0;
                 this.path = path;
+                this.consumeActionPoints = consumeActionPoints;
             }
         }
 
@@ -257,7 +277,21 @@ namespace GalaxyBrain.Creatures
                 targetList.Add(pathfinding.ToGridPos(transform.position));
                 targetList.Add(pathfinding.ToGridPos(transform.position) + offset);
 
-                StartMoveAlongPath(targetList);
+                StartMoveAlongPath(targetList,false);
+            }
+            manualMove = true;
+        }
+        
+        public void MoveToTarget(Vector3 target)
+        {
+            if (!moving)
+            {
+                List<Vector3> targetList = new List<Vector3>();
+
+                targetList.Add(pathfinding.ToGridPos(transform.position));
+                targetList.Add(pathfinding.ToGridPos(target));
+
+                StartMoveAlongPath(targetList,false);
             }
             manualMove = true;
         }

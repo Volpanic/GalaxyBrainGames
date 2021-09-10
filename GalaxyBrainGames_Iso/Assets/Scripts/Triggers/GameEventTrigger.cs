@@ -14,7 +14,7 @@ namespace GalaxyBrain.Interactables
 
         private bool activated;
 
-        public void OnTriggerEnter()
+        private void OnTriggerEnter(Collider other)
         {
             if (onlyOnce && activated) return;
             onTriggerEnter?.Raise();

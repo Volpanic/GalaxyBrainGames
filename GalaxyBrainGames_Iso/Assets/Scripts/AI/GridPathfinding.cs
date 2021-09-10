@@ -450,6 +450,12 @@ namespace GalaxyBrain.Pathfinding
 
         private bool CheckIfNodeIsViable(Node startNode, Node endNode, Node current,Node neighborNode)
         {
+            //Start node should always be viable, because we're there already
+            if(neighborNode == startNode)
+            {
+                return true;
+            }
+
             //Skip node states
             if (neighborNode.IsWall || (!neighborNode.IsGround && !neighborNode.IsSlope && !neighborNode.IsClimbable && !neighborNode.IsWater))
             {
@@ -457,13 +463,13 @@ namespace GalaxyBrain.Pathfinding
             }
 
             //Check for dynamic blocks, players etc
-            if(startNode != neighborNode && Physics.CheckBox(neighborNode.Position,Vector3.one*0.5f,Quaternion.identity,dynamicPathBlockingMask))
+            if(Physics.CheckBox(neighborNode.Position,Vector3.one*0.5f,Quaternion.identity,dynamicPathBlockingMask))
             {
                 return false;
             }
 
             //Make sure if it's water we can swim
-            if(!canSwim && neighborNode.IsWater)
+            if(!current.IsWater && !canSwim && neighborNode.IsWater)
             {
                 return false;
             }
@@ -476,9 +482,6 @@ namespace GalaxyBrain.Pathfinding
                     //Unless we're climbing of course
                     if (!isClimbing) return false;
                 }
-
-
-
 
                 //Make sure we go on the slope the correct way
                 if (neighborNode.IsSlope)
@@ -533,7 +536,7 @@ namespace GalaxyBrain.Pathfinding
             {
                 finalPath.Add(currentNode);
                 currentNode = currentNode.Parent;
-                if (currentNode.IsWater && !canSwim) viable = false;
+                if (currentNode.IsWater && !canSwim && currentNode != startNode) viable = false;
             }
 
             finalPath.Reverse();
