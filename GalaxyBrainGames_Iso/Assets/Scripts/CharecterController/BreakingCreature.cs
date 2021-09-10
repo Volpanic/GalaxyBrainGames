@@ -17,6 +17,7 @@ namespace GalaxyBrain.Creatures
             creatureData.LogCreature(controller);
             controller.AddAbility(new PushBlockAbility());
             controller.AddAbility(new KnockOverPillarAbility());
+            controller.AddAbility(new ClimbOnBackAbility(PlayerController.PlayerTypes.Water));
         }
     }
 }
