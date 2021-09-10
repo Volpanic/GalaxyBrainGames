@@ -91,6 +91,7 @@ namespace GalaxyBrain.Creatures
 
         private void Update()
         {
+
             if (currentRunningAbility < 0)
             {
                 if (Selected)
@@ -162,7 +163,9 @@ namespace GalaxyBrain.Creatures
                 actionPointData?.SubtractActionPoint(1);
                 moveTimer = 0;
 
-                if (currentPathIndex + 1 >= path.Count)
+                // Stop if we wan't to move the player manually
+                // or we've reached the end of the path
+                if (manualMove || currentPathIndex + 1 >= path.Count)
                 {
                     StopMoveAlongPath();
                 }
@@ -245,11 +248,17 @@ namespace GalaxyBrain.Creatures
             }
         }
 
-        public void Move(Vector3 velocity)
+        public void ShiftPlayer(Vector3 offset)
         {
-            controller.SimpleMove(velocity);
-            moving = false;
-            IsClimbing = false;
+            if (!moving)
+            {
+                List<Vector3> targetList = new List<Vector3>();
+
+                targetList.Add(pathfinding.ToGridPos(transform.position));
+                targetList.Add(pathfinding.ToGridPos(transform.position) + offset);
+
+                StartMoveAlongPath(targetList);
+            }
             manualMove = true;
         }
 
