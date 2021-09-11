@@ -22,7 +22,7 @@ namespace GalaxyBrain.Managers
 
             if (interactions.ContainsKey(selectedObject.collider.gameObject))
             {
-                if(interactions[selectedObject.collider.gameObject].RequiredType != selectedCreature.PlayerType)
+                if(!interactions[selectedObject.collider.gameObject].IsRequiredType(selectedCreature.PlayerType))
                 {
                     return false;
                 }

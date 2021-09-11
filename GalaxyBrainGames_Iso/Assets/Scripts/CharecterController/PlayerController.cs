@@ -38,6 +38,9 @@ namespace GalaxyBrain.Creatures
         [HideInInspector] public bool Selected = false;
         [HideInInspector] public bool IsClimbing = false;
 
+        //Controls when we can leave water when in it
+        [HideInInspector] public bool WeighedDown = false;
+
         public bool Grounded
         {
             get { return controller.isGrounded; }
@@ -110,7 +113,7 @@ namespace GalaxyBrain.Creatures
             {
                 if (Selected)
                 {
-                    pathfinding.SetOwner(transform, moving, canClimb && IsClimbing, canSwim);
+                    pathfinding.SetOwner(transform, moving, canClimb && IsClimbing, canSwim,ExtraNodeConditions);
 
                     if (!moving) MovementSelection();
                 }
@@ -136,6 +139,16 @@ namespace GalaxyBrain.Creatures
 
             manualMove = false;
             transform.rotation = UpdateRotation(transform.rotation, targetRotation);
+        }
+
+        private bool ExtraNodeConditions(Node startNode, Node endNode, Node current, Node neighborNode)
+        {
+            if(WeighedDown && !neighborNode.IsWater)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private Quaternion UpdateRotation(Quaternion current, Quaternion target)

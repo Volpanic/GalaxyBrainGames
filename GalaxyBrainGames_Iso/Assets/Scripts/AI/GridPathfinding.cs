@@ -21,6 +21,7 @@ namespace GalaxyBrain.Pathfinding
         [SerializeField] Gradient nonvalidPathGradiant;
 
         public event Action OnPathChanged;
+        private Func<Node, Node, Node, Node, bool> extraNodeConditons; 
 
         private Vector3 lastArea;
 
@@ -65,12 +66,13 @@ namespace GalaxyBrain.Pathfinding
             viablePath = false;
         }
 
-        public void SetOwner(Transform newOwner,bool moving, bool climb = false, bool swim = false)
+        public void SetOwner(Transform newOwner,bool moving, bool climb = false, bool swim = false, Func<Node, Node, Node, Node, bool> nodeCondtions = null)
         {
             owner = newOwner;
             ownerMoving = moving;
             isClimbing = climb;
             canSwim = swim;
+            extraNodeConditons = nodeCondtions;
         }
 
         //Path info
@@ -454,6 +456,15 @@ namespace GalaxyBrain.Pathfinding
             if(neighborNode == startNode)
             {
                 return true;
+            }
+
+            //Extra conditions
+            if (extraNodeConditons != null)
+            {
+                if(!extraNodeConditons.Invoke(startNode,endNode,current,neighborNode))
+                {
+                    return false;
+                }
             }
 
             //Skip node states

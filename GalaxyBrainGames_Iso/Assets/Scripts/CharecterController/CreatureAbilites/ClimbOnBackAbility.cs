@@ -40,7 +40,9 @@ namespace GalaxyBrain.Creatures.Abilities
         public void OnAbilityStart(PlayerController controller, Interactalbe interactable, Vector3 interactDirection)
         {
             controller.MoveToTarget(interactableController.ColliderBounds.center +
-                new Vector3(0, interactableController.ColliderBounds.extents.y, 0));
+                new Vector3(0, interactableController.ColliderBounds.extents.y*2, 0));
+            Debug.DrawLine(interactableController.ColliderBounds.center, interactableController.ColliderBounds.center +
+                new Vector3(0, interactableController.ColliderBounds.extents.y*2, 0), Color.red, 25f);
         }
 
         public void OnAbilityUpdate()

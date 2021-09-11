@@ -206,6 +206,7 @@ MonoBehaviour:
   pathfinding: {fileID: 8722944019302059944}
   Selected: 0
   IsClimbing: 0
+  WeighedDown: 0
 --- !u!114 &8489134180897291316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -340,6 +341,7 @@ MonoBehaviour:
   pathfinding: {fileID: 8722944019302059944}
   Selected: 0
   IsClimbing: 0
+  WeighedDown: 0
 --- !u!114 &8489134181068076577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,8 +356,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   creatureData: {fileID: 11400000, guid: 7c514ea391c56834799b9fb50443484e, type: 2}
   controller: {fileID: 8722944019988859023}
+  controllerCarry: {fileID: 2603931490016016559}
   myCollider: {fileID: 8722944019654189203}
-  worldModel: {fileID: 0}
+  worldModel: {fileID: 5686165778968380515}
   waterMask:
     serializedVersion: 2
     m_Bits: 16
@@ -420,6 +423,7 @@ MonoBehaviour:
   lastInteractedWithCreature: {fileID: 0}
   myCollider: {fileID: 0}
   requiredType: 0
+  allTypes: 1
   onlyOnce: 0
   OnInteractedEvent: {fileID: 0}
   OnInteracted:
@@ -5450,6 +5454,7 @@ MonoBehaviour:
   pathfinding: {fileID: 8722944019302059944}
   Selected: 0
   IsClimbing: 0
+  WeighedDown: 0
 --- !u!114 &5516191661116780862
 MonoBehaviour:
   m_ObjectHideFlags: 0

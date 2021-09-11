@@ -13,6 +13,7 @@ namespace GalaxyBrain.Creatures
         [Header("References")]
         [SerializeField] private CreatureData creatureData;
         [SerializeField] private PlayerController controller;
+        [SerializeField] private ControllerCarry controllerCarry;
         [SerializeField] private Collider myCollider;
         [SerializeField] private Transform worldModel;
         [SerializeField] private LayerMask waterMask;
@@ -65,6 +66,9 @@ namespace GalaxyBrain.Creatures
                 worldModel.localPosition = Vector3.MoveTowards(worldModel.localPosition, worldModelOriginalPos,
                     Time.deltaTime*4);
             }
+
+            controller.WeighedDown = controllerCarry.SteppedOn;
+
         }
     }
 }
