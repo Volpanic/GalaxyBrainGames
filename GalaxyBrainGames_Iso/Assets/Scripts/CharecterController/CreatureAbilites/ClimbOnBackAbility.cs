@@ -8,6 +8,7 @@ namespace GalaxyBrain.Creatures.Abilities
     public class ClimbOnBackAbility : ICreatureAbility
     {
         private PlayerController interactableController;
+        private SwimingCreature swimming;
         private PlayerController.PlayerTypes targetType;
 
         public ClimbOnBackAbility(PlayerController.PlayerTypes targetType)
@@ -19,10 +20,17 @@ namespace GalaxyBrain.Creatures.Abilities
         {
             interactableController = interactable.gameObject.GetComponent<PlayerController>();
 
-            if (interactableController != null && interactableController.PlayerType == targetType)
+            if (interactableController != null && interactableController.PlayerType == targetType &&
+                !interactableController.WeighedDown)
             {
+                swimming = interactable.gameObject.GetComponent<SwimingCreature>();
 
-                return true;
+                //Make it so we can only climb on the swimming creatures back if swimming.
+                if(swimming != null && swimming.Swimming)
+                {
+                    return true;
+
+                }
             }
             return false;
         }
@@ -35,6 +43,7 @@ namespace GalaxyBrain.Creatures.Abilities
         public void OnAbilityEnd()
         {
             interactableController = null;
+            swimming = null;
         }
 
         public void OnAbilityStart(PlayerController controller, Interactalbe interactable, Vector3 interactDirection)
@@ -47,6 +56,7 @@ namespace GalaxyBrain.Creatures.Abilities
 
         public void OnAbilityUpdate()
         {
+
         }
     }
 }
