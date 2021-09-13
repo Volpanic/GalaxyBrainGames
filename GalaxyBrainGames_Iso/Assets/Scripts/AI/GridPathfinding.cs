@@ -68,6 +68,14 @@ namespace GalaxyBrain.Pathfinding
 
         public void SetOwner(Transform newOwner,bool moving, bool climb = false, bool swim = false, Func<Node, Node, Node, Node, bool> nodeCondtions = null)
         {
+            if(owner != newOwner)
+            {
+                //We've changed the owner, so scrap the current path
+                if(path != null) path.Clear();
+                viablePath = false;
+                UpdateLineRenderer();
+            }
+
             owner = newOwner;
             ownerMoving = moving;
             isClimbing = climb;
@@ -140,6 +148,12 @@ namespace GalaxyBrain.Pathfinding
         {
             if (pathRenderer != null)
             {
+                if (path == null || path.Count < 2)
+                {
+                    pathRenderer.positionCount = 0;
+                    return;
+                }
+
                 pathRenderer.positionCount = path.Count;
                 for (int i = 0; i < path.Count; i++)
                 {
