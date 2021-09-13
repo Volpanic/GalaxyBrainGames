@@ -31,8 +31,8 @@ namespace GalaxyBrain.Managers
                     interactions[selectedObject.collider.gameObject].CheckIfNeaby(selectedCreature.gameObject, 1.25f))
                 {
                     interactions[selectedObject.collider.gameObject].OnInteract(selectedCreature);
+                    return true;
                 }
-                return true;
             }
             return false;
         }

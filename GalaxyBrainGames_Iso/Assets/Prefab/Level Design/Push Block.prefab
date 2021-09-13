@@ -469,6 +469,7 @@ MonoBehaviour:
   lastInteractedWithCreature: {fileID: 0}
   myCollider: {fileID: 0}
   requiredType: 2
+  allTypes: 0
   onlyOnce: 0
   OnInteractedEvent: {fileID: 0}
   OnInteracted:
@@ -488,7 +489,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pushBlockRenderer: {fileID: 1942340470906691287}
   controller: {fileID: 1942340471600068356}
+  myCollider: {fileID: 5432799064507195405}
   creatureData: {fileID: 11400000, guid: 7c514ea391c56834799b9fb50443484e, type: 2}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 1
   maxPushRange: 3
 --- !u!143 &1942340471600068356
 CharacterController:
@@ -519,5 +524,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.99, y: 0.99, z: 0.99}
+  m_Size: {x: 0.95, y: 0.95, z: 0.95}
   m_Center: {x: 0, y: 0, z: 0}
