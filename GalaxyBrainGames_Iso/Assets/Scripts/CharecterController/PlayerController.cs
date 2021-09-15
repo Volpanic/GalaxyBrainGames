@@ -108,7 +108,6 @@ namespace GalaxyBrain.Creatures
 
         private void Update()
         {
-
             if (currentRunningAbility < 0)
             {
                 if (Selected)
@@ -133,6 +132,7 @@ namespace GalaxyBrain.Creatures
                 if (abilites[currentRunningAbility].OnAbilityCheckDone())
                 {
                     abilites[currentRunningAbility].OnAbilityEnd();
+                    actionPointData.SubtractActionPoint();
                     currentRunningAbility = -1;
                 }
             }
