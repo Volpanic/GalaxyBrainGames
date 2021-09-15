@@ -53,19 +53,10 @@ namespace GalaxyBrain.UI
             if (creatureData != null && creatureUIBlockPrefab != null && layoutGroup != null)
             {
                 //Get text base from prefab
-                TextMeshProUGUI textBase = creatureUIBlockPrefab.GetComponentInChildren<TextMeshProUGUI>();
                 List<CreatureSelectionIcon> lastObject = new List<CreatureSelectionIcon>();
 
                 //Edit the prefabs text and instantiate it
-                for (int i = 0; i < creatureData.GetCreatureCount(); i++)
-                {
-                    PlayerController creature = creatureData.GetCreature(i);
-                    if (creature != null)
-                    {
-                        textBase.text = creature.gameObject.name;
-                        lastObject.Add(Instantiate(creatureUIBlockPrefab, layoutGroup.transform).GetComponent<CreatureSelectionIcon>());
-                    }
-                }
+                InstansiateCreatureIconPrefabs(lastObject);
 
                 LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)layoutGroup.transform);
                 creatureUIIcons = lastObject.ToArray();
@@ -81,6 +72,34 @@ namespace GalaxyBrain.UI
                     {
                         lastObject[lastObject.Count - 1].OnSelectCreature();
                     }
+                }
+            }
+        }
+
+        private void InstansiateCreatureIconPrefabs(List<CreatureSelectionIcon> lastObject)
+        {
+            TextMeshProUGUI textBase = creatureUIBlockPrefab.GetComponentInChildren<TextMeshProUGUI>();
+            Button button = creatureUIBlockPrefab.GetComponentInChildren<Button>();
+
+            for (int i = 0; i < creatureData.GetCreatureCount(); i++)
+            {
+                PlayerController creature = creatureData.GetCreature(i);
+                if (creature != null)
+                {
+                    textBase.text = creature.gameObject.name;
+
+
+                    CreatureSelectionIcon icon = Instantiate(creatureUIBlockPrefab, layoutGroup.transform).GetComponent<CreatureSelectionIcon>();
+
+                    Button iconButton = icon.GetComponentInChildren<Button>();
+
+                    //Store loop i in scope variable, or else they will all be the same value
+                    int iLoopValue = i;
+                    iconButton.onClick.AddListener(() => {
+                        creatureData.SetSelectedCreature(iLoopValue);
+                    });
+
+                    lastObject.Add(icon);
                 }
             }
         }
