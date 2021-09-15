@@ -48,6 +48,14 @@ namespace GalaxyBrain.Utility
             }
         }
 
+        public T GetRawGameobject()
+        {
+            GameObject obj = new GameObject($"{typeof(T).Name} Raw", typeof(T));
+            obj.transform.parent = rootObject.transform;
+
+            return obj.GetComponent<T>();
+        }
+
         public ObjectPoolItem GetPooledObject()
         {
             for (int i = 0; i < pooledObjects.Count; i++)
