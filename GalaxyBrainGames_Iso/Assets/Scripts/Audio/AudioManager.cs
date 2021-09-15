@@ -56,6 +56,7 @@ namespace GalaxyBrain.Audio
             AudioSource source = GetSoundObject();
 
             source.clip = sound.Sound;
+            source.outputAudioMixerGroup = sound.SoundMixer;
             source.Play();
             source.gameObject.SetActive(true);
             StartCoroutine(DeactivateAfteTime(source.gameObject,source.clip.length));

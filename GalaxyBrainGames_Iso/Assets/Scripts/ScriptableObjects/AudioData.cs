@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace GalaxyBrain.Audio
 {
@@ -8,6 +9,7 @@ namespace GalaxyBrain.Audio
     public class AudioData : ScriptableObject
     {
         public AudioClip Sound;
+        public AudioMixerGroup SoundMixer;
 
         public AudioType AudioType;
 
