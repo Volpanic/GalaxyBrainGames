@@ -9,7 +9,7 @@ namespace GalaxyBrain.Audio
     public class AudioManager : MonoBehaviour
     {
         public Dictionary<string, AudioClip> soundLookup;
-        public ObjectPooler<AudioSource> objectPooler = new ObjectPooler<AudioSource>(20,false);
+        public ObjectPooler<AudioSource> objectPooler;
 
         private static AudioManager instance;
 
@@ -41,7 +41,7 @@ namespace GalaxyBrain.Audio
 
         private void Awake()
         {
-            
+            objectPooler = new ObjectPooler<AudioSource>(20, false);
         }
 
         public AudioSource GetSoundObject()
@@ -57,6 +57,7 @@ namespace GalaxyBrain.Audio
 
             source.clip = sound.Sound;
             source.Play();
+            source.gameObject.SetActive(true);
             StartCoroutine(DeactivateAfteTime(source.gameObject,source.clip.length));
 
             return source;

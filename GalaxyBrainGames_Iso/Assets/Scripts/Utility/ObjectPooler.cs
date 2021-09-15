@@ -31,7 +31,7 @@ namespace GalaxyBrain.Utility
             SharedInstance = this;
 
             amountToPool = poolAmount;
-            shouldExpand = false;
+            this.shouldExpand = shouldExpand;
 
             pooledObjects = new List<ObjectPoolItem>();
 
@@ -43,6 +43,7 @@ namespace GalaxyBrain.Utility
             {
                 GameObject obj = new GameObject($"{typeof(T).Name} ({i})",typeof(T));
                 obj.SetActive(false);
+                obj.transform.parent = rootObject.transform;
                 pooledObjects.Add(new ObjectPoolItem(obj));
             }
         }
