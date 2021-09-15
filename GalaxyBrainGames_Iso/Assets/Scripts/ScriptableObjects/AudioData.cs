@@ -18,7 +18,15 @@ namespace GalaxyBrain.Audio
 
         public void Play()
         {
-            AudioManager.Instance.PlaySound(this);
+            if (AudioType == AudioType.Sound)
+            {
+                AudioManager.Instance.PlaySound(this);
+            }
+
+            if (AudioType == AudioType.Music)
+            {
+                AudioManager.Instance.PlayMusic(this);
+            }
         }
     }
 }

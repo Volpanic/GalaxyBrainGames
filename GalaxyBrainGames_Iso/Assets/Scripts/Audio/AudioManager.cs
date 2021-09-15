@@ -25,6 +25,8 @@ namespace GalaxyBrain.Audio
             }
         }
 
+        private AudioSource musicSource;
+
         /// <summary>
         /// Generates a singleton instance if we don't have one
         /// </summary>
@@ -42,6 +44,11 @@ namespace GalaxyBrain.Audio
         private void Awake()
         {
             objectPooler = new ObjectPooler<AudioSource>(20, false);
+
+            //Setup music source
+            musicSource = objectPooler.GetRawGameobject();
+
+            musicSource.loop = true;
         }
 
         public AudioSource GetSoundObject()
@@ -62,6 +69,18 @@ namespace GalaxyBrain.Audio
             StartCoroutine(DeactivateAfteTime(source.gameObject,source.clip.length));
 
             return source;
+        }
+
+        public AudioSource PlayMusic(AudioData sound)
+        {
+            if (sound.Sound != musicSource.clip)
+            {
+                musicSource.clip = sound.Sound;
+                musicSource.outputAudioMixerGroup = sound.SoundMixer;
+                musicSource.Play();
+            }
+
+            return musicSource;
         }
 
         private IEnumerator DeactivateAfteTime(GameObject obj,float time)
