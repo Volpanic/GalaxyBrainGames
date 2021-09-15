@@ -40,11 +40,15 @@ namespace GalaxyBrain.Managers
             Ray cameraRay = cam.ScreenPointToRay(Input.mousePosition);
 
             RaycastHit selectedObject;
-            if (Physics.Raycast(cameraRay, out selectedObject, float.MaxValue))
+            if (Physics.Raycast(cameraRay, out selectedObject, float.MaxValue, defaultLayer, QueryTriggerInteraction.Collide))
             {
+                //We didn't hit anything, so don't bother
+                if (selectedObject.collider == null) return;
+
+                //Check if we hit a interactable first
                 if (interaction != null && interaction.LookForInteractables(selectedObject))
                 {
-                    //Make sure we can still path find on climable areas
+                    //Make sure we can still path find on climbable areas
                     if (!ObjectIsOnLayer(selectedObject.collider.gameObject.layer, climableLayer))
                     {
                         pathfinding.ForceUnvialblePath();
@@ -52,6 +56,7 @@ namespace GalaxyBrain.Managers
                     }
                 }
 
+                //Nothing is obstructing, so path find
                 if (pathfinding != null && pathfinding.LookForPath(selectedObject)) return;
             }
         }

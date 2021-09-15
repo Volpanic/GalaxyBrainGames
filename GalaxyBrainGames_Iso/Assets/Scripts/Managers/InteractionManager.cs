@@ -22,7 +22,7 @@ namespace GalaxyBrain.Managers
 
             if (interactions.ContainsKey(selectedObject.collider.gameObject))
             {
-                if(interactions[selectedObject.collider.gameObject].RequiredType != selectedCreature.PlayerType)
+                if(!interactions[selectedObject.collider.gameObject].IsRequiredType(selectedCreature.PlayerType))
                 {
                     return false;
                 }
@@ -31,8 +31,8 @@ namespace GalaxyBrain.Managers
                     interactions[selectedObject.collider.gameObject].CheckIfNeaby(selectedCreature.gameObject, 1.25f))
                 {
                     interactions[selectedObject.collider.gameObject].OnInteract(selectedCreature);
+                    return true;
                 }
-                return true;
             }
             return false;
         }

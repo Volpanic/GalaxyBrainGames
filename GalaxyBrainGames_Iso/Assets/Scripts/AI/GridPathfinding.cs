@@ -21,6 +21,7 @@ namespace GalaxyBrain.Pathfinding
         [SerializeField] Gradient nonvalidPathGradiant;
 
         public event Action OnPathChanged;
+        private Func<Node, Node, Node, Node, bool> extraNodeConditons; 
 
         private Vector3 lastArea;
 
@@ -65,12 +66,21 @@ namespace GalaxyBrain.Pathfinding
             viablePath = false;
         }
 
-        public void SetOwner(Transform newOwner,bool moving, bool climb = false, bool swim = false)
+        public void SetOwner(Transform newOwner,bool moving, bool climb = false, bool swim = false, Func<Node, Node, Node, Node, bool> nodeCondtions = null)
         {
+            if(owner != newOwner)
+            {
+                //We've changed the owner, so scrap the current path
+                if(path != null) path.Clear();
+                viablePath = false;
+                UpdateLineRenderer();
+            }
+
             owner = newOwner;
             ownerMoving = moving;
             isClimbing = climb;
             canSwim = swim;
+            extraNodeConditons = nodeCondtions;
         }
 
         //Path info
@@ -138,6 +148,12 @@ namespace GalaxyBrain.Pathfinding
         {
             if (pathRenderer != null)
             {
+                if (path == null || path.Count < 2)
+                {
+                    pathRenderer.positionCount = 0;
+                    return;
+                }
+
                 pathRenderer.positionCount = path.Count;
                 for (int i = 0; i < path.Count; i++)
                 {
@@ -237,6 +253,7 @@ namespace GalaxyBrain.Pathfinding
             //Add the node
             node.IsWall = wall.Length > 0;
             node.IsGround = false;
+            node.IsWater = false;
             node.IsSlope = false;
             node.TemporalPosition = node.Position - new Vector3(0, 0.45f, 0);
             node.IsClimbable = climbable || belowClimbable;
@@ -251,14 +268,21 @@ namespace GalaxyBrain.Pathfinding
             if (!sloped && wall.Length == 0)
             {
                 RaycastHit hit;
-                if (!water && Physics.Raycast(new Ray(node.Position, Vector3.down), out hit, 0.8f, groundMask))
+                if (Physics.Raycast(new Ray(node.Position, Vector3.down), out hit, 0.8f, groundMask))
                 {
-                    node.IsGround = true;
-                    node.TemporalPosition = node.Position - new Vector3(0, 0.45f, 0);
+                    //Make sure it's not water
+                    if (!(waterMask == (waterMask | (1 << hit.collider.gameObject.layer))))
+                    {
+                        node.IsGround = true;
+                        node.TemporalPosition = node.Position - new Vector3(0, 0.45f, 0);
+                    }
                 }
             }
 
-            node.IsWater = water && !node.IsWall;
+            if(!node.IsWall && !node.IsGround)
+            {
+                node.IsWater = water;
+            }
 
             //Check if slope
             if (sloped)
@@ -456,6 +480,15 @@ namespace GalaxyBrain.Pathfinding
                 return true;
             }
 
+            //Extra conditions
+            if (extraNodeConditons != null)
+            {
+                if(!extraNodeConditons.Invoke(startNode,endNode,current,neighborNode))
+                {
+                    return false;
+                }
+            }
+
             //Skip node states
             if (neighborNode.IsWall || (!neighborNode.IsGround && !neighborNode.IsSlope && !neighborNode.IsClimbable && !neighborNode.IsWater))
             {
@@ -543,6 +576,18 @@ namespace GalaxyBrain.Pathfinding
             viablePath = viable;
 
             return finalPath;
+        }
+
+        private void OnDrawGizmos()
+        {
+            foreach(var node in nodeGrid)
+            {
+                if(node.Value.IsWater)
+                {
+                    Gizmos.color = Color.blue * 0.2f;
+                    Gizmos.DrawCube(node.Value.Position,Vector3.one);
+                }
+            }
         }
 
         #endregion

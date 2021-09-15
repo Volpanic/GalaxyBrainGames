@@ -10,6 +10,7 @@ namespace GalaxyBrain.Interactables
         [HideInInspector] public Collider myCollider = null;
 
         [SerializeField] private PlayerController.PlayerTypes requiredType;
+        [SerializeField] private bool allTypes = false;
         [SerializeField] private bool onlyOnce = true;
 
         [SerializeField] private GameEvent OnInteractedEvent;
@@ -26,7 +27,7 @@ namespace GalaxyBrain.Interactables
         private bool activated;
         public void OnInteract(PlayerController creature)
         {
-            if (requiredType == creature.PlayerType)
+            if (IsRequiredType(creature.PlayerType))
             {
                 if (onlyOnce && activated) return;
                 creature.AttemptInteract(this);
@@ -34,6 +35,11 @@ namespace GalaxyBrain.Interactables
                 OnInteracted.Invoke();
                 activated = true;
             }
+        }
+
+        public bool IsRequiredType(PlayerController.PlayerTypes playerType)
+        {
+            return allTypes || requiredType == playerType;
         }
 
         public bool CheckIfNeaby(GameObject obj, float maxDistance)

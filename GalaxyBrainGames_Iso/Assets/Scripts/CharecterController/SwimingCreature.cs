@@ -13,6 +13,7 @@ namespace GalaxyBrain.Creatures
         [Header("References")]
         [SerializeField] private CreatureData creatureData;
         [SerializeField] private PlayerController controller;
+        [SerializeField] private ControllerCarry controllerCarry;
         [SerializeField] private Collider myCollider;
         [SerializeField] private Transform worldModel;
         [SerializeField] private LayerMask waterMask;
@@ -25,6 +26,11 @@ namespace GalaxyBrain.Creatures
 
         private Vector3 worldModelOriginalPos;
         private bool submerge = false;
+        
+        public bool Swimming
+        {
+            get { return submerge; }
+        }
 
         private void Awake()
         {
@@ -57,7 +63,9 @@ namespace GalaxyBrain.Creatures
         {
             if(submerge)
             {
-                worldModel.localPosition = Vector3.MoveTowards(worldModel.localPosition, worldModelOriginalPos + (Vector3.down * waterSubmergeDepth),
+                Vector3 targetPos = worldModelOriginalPos + (Vector3.down * waterSubmergeDepth);
+                if(controller.WeighedDown) targetPos += Vector3.down* waterSubmergeDepth;
+                worldModel.localPosition = Vector3.MoveTowards(worldModel.localPosition, targetPos,
                     Time.deltaTime*4);
             }
             else
@@ -65,6 +73,8 @@ namespace GalaxyBrain.Creatures
                 worldModel.localPosition = Vector3.MoveTowards(worldModel.localPosition, worldModelOriginalPos,
                     Time.deltaTime*4);
             }
+
+            controller.WeighedDown = controllerCarry.SteppedOn;
         }
     }
 }

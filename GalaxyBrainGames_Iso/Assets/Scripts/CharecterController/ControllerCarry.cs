@@ -13,11 +13,9 @@ namespace GalaxyBrain.Creatures
         private Dictionary<GameObject, CharacterController> cachedControllers = new Dictionary<GameObject, CharacterController>();
         [SerializeField, ReadOnly] private List<CharacterController> passengers = new List<CharacterController>();
 
-        private bool steppedOn = false;
-
         public bool SteppedOn
         {
-            get { return steppedOn; }
+            get { return passengers.Count > 0; }
         }
 
         public bool IsBeingCarried(CharacterController controllerToCheck)
@@ -50,7 +48,6 @@ namespace GalaxyBrain.Creatures
                     passengers[i].Move(controller.velocity * Time.deltaTime);
                 }
             }
-            steppedOn = passengers.Count > 0;
         }
 
         private void FindPassengers()

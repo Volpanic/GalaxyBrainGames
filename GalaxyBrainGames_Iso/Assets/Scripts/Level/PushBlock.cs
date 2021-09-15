@@ -11,7 +11,9 @@ namespace GalaxyBrain.Interactables
     {
         [SerializeField] private LineRenderer pushBlockRenderer;
         [SerializeField] private CharacterController controller;
+        [SerializeField] private Collider myCollider;
         [SerializeField] private CreatureData creatureData;
+        [SerializeField] private LayerMask groundMask;
         [SerializeField] private int maxPushRange = 3;
 
         private Plane plane;
@@ -23,6 +25,7 @@ namespace GalaxyBrain.Interactables
         private Vector3 oldMovement = Vector3.zero;
         private float pushTimer = 0;
         private bool firstSnap = true;
+        private bool firstLand = true;
 
         public void UpdatePlane()
         {
@@ -51,7 +54,20 @@ namespace GalaxyBrain.Interactables
             }
             else
             {
-                if (Physics.BoxCast(controller.bounds.center, controller.bounds.extents * 0.98f, Vector3.down, Quaternion.identity, 0.1f)) SmoothSnapToGrid();
+                if (Physics.BoxCast(controller.bounds.center, controller.bounds.extents * 0.98f, Vector3.down, Quaternion.identity, 0.025f)) 
+                {
+                    SmoothSnapToGrid();
+
+                    if (!firstLand)
+                    {
+                        firstLand = true;
+                        creatureData.pathfinding.UpdateNodeCells(myCollider.bounds.min - Vector3.one, myCollider.bounds.max + Vector3.one);
+                    }
+                }
+                else
+                {
+                    firstLand = false;
+                }
                 controller.SimpleMove(Vector3.zero);
             }
         }
@@ -83,7 +99,7 @@ namespace GalaxyBrain.Interactables
             if (pushTimer >= 1)
             {
                 //Disable the controller to allow for manual movement.
-                creatureData.pathfinding.UpdateNodeCells(controller.bounds.min - Vector3.one, controller.bounds.max + Vector3.one);
+                creatureData.pathfinding.UpdateNodeCells(myCollider.bounds.min - Vector3.one, myCollider.bounds.max + Vector3.one);
 
                 creatureData.pathfinding.UpdateNodeCells(startPos - Vector3.one, startPos + Vector3.one);
                 moving = false;
@@ -93,7 +109,7 @@ namespace GalaxyBrain.Interactables
 
         public bool PlaceMeeting(Vector3 offset, float sizeScale)
         {
-            Collider[] colls = Physics.OverlapBox(controller.bounds.center + offset, controller.bounds.extents * sizeScale, Quaternion.identity);
+            Collider[] colls = Physics.OverlapBox(controller.bounds.center + offset, controller.bounds.extents * sizeScale, Quaternion.identity, groundMask);
 
             for (int i = 0; i < colls.Length; i++)
             {
@@ -133,7 +149,7 @@ namespace GalaxyBrain.Interactables
             {
                 Vector3 hit = ray.GetPoint(enter);
 
-                Vector3 endPoint = new Vector3(Mathf.Round(hit.x), transform.position.y, Mathf.Round(hit.z)) - transform.position;
+                Vector3 endPoint = new Vector3(Mathf.Ceil(hit.x), transform.position.y, Mathf.Ceil(hit.z)) - transform.position;
                 endPoint.x *= interactionCardinal.normalized.x;
                 endPoint.z *= interactionCardinal.normalized.z;
                 endPoint = Vector3.ClampMagnitude(endPoint, maxPushRange).magnitude * interactionCardinal;
@@ -166,6 +182,7 @@ namespace GalaxyBrain.Interactables
             pushTimer = 0;
             oldMovement = Vector3.zero;
             moving = true;
+            firstLand = false;
             firstSnap = false;
         }
     }
