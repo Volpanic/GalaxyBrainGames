@@ -25,16 +25,21 @@ namespace GalaxyBrain.Interactables
         }
 
         private bool activated;
-        public void OnInteract(PlayerController creature)
+        public void AttemptInteract(PlayerController creature)
         {
             if (IsRequiredType(creature.PlayerType))
             {
                 if (onlyOnce && activated) return;
                 creature.AttemptInteract(this);
-                lastInteractedWithCreature = creature;
-                OnInteracted.Invoke();
-                activated = true;
+                
             }
+        }
+
+        public void Interact(PlayerController player)
+        {
+            lastInteractedWithCreature = player;
+            OnInteracted.Invoke();
+            activated = true;
         }
 
         public bool IsRequiredType(PlayerController.PlayerTypes playerType)

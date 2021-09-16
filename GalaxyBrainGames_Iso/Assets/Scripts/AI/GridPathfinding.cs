@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 namespace GalaxyBrain.Pathfinding
@@ -34,12 +35,13 @@ namespace GalaxyBrain.Pathfinding
         private bool canSwim = false;
         private bool ownerMoving = false;
 
+        public bool LookPathPath = false;
+
         private Dictionary<Vector3, Node> nodeGrid = new Dictionary<Vector3, Node>();
 
         public bool LookForPath(RaycastHit hit)
         {
-            if (owner == null || ownerMoving) return false;
-
+            if (!LookPathPath || owner == null || ownerMoving) return false;
 
             if (ToGridPos(hit.point + new Vector3(0, 0.5f, 0)) != lastArea)
             {
@@ -56,6 +58,7 @@ namespace GalaxyBrain.Pathfinding
 
             lastArea = ToGridPos(hit.point + Vector3.up);
             OnPathChanged?.Invoke();
+            LookPathPath = false;
 
             return true;
         }
@@ -66,7 +69,7 @@ namespace GalaxyBrain.Pathfinding
             viablePath = false;
         }
 
-        public void SetOwner(Transform newOwner,bool moving, bool climb = false, bool swim = false, Func<Node, Node, Node, Node, bool> nodeCondtions = null)
+        public void SetOwner(Transform newOwner, bool climb = false, bool swim = false, Func<Node, Node, Node, Node, bool> nodeCondtions = null)
         {
             if(owner != newOwner)
             {
@@ -77,9 +80,9 @@ namespace GalaxyBrain.Pathfinding
             }
 
             owner = newOwner;
-            ownerMoving = moving;
             isClimbing = climb;
             canSwim = swim;
+            LookPathPath = true;
             extraNodeConditons = nodeCondtions;
         }
 
@@ -415,13 +418,13 @@ namespace GalaxyBrain.Pathfinding
             Node startNode = nodeGrid[p1];
             Node targetNode = nodeGrid[p2];
 
-            Debug.DrawRay(targetNode.Position + (Vector3.down * 0.5f), Vector3.up * 3, Color.yellow, 0.1f);
+            //Debug.DrawRay(targetNode.Position + (Vector3.down * 0.5f), Vector3.up * 3, Color.yellow, 0.1f);
 
             openList.Add(startNode);
 
             if (openList[0] == null)
             {
-                Debug.Log("No!!! NOOOO");
+               // Debug.Log("No!!! NOOOO");
                 return null;
             }
 
