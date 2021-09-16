@@ -45,10 +45,7 @@ namespace GalaxyBrain.Interactables
         {
             if (pushDirection == Vector3.zero) return;
 
-            Vector3 target = initalRotation.eulerAngles;
-            target += pushDirection * 90;
-
-            targetRotation.SetFromToRotation(Vector3.up, pushDirection);
+            targetRotation.SetLookRotation(transform.forward,pushDirection);
             fallingOver = true;
             pushedOver = true;
         }

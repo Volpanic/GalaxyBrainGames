@@ -61,7 +61,7 @@ namespace GalaxyBrain.Creatures
         /// </summary>
         public event Action<Vector3,Vector3> OnPathInterval;
 
-        private List<Vector3> path;
+        private Vector3[] path;
         private bool manualMove = false;
 
         //Moving Along Path
@@ -192,7 +192,7 @@ namespace GalaxyBrain.Creatures
 
                 // Stop if we wan't to move the player manually
                 // or we've reached the end of the path
-                if (manualMove || currentPathIndex + 1 >= path.Count)
+                if (manualMove || currentPathIndex + 1 >= path.Length)
                 {
                     OnPathInterval?.Invoke(path[currentPathIndex - 1], path[currentPathIndex]);
                     StopMoveAlongPath();
@@ -242,7 +242,7 @@ namespace GalaxyBrain.Creatures
                 moveMaxTime = movementSpeed;
                 moveTimer = 0;
                 currentPathIndex = 0;
-                this.path = path;
+                this.path = path.ToArray();
                 this.consumeActionPoints = consumeActionPoints;
             }
         }
