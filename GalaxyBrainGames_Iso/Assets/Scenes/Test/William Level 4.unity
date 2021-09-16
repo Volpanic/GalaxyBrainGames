@@ -4592,7 +4592,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh228078
+  m_Name: pb_Mesh47912
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -4756,7 +4756,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-131050
+  m_Name: pb_Mesh-17386
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -6441,7 +6441,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh227918
+  m_Name: pb_Mesh47750
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -9248,6 +9248,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Door (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 417919248509411204, guid: 1561f26d4b2b7804ebbea8e21008cdf8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 417919248509411327, guid: 1561f26d4b2b7804ebbea8e21008cdf8, type: 3}
+      propertyPath: isOpen
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1561f26d4b2b7804ebbea8e21008cdf8, type: 3}
 --- !u!1 &918842171
@@ -10111,7 +10119,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh227730
+  m_Name: pb_Mesh47564
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -10468,10 +10476,18 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4257779103433225452, guid: 9a36639567d8d8a4b9c7a227f9759ef4, type: 3}
       propertyPath: actionPointCount
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 8489134181068076582, guid: 9a36639567d8d8a4b9c7a227f9759ef4, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8722944019424231984, guid: 9a36639567d8d8a4b9c7a227f9759ef4, type: 3}
+      propertyPath: m_Height
+      value: 0.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 8722944019424231984, guid: 9a36639567d8d8a4b9c7a227f9759ef4, type: 3}
+      propertyPath: m_Center.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8722944019424231985, guid: 9a36639567d8d8a4b9c7a227f9759ef4, type: 3}
@@ -10545,6 +10561,10 @@ PrefabInstance:
     - target: {fileID: 8722944020632010957, guid: 9a36639567d8d8a4b9c7a227f9759ef4, type: 3}
       propertyPath: m_Name
       value: LevelBase
+      objectReference: {fileID: 0}
+    - target: {fileID: 8722944020839051678, guid: 9a36639567d8d8a4b9c7a227f9759ef4, type: 3}
+      propertyPath: m_Height
+      value: 0.99
       objectReference: {fileID: 0}
     - target: {fileID: 9116594218909838492, guid: 9a36639567d8d8a4b9c7a227f9759ef4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11365,6 +11385,7 @@ GameObject:
   - component: {fileID: 1130274119}
   - component: {fileID: 1130274118}
   - component: {fileID: 1130274117}
+  - component: {fileID: 1130274122}
   - component: {fileID: 1130274121}
   m_Layer: 0
   m_Name: Breakable Block
@@ -11464,15 +11485,16 @@ MonoBehaviour:
   lastInteractedWithCreature: {fileID: 0}
   myCollider: {fileID: 0}
   requiredType: 2
+  allTypes: 0
   onlyOnce: 1
   OnInteractedEvent: {fileID: 0}
   OnInteracted:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1130274116}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1130274122}
+        m_TargetAssemblyTypeName: DoorControl, Assembly-CSharp
+        m_MethodName: Both
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -11481,6 +11503,22 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1130274122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1130274116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f41fff988dfc0564ab24b81cae7fbdff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  element: {fileID: 1130274116}
+  isOpen: 0
+  data: {fileID: 11400000, guid: 7c514ea391c56834799b9fb50443484e, type: 2}
+  myCollider: {fileID: 1130274117}
 --- !u!1 &1150211802
 GameObject:
   m_ObjectHideFlags: 0
@@ -12152,6 +12190,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Vine Block
       objectReference: {fileID: 0}
+    - target: {fileID: 6237290962835124109, guid: 5424c4681e334d243beb4f338ecf7cc9, type: 3}
+      propertyPath: myCollider
+      value: 
+      objectReference: {fileID: 1321011021}
+    - target: {fileID: 6237290962835124109, guid: 5424c4681e334d243beb4f338ecf7cc9, type: 3}
+      propertyPath: maxPushRange
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6237290962835124109, guid: 5424c4681e334d243beb4f338ecf7cc9, type: 3}
+      propertyPath: groundMask.m_Bits
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6237290962835124110, guid: 5424c4681e334d243beb4f338ecf7cc9, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -12563,7 +12613,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-109498
+  m_Name: pb_Mesh-17492
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -12727,7 +12777,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh228712
+  m_Name: pb_Mesh48548
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -13450,6 +13500,11 @@ Transform:
   m_Father: {fileID: 1963665076}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1321011021 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 513118697869162630, guid: 5424c4681e334d243beb4f338ecf7cc9, type: 3}
+  m_PrefabInstance: {fileID: 1193978722}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1333495831
 GameObject:
   m_ObjectHideFlags: 0
@@ -13945,6 +14000,7 @@ MonoBehaviour:
   lastInteractedWithCreature: {fileID: 0}
   myCollider: {fileID: 0}
   requiredType: 0
+  allTypes: 0
   onlyOnce: 0
   OnInteractedEvent: {fileID: 0}
   OnInteracted:
@@ -16296,7 +16352,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh227742
+  m_Name: pb_Mesh47576
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -16650,7 +16706,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh228644
+  m_Name: pb_Mesh48478
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -17004,7 +17060,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh228848
+  m_Name: pb_Mesh48684
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -18723,7 +18779,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh229268
+  m_Name: pb_Mesh49106
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

@@ -6994,7 +6994,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-119716
+  m_Name: pb_Mesh-80394
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -8947,6 +8947,11 @@ Transform:
   m_Father: {fileID: 1391061007}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1623170733 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 513118697869162630, guid: 5424c4681e334d243beb4f338ecf7cc9, type: 3}
+  m_PrefabInstance: {fileID: 5511239687633611512}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1627125377
 GameObject:
   m_ObjectHideFlags: 0
@@ -11981,8 +11986,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 749320592912737818}
-  m_LocalRotation: {x: -0.14056338, y: -0.8592822, z: 0.33886233, w: -0.35643858}
-  m_LocalPosition: {x: -10.080005, y: 17, z: 9.75}
+  m_LocalRotation: {x: 0.2595406, y: 0.6574701, z: -0.2592767, w: 0.65813935}
+  m_LocalPosition: {x: -14.926304, y: 17, z: -1.9500008}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5892008787691033238}
@@ -12263,6 +12268,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Push Block (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6237290962835124109, guid: 5424c4681e334d243beb4f338ecf7cc9, type: 3}
+      propertyPath: myCollider
+      value: 
+      objectReference: {fileID: 1623170733}
+    - target: {fileID: 6237290962835124109, guid: 5424c4681e334d243beb4f338ecf7cc9, type: 3}
+      propertyPath: maxPushRange
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6237290962835124109, guid: 5424c4681e334d243beb4f338ecf7cc9, type: 3}
+      propertyPath: groundMask.m_Bits
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6237290962835124110, guid: 5424c4681e334d243beb4f338ecf7cc9, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -12377,8 +12394,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5892008786011607364}
-  m_LocalRotation: {x: -0.14056338, y: -0.8592822, z: 0.33886233, w: -0.35643858}
-  m_LocalPosition: {x: -10.080005, y: 17, z: 9.75}
+  m_LocalRotation: {x: 0.2595406, y: 0.6574701, z: -0.2592767, w: 0.65813935}
+  m_LocalPosition: {x: -14.926304, y: 17, z: -1.9500008}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5892008786264507276}
@@ -12465,7 +12482,7 @@ MonoBehaviour:
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
   m_XAxis:
-    Value: 0
+    Value: -45
     m_SpeedMode: 0
     m_MaxSpeed: 3000
     m_AccelTime: 0.1
