@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Volpanic.Easing;
 
 namespace GalaxyBrain.Interactables
 {
@@ -30,7 +31,8 @@ namespace GalaxyBrain.Interactables
             if (fallingOver)
             {
                 fallingTimer += Time.deltaTime;
-                transform.rotation = Quaternion.Lerp(initalRotation, targetRotation, fallingTimer);
+                float lerpPos = Easingf.InExpo(0,1,fallingTimer);
+                transform.rotation = Quaternion.Lerp(initalRotation, targetRotation, lerpPos);
 
                 if (fallingTimer >= 1)
                 {

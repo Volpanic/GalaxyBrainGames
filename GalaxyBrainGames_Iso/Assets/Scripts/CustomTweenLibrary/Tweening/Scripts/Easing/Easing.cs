@@ -16,8 +16,22 @@ namespace Volpanic.Easing
         // A interpolation function that has smoothing in and out
         public static float InOutSine(float start, float end, float time)
         {
-            float mod = -(Mathf.Cos(Mathf.PI * time) - 1f) / 2f;
+            float mod = 1f -(Mathf.Cos(time * Mathf.PI) / 2f);
             return start + ((end-start) * mod);
+        }
+
+        // A interpolation function that has smoothing in and out
+        public static float InSine(float start, float end, float time)
+        {
+            float mod = -(Mathf.Cos(Mathf.PI * time) - 1f) / 2f;
+            return start + ((end - start) * mod);
+        }
+
+        public static float InExpo(float start, float end, float time)
+        {
+            float mod = time == 0 ? 0 : Mathf.Pow(2, 10f * time - 10f);
+            mod = Mathf.Clamp01(mod);
+            return start + ((end - start) * mod);
         }
 
         //Bounds for lerps that go out of the 0-1 range
