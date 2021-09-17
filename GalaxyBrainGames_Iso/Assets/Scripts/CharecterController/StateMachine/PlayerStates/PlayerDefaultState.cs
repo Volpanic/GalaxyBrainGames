@@ -20,7 +20,7 @@ namespace GalaxyBrain.Creatures.States
 
             if (controller.Selected)
             {
-                pathfinding.SetOwner(controller.transform, controller.CanClimb && controller.IsClimbing, controller.CanSwim, ExtraNodeConditions);
+                pathfinding.SetOwner(controller.transform, controller.CanClimb, controller.CanSwim, ExtraNodeConditions);
                 MovementSelection();
             }
         }
