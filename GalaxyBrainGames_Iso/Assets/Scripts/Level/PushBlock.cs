@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Volpanic.Easing;
 
 namespace GalaxyBrain.Interactables
 {
@@ -24,6 +25,7 @@ namespace GalaxyBrain.Interactables
         private Vector3 targetPos = Vector3.zero;
         private Vector3 oldMovement = Vector3.zero;
         private float pushTimer = 0;
+        private float pushMaxTime = 1;
         private bool firstSnap = true;
         private bool firstLand = true;
 
@@ -75,7 +77,8 @@ namespace GalaxyBrain.Interactables
         private void UpdateBlockMoving()
         {
             pushTimer += Time.deltaTime;
-            Vector3 target = Vector3.Lerp(startPos, targetPos, pushTimer);
+            float lerpPos = Easingf.OutSine(0f, 1f, pushTimer / pushMaxTime);
+            Vector3 target = Vector3.Lerp(startPos, targetPos, lerpPos);
 
             Vector3 movement = target - oldMovement;
             if (movement != Vector3.zero) controller.Move(movement);
@@ -96,7 +99,7 @@ namespace GalaxyBrain.Interactables
                 controller.enabled = true;
             }
 
-            if (pushTimer >= 1)
+            if (pushTimer >= pushMaxTime)
             {
                 //Disable the controller to allow for manual movement.
                 creatureData.pathfinding.UpdateNodeCells(myCollider.bounds.min - Vector3.one, myCollider.bounds.max + Vector3.one);
@@ -184,6 +187,8 @@ namespace GalaxyBrain.Interactables
             moving = true;
             firstLand = false;
             firstSnap = false;
+
+            pushMaxTime = 1;
         }
     }
 }
