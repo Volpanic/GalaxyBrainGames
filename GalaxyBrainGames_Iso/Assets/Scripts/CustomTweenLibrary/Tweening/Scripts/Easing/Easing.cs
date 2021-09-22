@@ -20,16 +20,30 @@ namespace Volpanic.Easing
             return start + ((end-start) * mod);
         }
 
-        // A interpolation function that has smoothing in and out
+        // A interpolation function that has smoothing in
         public static float InSine(float start, float end, float time)
         {
             float mod = -(Mathf.Cos(Mathf.PI * time) - 1f) / 2f;
             return start + ((end - start) * mod);
         }
 
+        // A interpolation function that has smoothing out
+        public static float OutSine(float start, float end, float time)
+        {
+            float mod = Mathf.Sin((time * Mathf.PI) / 2f);
+            return start + ((end - start) * mod);
+        }
+
         public static float InExpo(float start, float end, float time)
         {
             float mod = time == 0 ? 0 : Mathf.Pow(2, 10f * time - 10f);
+            mod = Mathf.Clamp01(mod);
+            return start + ((end - start) * mod);
+        }
+
+        public static float OutExpo(float start, float end, float time)
+        {
+            float mod = time == 1 ? 1 : 1 - Mathf.Pow(2, -10f * time);
             mod = Mathf.Clamp01(mod);
             return start + ((end - start) * mod);
         }
