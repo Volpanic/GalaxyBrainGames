@@ -363,7 +363,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 16
   waterParticles: {fileID: 8722944020734451665}
-  testAudio: {fileID: 0}
   FastSpeed: 4.5
   SlowSpeed: 3
   waterSubmergeDepth: 0.25
@@ -5380,6 +5379,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 3
+  LookPathPath: 0
 --- !u!1 &8722944019424231990
 GameObject:
   m_ObjectHideFlags: 0
@@ -11162,6 +11162,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1020886905633283694, guid: fa16d9c31b895d74daaccd2f842a197b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4695138176723890998, guid: fa16d9c31b895d74daaccd2f842a197b, type: 3}
+      propertyPath: playingSequence.Array.data[0].NormalizedPortraitPosition
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4695138176723890998, guid: fa16d9c31b895d74daaccd2f842a197b, type: 3}
+      propertyPath: playingSequence.Array.data[1].NormalizedPortraitPosition
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8048563334720724742, guid: fa16d9c31b895d74daaccd2f842a197b, type: 3}

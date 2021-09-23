@@ -13,6 +13,9 @@ namespace GalaxyBrain.UI
     {
         [TextArea(3, 5)]
         public string DialougeText;
+
+        public Texture SpeakerPortrait;
+        public float NormalizedPortraitPosition;
     }
 
     public class DialougeBox : MonoBehaviour // Handels fading in letters of the dialogue box.
