@@ -11,6 +11,8 @@ namespace GalaxyBrain.Creatures.States
         private PlayerState defaultState;
 
         private PlayerState currentState;
+        
+        private bool lockedState = false;
 
         public PlayerState CurrentState
         {
@@ -20,6 +22,12 @@ namespace GalaxyBrain.Creatures.States
         public bool InDefaultState
         {
             get { return currentState == defaultState; }
+        }
+
+        public bool LockState
+        {
+            get { return lockedState ; }
+            set { lockedState = value; }
         }
 
         public PlayerStateMachine(PlayerState defaultState)
@@ -50,6 +58,8 @@ namespace GalaxyBrain.Creatures.States
 
         public void ChangeState(Type stateType)
         {
+            if (lockedState) return;
+
             PlayerState targetState = stateLookup.ContainsKey(stateType) ? stateLookup[stateType] : null;
             currentState?.OnStateEnd();
             targetState?.OnStateStart();
@@ -59,6 +69,8 @@ namespace GalaxyBrain.Creatures.States
 
         public void ChangeToDefaultState()
         {
+            if (lockedState) return;
+
             currentState?.OnStateEnd();
             defaultState?.OnStateStart();
 

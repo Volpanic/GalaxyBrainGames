@@ -18,7 +18,7 @@ namespace GalaxyBrain.Creatures.States
         {
             controller.Controller.SimpleMove(Vector3.zero);
 
-            if (controller.Selected)
+            if (controller.Selected && !machine.LockState)
             {
                 pathfinding.SetOwner(controller.transform, controller.CanClimb, controller.CanSwim, ExtraNodeConditions);
                 MovementSelection();

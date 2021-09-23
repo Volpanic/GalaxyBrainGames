@@ -190,5 +190,11 @@ namespace GalaxyBrain.Creatures
         {
             OnPathInterval?.Invoke(previousGridCell, nextGridCell);
         }
+
+        public void LockMovement()
+        {
+            stateMachine.ChangeToDefaultState();
+            stateMachine.LockState = true;
+        }
     }
 }
