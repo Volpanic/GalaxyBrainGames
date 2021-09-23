@@ -38,6 +38,7 @@ namespace GalaxyBrain.Interactables
                 {
                     fallingOver = false;
                     fallingTimer = 1;
+                    transform.rotation = targetRotation;
                     creatureData.pathfinding.UpdateNodeCells(myCollider.bounds.min, myCollider.bounds.max);
                 }
             }
