@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Volpanic.Easing;
 
 namespace GalaxyBrain.UI
 {
@@ -14,7 +15,7 @@ namespace GalaxyBrain.UI
         [TextArea(3, 5)]
         public string DialougeText;
 
-        public Texture SpeakerPortrait;
+        public Sprite SpeakerPortrait;
         public float NormalizedPortraitPosition;
     }
 
@@ -23,24 +24,46 @@ namespace GalaxyBrain.UI
         public TextMeshProUGUI DialougeText;
         public float DelayBetweenLetter = 0.1f;
         public Transform DialougeDoneIndecator;
+        [SerializeField] private Image dialougePortrait;
 
         private float timer = 0;
         private int maxCharecter = 1;
         private int messageCount = 0;
+
+        private RectTransform textTransform;
+        private RectTransform portraitTransform;
 
         [SerializeField]
         private List<DialougeSequence> playingSequence;
 
         [SerializeField] private UnityEvent onDialougeComplete;
 
-        private byte CharecterAlpha = 0;
         private bool active = true;
+
+        //Portrait Effects
+        private float portraitTimer = 0;
+        private Vector3 startPortraitPositon;
+        private Vector3 targetPortraitPositon;
+        private Vector2 targetPortraitPivot;
+        private Sprite targetPortraitSprite;
+        private Color targetPortraitColor;
 
         private void Start()
         {
+            textTransform = DialougeText.GetComponent<RectTransform>();
+            portraitTransform = dialougePortrait.GetComponent<RectTransform>();
+
+            startPortraitPositon = portraitTransform.position;
+            targetPortraitPositon = portraitTransform.position;
+            targetPortraitPivot = portraitTransform.pivot;
+            targetPortraitSprite = dialougePortrait.sprite;
+            targetPortraitColor = Color.white;
+
             if (playingSequence != null && playingSequence.Count > 0)
             {
                 DialougeText.text = playingSequence[0].DialougeText;
+                UpdateDialougePortrait(playingSequence[0]);
+                portraitTimer = 0.9f;
             }
         }
 
@@ -48,16 +71,15 @@ namespace GalaxyBrain.UI
         void Update()
         {
             TypewritterEffect();
+            UpdatePortraitEffects(0.1f);
         }
 
         private void TypewritterEffect()
         {
-            Color32[] colors = DialougeText.textInfo.meshInfo[0].colors32;
-
             // If Active update code
-            if (active && colors != null && colors.Length > 0)
+            if (active)
             {
-                DialougeLineUpdate(colors);
+                DialougeLineUpdate();
             }
             else
             {
@@ -67,12 +89,13 @@ namespace GalaxyBrain.UI
             DialougeText.maxVisibleCharacters = maxCharecter;
         }
 
-        private void DialougeLineUpdate(Color32[] colors)
+        private void DialougeLineUpdate()
         {
             //Turn off the done idecator 
             DialougeDoneIndecator.gameObject.SetActive(false);
 
             timer += Time.deltaTime;
+            UpdateDialougePortrait(playingSequence[messageCount]);
 
             while (timer > DelayBetweenLetter)
             {
@@ -89,8 +112,6 @@ namespace GalaxyBrain.UI
 
                 if (DelayBetweenLetter <= 0) break;
             }
-
-            DialougeText.UpdateVertexData();
         }
 
         //Runs when the line of dialogue has concluded
@@ -107,7 +128,6 @@ namespace GalaxyBrain.UI
                 //Reset values and play dialouge
                 active = true;
                 maxCharecter = 1;
-                CharecterAlpha = 0;
                 timer = 0;
 
                 if (messageCount > playingSequence.Count - 1)
@@ -120,8 +140,54 @@ namespace GalaxyBrain.UI
                 {
                     //Set the text to be the first message
                     DialougeText.text = playingSequence[messageCount].DialougeText;
+                    UpdateDialougePortrait(playingSequence[messageCount]);
                 }
             }
+        }
+
+        private void UpdatePortraitEffects(float duration = 1f)
+        {
+            if(portraitTimer <= duration)
+            {
+                portraitTimer += Time.deltaTime;
+
+                Vector3 targetPos;
+                targetPos.x = Mathf.Lerp(startPortraitPositon.x, targetPortraitPositon.x, portraitTimer/duration);
+                targetPos.y = Mathf.Lerp(startPortraitPositon.y, targetPortraitPositon.y, portraitTimer/duration);
+                targetPos.z = Mathf.Lerp(startPortraitPositon.z, targetPortraitPositon.z, portraitTimer/duration);
+
+                portraitTransform.position = targetPos;
+
+                ////First Half
+                //if (portraitTimer <= duration * 0.5f)
+                //{
+                //    targetPortraitColor.a = Mathf.Lerp(1f,0f,portraitTimer / duration);
+                //}
+                //else
+                //{
+                //    dialougePortrait.sprite = targetPortraitSprite;
+                //    targetPortraitColor.a = Mathf.Lerp(.5f, 1f,(portraitTimer / duration));
+                //}
+
+                //dialougePortrait.color = targetPortraitColor;
+            }
+        }
+
+        private void UpdateDialougePortrait(DialougeSequence sequence)
+        {
+            startPortraitPositon = portraitTransform.position;
+            targetPortraitSprite = sequence.SpeakerPortrait;
+
+            float width = textTransform.rect.max.x - textTransform.rect.min.x;
+            float xLeft = textTransform.TransformPoint(textTransform.rect.min).x;
+            xLeft -= textTransform.offsetMin.x;
+            width -= textTransform.offsetMax.x;
+            float newXPos = (width) * sequence.NormalizedPortraitPosition;
+
+            targetPortraitPivot = new Vector2(sequence.NormalizedPortraitPosition, portraitTransform.pivot.y);
+            targetPortraitPositon = new Vector3(xLeft + newXPos, portraitTransform.position.y, portraitTransform.position.z);
+
+            portraitTimer = 0;
         }
 
         public void PlayDialouge(DialougeSequence playThis)
@@ -129,7 +195,6 @@ namespace GalaxyBrain.UI
             //Reset values and play dialouge
             active = true;
             maxCharecter = 1;
-            CharecterAlpha = 0;
             timer = 0;
             messageCount = 0;
 

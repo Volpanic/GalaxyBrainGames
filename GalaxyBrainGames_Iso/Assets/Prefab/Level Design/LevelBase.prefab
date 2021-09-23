@@ -11165,12 +11165,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4695138176723890998, guid: fa16d9c31b895d74daaccd2f842a197b, type: 3}
+      propertyPath: playingSequence.Array.data[0].SpeakerPortrait
+      value: 
+      objectReference: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 4695138176723890998, guid: fa16d9c31b895d74daaccd2f842a197b, type: 3}
+      propertyPath: playingSequence.Array.data[1].SpeakerPortrait
+      value: 
+      objectReference: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 4695138176723890998, guid: fa16d9c31b895d74daaccd2f842a197b, type: 3}
       propertyPath: playingSequence.Array.data[0].NormalizedPortraitPosition
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4695138176723890998, guid: fa16d9c31b895d74daaccd2f842a197b, type: 3}
       propertyPath: playingSequence.Array.data[1].NormalizedPortraitPosition
-      value: 0
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4695138176723890998, guid: fa16d9c31b895d74daaccd2f842a197b, type: 3}
+      propertyPath: playingSequence.Array.data[2].NormalizedPortraitPosition
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8048563334720724742, guid: fa16d9c31b895d74daaccd2f842a197b, type: 3}
       propertyPath: pathfinding

@@ -33,7 +33,6 @@ namespace GalaxyBrainEditor.Drawers
             if(property.isExpanded)
             {
                 //Portrait Sprite
-                GUI.enabled = false;
                 position.y += position.height;
                 EditorGUI.PropertyField(position,portrait);
 
@@ -41,8 +40,7 @@ namespace GalaxyBrainEditor.Drawers
                 position.y += position.height;
                 EditorGUI.LabelField(position,"Portrait Position on text box",EditorStyles.centeredGreyMiniLabel);
                 position.y += position.height;
-                normalPortPos.floatValue = GUI.HorizontalSlider(position,normalPortPos.floatValue,0f,1f);
-                GUI.enabled = true;
+                normalPortPos.floatValue = Mathf.Round(GUI.HorizontalSlider(position,normalPortPos.floatValue,0f,1f) * 10f) / 10f;
 
                 //Text box
                 position.y += position.height;
