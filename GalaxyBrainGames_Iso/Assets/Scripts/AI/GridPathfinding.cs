@@ -406,6 +406,9 @@ namespace GalaxyBrain.Pathfinding
                 return null;
             }
 
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
             while (openList.Count > 0)
             {
                 Node current = openList[0];
@@ -442,6 +445,9 @@ namespace GalaxyBrain.Pathfinding
 
                 if (current == targetNode)
                 {
+                    sw.Stop();
+                    print(sw.Elapsed.TotalMilliseconds);
+
                     return GetFinalPath(startNode, targetNode);
                 }
 
@@ -472,11 +478,13 @@ namespace GalaxyBrain.Pathfinding
                     }
                 }
             }
+            sw.Stop();
             return null;
         }
 
         private bool CheckIfNodeIsViable(Node startNode, Node endNode, Node current, Node neighborNode)
         {
+            UpdateGridCell(neighborNode.Position);
 
             //Extra conditions
             if (extraNodeConditons != null)
