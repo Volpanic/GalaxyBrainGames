@@ -33,6 +33,7 @@ namespace GalaxyBrain.Creatures
         [SerializeField] private PlayerTypes playerType;
         [SerializeField] private bool canClimb;
         [SerializeField] private bool canSwim;
+        [SerializeField] private LayerMask waterLayer;
 
         [SerializeField] private GridPathfinding pathfinding;
 
@@ -101,7 +102,7 @@ namespace GalaxyBrain.Creatures
             }
 
             //Create States
-            defaultState = new PlayerDefaultState(this, pathfinding);
+            defaultState = new PlayerDefaultState(this, pathfinding,waterLayer);
             pathfindState = new PlayerPathfindState(this, movementSpeed);
             abilityState = new PlayerAbilityState(this);
 

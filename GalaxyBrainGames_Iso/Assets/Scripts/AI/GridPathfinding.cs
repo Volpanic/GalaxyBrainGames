@@ -26,7 +26,7 @@ namespace GalaxyBrain.Pathfinding
 
         private Vector3 lastArea;
 
-        private List<Vector3> path;
+        private List<Vector3> path = new List<Vector3>();
         private Transform owner;
         private Vector3 gridOffset;
         private bool viablePath = false;
@@ -42,16 +42,21 @@ namespace GalaxyBrain.Pathfinding
 
         public bool LookForPath(RaycastHit hit)
         {
-            if (!LookPathPath || owner == null || ownerMoving) return false;
+            if (!LookPathPath || owner == null || ownerMoving)
+            {
+                path.Clear();
+                return false;
+            }
 
             if (ToGridPos(hit.point + new Vector3(0, 0.5f, 0)) != lastArea)
             {
                 //Convert to grid position
                 lastArea = ToGridPos(hit.point + new Vector3(0, 0.1f, 0));
+                Vector3 ownerPos = ToGridPos(owner.position + new Vector3(0,0.5f,0));
 
                 //Path Finding
-                FillGrid(ToGridPos(owner.position), lastArea);
-                List<Node> nodePath = FindPath(ToGridPos(owner.position), lastArea);
+                FillGrid(ownerPos, lastArea);
+                List<Node> nodePath = FindPath(ownerPos, lastArea);
 
                 //Visualization
                 UpdatePath(nodePath);
@@ -245,13 +250,13 @@ namespace GalaxyBrain.Pathfinding
         private Node CheckNodeConditions(Node node)
         {
             //Check for wall
-            Collider[] wall = Physics.OverlapBox(node.Position + new Vector3(0, 0.25f, 0), new Vector3(0.33f, 0.11f, 0.33f), Quaternion.identity, groundMask);
+            Collider[] wall = Physics.OverlapBox(node.Position + new Vector3(0, 0.25f, 0), new Vector3(0.33f, 0.11f, 0.33f), Quaternion.identity, groundMask, QueryTriggerInteraction.Collide);
 
-            bool climbable = (Physics.OverlapBox(node.Position, new Vector3(0.5f, 0.75f, 0.5f), Quaternion.identity, climbableMask).Length > 0);
-            bool belowClimbable = (Physics.OverlapBox(node.Position + Vector3.down, new Vector3(0.5f, 0.75f, 0.5f), Quaternion.identity, climbableMask).Length > 0);
+            bool climbable = (Physics.OverlapBox(node.Position, new Vector3(0.5f, 0.75f, 0.5f), Quaternion.identity, climbableMask, QueryTriggerInteraction.Collide).Length > 0);
+            bool belowClimbable = (Physics.OverlapBox(node.Position + Vector3.down, new Vector3(0.5f, 0.75f, 0.5f), Quaternion.identity, climbableMask, QueryTriggerInteraction.Collide).Length > 0);
 
             bool sloped = (Physics.OverlapBox(node.Position, new Vector3(0.45f, 0.45f, 0.45f), Quaternion.identity, slopeMask).Length > 0);
-            bool water = (Physics.OverlapBox(node.Position, new Vector3(0.45f, 0.6f, 0.45f), Quaternion.identity, waterMask).Length > 0);
+            bool water = (Physics.OverlapBox(node.Position, new Vector3(0.45f, 0.6f, 0.45f), Quaternion.identity, waterMask, QueryTriggerInteraction.Collide).Length > 0);
 
             //Add the node
             node.IsWall = wall.Length > 0;
@@ -423,12 +428,12 @@ namespace GalaxyBrain.Pathfinding
                     Node oldCurrent = openList[openList.Count - 1];
 
                     if (oldCurrent.Position.x == current.Position.x &&
-                        oldCurrent.Position.z == current.Position.z && 
+                        oldCurrent.Position.z == current.Position.z &&
                         oldCurrent.Position.y != current.Position.y)
                     {
                         //We must be moving vertically
                         isClimbing = true;
-                        UnityEngine.Debug.DrawRay(current.Position,Vector3.up,Color.red,0.1f);
+                        UnityEngine.Debug.DrawRay(current.Position, Vector3.up, Color.red, 0.1f);
                     }
                     else
                     {
@@ -495,19 +500,23 @@ namespace GalaxyBrain.Pathfinding
             }
 
             //Check for dynamic blocks, players etc
-            Collider[] dynamicBlock = Physics.OverlapBox(neighborNode.Position, Vector3.one * 0.5f, Quaternion.identity, dynamicPathBlockingMask);
-            for(int i = 0; i < dynamicBlock.Length; i++)
+            Collider[] dynamicBlock = Physics.OverlapBox(neighborNode.Position, Vector3.one * 0.25f, Quaternion.identity, dynamicPathBlockingMask);
+            for (int i = 0; i < dynamicBlock.Length; i++)
             {
-                if(dynamicBlock[i].gameObject.transform != owner)
+                if (dynamicBlock[i].gameObject.transform != owner)
                 {
                     return false;
                 }
             }
 
             //Make sure if it's water we can swim
-            if (!current.IsWater && !canSwim && neighborNode.IsWater)
+            if (!canSwim && neighborNode.IsWater)
             {
-                return false;
+                Collider[] dynamicGround = Physics.OverlapBox(neighborNode.Position + Vector3.down, new Vector3(.25f,.6f,.25f), Quaternion.identity, dynamicPathBlockingMask);
+                if (dynamicGround.Length <= 0)
+                {
+                    return false;
+                }
             }
 
             //Don't sample climbable blocks if they aren't ground level

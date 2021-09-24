@@ -203,6 +203,9 @@ MonoBehaviour:
   playerType: 2
   canClimb: 0
   canSwim: 0
+  waterLayer:
+    serializedVersion: 2
+    m_Bits: 16
   pathfinding: {fileID: 8722944019302059944}
   Selected: 0
   IsClimbing: 0
@@ -313,7 +316,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 0.3
-  m_Radius: 0.4
+  m_Radius: 0.3
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.04
@@ -338,6 +341,9 @@ MonoBehaviour:
   playerType: 1
   canClimb: 0
   canSwim: 1
+  waterLayer:
+    serializedVersion: 2
+    m_Bits: 16
   pathfinding: {fileID: 8722944019302059944}
   Selected: 0
   IsClimbing: 0
@@ -365,7 +371,7 @@ MonoBehaviour:
   waterParticles: {fileID: 8722944020734451665}
   FastSpeed: 4.5
   SlowSpeed: 3
-  waterSubmergeDepth: 0.25
+  waterSubmergeDepth: 0.4
 --- !u!114 &2603931490016016559
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5452,6 +5458,9 @@ MonoBehaviour:
   playerType: 0
   canClimb: 1
   canSwim: 0
+  waterLayer:
+    serializedVersion: 2
+    m_Bits: 16
   pathfinding: {fileID: 8722944019302059944}
   Selected: 0
   IsClimbing: 0
