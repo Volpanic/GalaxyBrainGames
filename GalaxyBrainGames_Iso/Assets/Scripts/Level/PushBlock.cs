@@ -10,7 +10,7 @@ namespace GalaxyBrain.Interactables
 {
     public class PushBlock : MonoBehaviour
     {
-        [SerializeField] private LineRenderer pushBlockRenderer;
+        [SerializeField] private SpriteRenderer pushBlockRenderer;
         [SerializeField] private CharacterController controller;
         [SerializeField] private Collider myCollider;
         [SerializeField] private CreatureData creatureData;
@@ -39,13 +39,6 @@ namespace GalaxyBrain.Interactables
         {
             UpdatePlane();
             cam = Camera.main;
-
-            if (pushBlockRenderer != null)
-            {
-                pushBlockRenderer.positionCount = 2;
-                pushBlockRenderer.SetPosition(0, new Vector3(0, -controller.bounds.extents.y * 0.95f, 0));
-                pushBlockRenderer.SetPosition(1, new Vector3(0, -controller.bounds.extents.y * 0.95f, 0));
-            }
         }
 
         private void Update()
@@ -159,7 +152,7 @@ namespace GalaxyBrain.Interactables
 
                 if (pushBlockRenderer != null)
                 {
-                    pushBlockRenderer.SetPosition(1, endPoint - new Vector3(0, controller.bounds.extents.y * 0.95f, 0));
+                    UpdateTileIdecator(interactionCardinal.normalized, endPoint.magnitude);
                 }
 
                 if (Input.GetMouseButtonDown(0))
@@ -167,15 +160,38 @@ namespace GalaxyBrain.Interactables
                     //Cancel out if too short
                     if (endPoint.magnitude <= 0.1f)
                     {
+                        pushBlockRenderer.gameObject.SetActive(false);
                         return true;
                     }
 
                     StartPush(endPoint);
-                    pushBlockRenderer?.SetPosition(1, pushBlockRenderer.GetPosition(0));
+                    pushBlockRenderer.gameObject.SetActive(false);
                     return true;
                 }
             }
             return false;
+        }
+
+        private void UpdateTileIdecator(Vector3 normalized, float magnitude)
+        {
+            if(magnitude <= .9f)
+            {
+                pushBlockRenderer.transform.localPosition = new Vector3(0, pushBlockRenderer.transform.localPosition.y,0);
+                return;
+            }
+
+            pushBlockRenderer.gameObject.SetActive(true);
+            normalized.y = 0;
+            
+            Vector3 endDirection = normalized * magnitude;
+            endDirection.x = Mathf.Abs(endDirection.x);
+            endDirection.z = Mathf.Abs(endDirection.z);
+
+            pushBlockRenderer.size = new Vector2(Mathf.Max(endDirection.x, 1), Mathf.Max(endDirection.z, 1));
+
+            //Set correct position
+            Vector3 midPoint = ((normalized * magnitude) * 0.5f) + (normalized * 0.5f);
+            pushBlockRenderer.transform.localPosition = new Vector3(midPoint.x,pushBlockRenderer.transform.localPosition.y,midPoint.z);
         }
 
         public void StartPush(Vector3 localEndPoint)
