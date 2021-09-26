@@ -79,7 +79,7 @@ namespace GalaxyBrain.Interactables
             oldMovement = target;
 
             //Check if we hit a wall
-            if (pushTimer >= 0.2f && (PlaceMeeting(movement, 0.9f) || !PlaceMeeting(Vector3.down*0.1f, 0.9f)))
+            if (pushTimer >= 0.2f && (PlaceMeeting(movement, 0.9f) || !PlaceMeeting(Vector3.down*0.25f, 0.9f)))
             {
                 moving = false;
 

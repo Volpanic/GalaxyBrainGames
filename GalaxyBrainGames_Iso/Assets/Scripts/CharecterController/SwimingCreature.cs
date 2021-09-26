@@ -23,6 +23,7 @@ namespace GalaxyBrain.Creatures
         [SerializeField] private float FastSpeed = 0.1f;
         [SerializeField] private float SlowSpeed = 0.2f;
         [SerializeField] private float waterSubmergeDepth = 0.5f;
+        [SerializeField] private float weighedDownDepth = 0.1f;
 
         private Vector3 worldModelOriginalPos;
         private bool submerge = false;
@@ -64,7 +65,7 @@ namespace GalaxyBrain.Creatures
             if (submerge)
             {
                 Vector3 targetPos = worldModelOriginalPos + (Vector3.up * waterSubmergeDepth);
-                if (controller.WeighedDown) targetPos += Vector3.down * waterSubmergeDepth;
+                if (controller.WeighedDown) targetPos += Vector3.down * weighedDownDepth;
                 worldModel.localPosition = Vector3.MoveTowards(worldModel.localPosition, targetPos,
                     Time.deltaTime * 4);
             }

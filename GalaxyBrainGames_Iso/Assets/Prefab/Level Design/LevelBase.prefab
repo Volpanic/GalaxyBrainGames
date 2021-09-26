@@ -237,6 +237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 8722944020839051678}
+  velocity: {x: 0, y: 0, z: 0}
   passengers: []
 --- !u!114 &6749983849354691656
 MonoBehaviour:
@@ -372,6 +373,7 @@ MonoBehaviour:
   FastSpeed: 4.5
   SlowSpeed: 3
   waterSubmergeDepth: 0.4
+  weighedDownDepth: 0.1
 --- !u!114 &2603931490016016559
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -385,6 +387,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 8722944019654189203}
+  velocity: {x: 0, y: 0, z: 0}
   passengers: []
 --- !u!114 &5832322545792335535
 MonoBehaviour:
@@ -5565,7 +5568,7 @@ GameObject:
   - component: {fileID: 8722944019611907252}
   - component: {fileID: 8722944019611907253}
   - component: {fileID: 8722944019611907258}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Wisp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
