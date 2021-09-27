@@ -598,7 +598,14 @@ namespace GalaxyBrain.Pathfinding
             {
                 finalPath.Add(currentNode);
                 currentNode = currentNode.Parent;
-                if (currentNode.IsWater && !canSwim && currentNode != startNode) viable = false;
+                if (currentNode.IsWater && !canSwim && currentNode != startNode)
+                {
+                    Collider[] dynamicGround = Physics.OverlapBox(currentNode.Position + Vector3.down, new Vector3(.25f, .6f, .25f), Quaternion.identity, dynamicPathBlockingMask);
+                    if (dynamicGround.Length <= 0)
+                    {
+                        viable = false;
+                    }
+                }
             }
 
             finalPath.Reverse();

@@ -81,6 +81,12 @@ namespace GalaxyBrain.Creatures.States
                 {
                     controller.PathInterval(path[currentPathIndex - 1], path[currentPathIndex]);
                 }
+
+                if(controller.InteruptNextPathInterval)
+                {
+                    machine.ChangeToDefaultState();
+                    controller.InteruptNextPathInterval = false;
+                }
             }
         }
 

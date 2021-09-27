@@ -39,6 +39,7 @@ namespace GalaxyBrain.Creatures
 
         [HideInInspector] public bool Selected = false;
         [HideInInspector] public bool IsClimbing = false;
+        [HideInInspector] public bool InteruptNextPathInterval = false;
 
         //Controls when we can leave water when in it
         [HideInInspector] public bool WeighedDown = false;
@@ -155,12 +156,19 @@ namespace GalaxyBrain.Creatures
 
         public void ShiftPlayer(Vector3 offset)
         {
-            List<Vector3> targetList = new List<Vector3>();
+            if (stateMachine.InDefaultState)
+            {
+                List<Vector3> targetList = new List<Vector3>();
 
-            targetList.Add(pathfinding.ToGridPos(transform.position));
-            targetList.Add(pathfinding.ToGridPos(transform.position) + offset);
+                targetList.Add(pathfinding.ToGridPos(transform.position));
+                targetList.Add(pathfinding.ToGridPos(transform.position) + offset);
 
-            StartMoveAlongPath(targetList, false);
+                StartMoveAlongPath(targetList, false);
+            }
+            else
+            {
+                InteruptNextPathInterval = true;
+            }
         }
 
         public void MoveToTarget(Vector3 target)
@@ -182,6 +190,7 @@ namespace GalaxyBrain.Creatures
         {
             if (targetList == null || targetList.Count < 2) return;
 
+            InteruptNextPathInterval = false;
             pathfindState.SetPath(targetList.ToArray());
             pathfindState.ConsumeActionPoints = consumeActionPoints;
             stateMachine.ChangeState(typeof(PlayerPathfindState));

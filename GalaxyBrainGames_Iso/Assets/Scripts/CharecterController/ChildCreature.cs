@@ -19,7 +19,7 @@ namespace GalaxyBrain.Creatures
 
         private void Start()
         {
-            controller.AddAbility(new ClimbOnBackAbility(PlayerController.PlayerTypes.Water));
+
         }
 
     }
