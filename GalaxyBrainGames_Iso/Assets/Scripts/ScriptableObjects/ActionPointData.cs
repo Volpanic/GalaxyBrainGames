@@ -31,7 +31,7 @@ namespace GalaxyBrain.Systems
 
         private void CheckIfOutOfPoints()
         {
-            if (currentActionPoint <= 0)
+            if (currentActionPoint < 0)
             {
                 //Raise the event to any event listeners
                 OutOfActionPoints?.Raise();
