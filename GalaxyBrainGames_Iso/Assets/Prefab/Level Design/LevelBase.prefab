@@ -209,6 +209,7 @@ MonoBehaviour:
   pathfinding: {fileID: 8722944019302059944}
   Selected: 0
   IsClimbing: 0
+  InteruptNextPathInterval: 0
   WeighedDown: 0
 --- !u!114 &8489134180897291316
 MonoBehaviour:
@@ -348,6 +349,7 @@ MonoBehaviour:
   pathfinding: {fileID: 8722944019302059944}
   Selected: 0
   IsClimbing: 0
+  InteruptNextPathInterval: 0
   WeighedDown: 0
 --- !u!114 &8489134181068076577
 MonoBehaviour:
@@ -5467,6 +5469,7 @@ MonoBehaviour:
   pathfinding: {fileID: 8722944019302059944}
   Selected: 0
   IsClimbing: 0
+  InteruptNextPathInterval: 0
   WeighedDown: 0
 --- !u!114 &5516191661116780862
 MonoBehaviour:
@@ -5682,6 +5685,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnlyCreatures: 1
+  creatureType: 0
 --- !u!1 &8722944020632010957
 GameObject:
   m_ObjectHideFlags: 0
