@@ -17,6 +17,9 @@ namespace GalaxyBrain.Interactables
         [SerializeField] private LayerMask groundMask;
         [SerializeField] private int maxPushRange = 3;
 
+        [SerializeField] private Color ViablePathColor = Color.green;
+        [SerializeField] private Color UnvialbePathColor = Color.red;
+
         private Plane plane;
         private Camera cam;
 
@@ -24,8 +27,10 @@ namespace GalaxyBrain.Interactables
         private Vector3 startPos = Vector3.zero;
         private Vector3 targetPos = Vector3.zero;
         private Vector3 oldMovement = Vector3.zero;
+        private Vector3 tempEndPoint = Vector3.zero;
         private float pushTimer = 0;
         private float pushMaxTime = 1;
+        private bool viablePushPath = true;
         private bool firstSnap = true;
         private bool firstLand = true;
 
@@ -136,10 +141,11 @@ namespace GalaxyBrain.Interactables
             }
         }
 
-        public bool UpdateAbility(Vector3 interactionCardinal)
+        public float UpdateAbility(Vector3 interactionCardinal)
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             float enter = 0;
+            viablePushPath = true;
 
             if (plane.Raycast(ray, out enter))
             {
@@ -150,26 +156,73 @@ namespace GalaxyBrain.Interactables
                 endPoint.z *= interactionCardinal.normalized.z;
                 endPoint = Vector3.ClampMagnitude(endPoint, maxPushRange).magnitude * interactionCardinal;
 
-                if (pushBlockRenderer != null)
+                //Point has Changed
+                if (endPoint != tempEndPoint)
                 {
-                    UpdateTileIdecator(interactionCardinal.normalized, endPoint.magnitude);
+                    viablePushPath = CheckIfPathIsViable(interactionCardinal.normalized, endPoint.magnitude);
+
+                    //Update Grid
+                    if (pushBlockRenderer != null)
+                    {
+                        UpdateTileIdecator(interactionCardinal.normalized, endPoint.magnitude);
+                    }
                 }
 
-                if (Input.GetMouseButtonDown(0))
+                if (viablePushPath && Input.GetMouseButtonDown(0))
                 {
+                    pushBlockRenderer.gameObject.SetActive(false);
+                    tempEndPoint = Vector3.zero;
+
                     //Cancel out if too short
                     if (endPoint.magnitude <= 0.1f)
                     {
-                        pushBlockRenderer.gameObject.SetActive(false);
-                        return true;
+                        return endPoint.magnitude;
                     }
 
                     StartPush(endPoint);
+                    return endPoint.magnitude;
+                }
+
+                //Cancel
+                if(Input.GetMouseButtonDown(1))
+                {
                     pushBlockRenderer.gameObject.SetActive(false);
-                    return true;
+                    tempEndPoint = Vector3.zero;
+                    return -1;
                 }
             }
-            return false;
+            return 0;
+        }
+
+        private bool CheckIfPathIsViable(Vector3 normalized, float magnitude)
+        {
+            Vector3 offset = normalized;
+
+            //Loop through each point on the path
+            for(int i = 0; i < magnitude; i++)
+            {
+                //Check for a wall
+                if (PlaceMeeting(offset,0.95f))
+                {
+                    return false;
+                }
+
+                //Check if there is no ground below us
+                if (CheckIfOffMap(transform.position + offset, 16))
+                {
+                    return false;
+                }
+
+                offset += normalized; //Increase by 1 tile size
+            }
+
+
+            return true;
+        }
+
+        private bool CheckIfOffMap(Vector3 position, float downDistance)
+        {
+            return !Physics.BoxCast(position, controller.bounds.extents * 0.95f, Vector3.down, transform.rotation, downDistance, groundMask);
         }
 
         private void UpdateTileIdecator(Vector3 normalized, float magnitude)
@@ -192,6 +245,9 @@ namespace GalaxyBrain.Interactables
             //Set correct position
             Vector3 midPoint = ((normalized * magnitude) * 0.5f) + (normalized * 0.5f);
             pushBlockRenderer.transform.localPosition = new Vector3(midPoint.x,pushBlockRenderer.transform.localPosition.y,midPoint.z);
+
+            //Change Color
+            pushBlockRenderer.color = (viablePushPath) ? ViablePathColor : UnvialbePathColor; 
         }
 
         public void StartPush(Vector3 localEndPoint)

@@ -17,9 +17,9 @@ namespace GalaxyBrain.Creatures.Abilities
             return pillar != null;
         }
 
-        public bool OnAbilityCheckDone()
+        public AbilityDoneType OnAbilityCheckDone()
         {
-            return pillar != null;
+            return (pillar != null)? AbilityDoneType.Done : AbilityDoneType.NotDone;
         }
 
         public void OnAbilityEnd()

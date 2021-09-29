@@ -30,10 +30,11 @@ namespace GalaxyBrain.Creatures.States
         {
             //Ability code
             abilites[currentRunningAbility].OnAbilityUpdate();
-            if (abilites[currentRunningAbility].OnAbilityCheckDone())
+            AbilityDoneType doneState = abilites[currentRunningAbility].OnAbilityCheckDone();
+            if (doneState == AbilityDoneType.Done || doneState == AbilityDoneType.Canceled)
             {
                 abilites[currentRunningAbility].OnAbilityEnd();
-                controller.ConsumeActionPoint();
+                if (doneState == AbilityDoneType.Done) controller.ConsumeActionPoint();
                 machine.ChangeToDefaultState();
                 currentRunningAbility = -1;
             }

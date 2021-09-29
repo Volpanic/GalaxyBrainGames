@@ -275,9 +275,17 @@ MonoBehaviour:
   assetGuid: 
   m_Mesh: {fileID: 0}
   m_IsSelectable: 1
-  m_SelectedFaces: 
-  m_SelectedEdges: []
-  m_SelectedVertices: 
+  m_SelectedFaces: 03000000
+  m_SelectedEdges:
+  - a: 12
+    b: 13
+  - a: 14
+    b: 12
+  - a: 13
+    b: 15
+  - a: 15
+    b: 14
+  m_SelectedVertices: 0c0000000d0000000e0000000f000000
 --- !u!23 &1942340471600068410
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -368,6 +376,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 9
   maxPushRange: 3
+  ViablePathColor: {r: 0.7058824, g: 1, b: 0.46666667, a: 1}
+  UnvialbePathColor: {r: 1, g: 0.4666667, b: 0.5721092, a: 1}
 --- !u!143 &1942340471600068356
 CharacterController:
   m_ObjectHideFlags: 0

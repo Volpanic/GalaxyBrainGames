@@ -9519,9 +9519,17 @@ MonoBehaviour:
   assetGuid: 
   m_Mesh: {fileID: 950504287}
   m_IsSelectable: 1
-  m_SelectedFaces: 
-  m_SelectedEdges: []
-  m_SelectedVertices: 
+  m_SelectedFaces: 03000000
+  m_SelectedEdges:
+  - a: 12
+    b: 13
+  - a: 14
+    b: 12
+  - a: 13
+    b: 15
+  - a: 15
+    b: 14
+  m_SelectedVertices: 0c0000000d0000000e0000000f000000
 --- !u!4 &1294566787
 Transform:
   m_ObjectHideFlags: 0
@@ -17261,6 +17269,30 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1310242350}
+    - target: {fileID: 1942340471600068358, guid: 938b4732c6be8a242b5b7ba99dc9c09e, type: 3}
+      propertyPath: maxPushRange
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1942340471600068358, guid: 938b4732c6be8a242b5b7ba99dc9c09e, type: 3}
+      propertyPath: ViablePathColor.b
+      value: 0.46666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 1942340471600068358, guid: 938b4732c6be8a242b5b7ba99dc9c09e, type: 3}
+      propertyPath: ViablePathColor.r
+      value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 1942340471600068358, guid: 938b4732c6be8a242b5b7ba99dc9c09e, type: 3}
+      propertyPath: UnvialbePathColor.b
+      value: 0.5721092
+      objectReference: {fileID: 0}
+    - target: {fileID: 1942340471600068358, guid: 938b4732c6be8a242b5b7ba99dc9c09e, type: 3}
+      propertyPath: UnvialbePathColor.g
+      value: 0.4666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 1942340471600068358, guid: 938b4732c6be8a242b5b7ba99dc9c09e, type: 3}
+      propertyPath: UnvialbePathColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1942340471600068408, guid: 938b4732c6be8a242b5b7ba99dc9c09e, type: 3}
       propertyPath: m_RootOrder
       value: 13
