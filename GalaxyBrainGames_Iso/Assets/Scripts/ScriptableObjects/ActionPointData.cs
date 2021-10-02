@@ -23,9 +23,10 @@ namespace GalaxyBrain.Systems
         {
             if (amount > 0)
             {
-                currentActionPoint = Mathf.Max(0, currentActionPoint - amount);
-                OnActionPointChanged?.Invoke(currentActionPoint);
+                currentActionPoint -= amount;
                 CheckIfOutOfPoints();
+                currentActionPoint = Mathf.Max(0, currentActionPoint);
+                OnActionPointChanged?.Invoke(currentActionPoint);
             }
         }
 
