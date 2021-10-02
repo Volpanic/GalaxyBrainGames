@@ -2,6 +2,7 @@ using GalaxyBrain.Systems;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -38,7 +39,7 @@ namespace GalaxyBrain.UI
                 {
                     GameObject icon = Instantiate(levelIconPrefab, layout.transform);
                     Button button = icon.GetComponent<Button>();
-                    Text text = icon.GetComponentInChildren<Text>();
+                    TextMeshProUGUI text = icon.GetComponentInChildren<TextMeshProUGUI>();
 
                     bool locked = i > saveData.Data.MaxLevelCompleted;
 
