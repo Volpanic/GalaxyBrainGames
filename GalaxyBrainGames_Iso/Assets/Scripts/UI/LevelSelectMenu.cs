@@ -17,6 +17,7 @@ namespace GalaxyBrain.UI
         [Header("Reference")]
         [SerializeField] private GameObject levelIconPrefab;
         [SerializeField] private GridLayoutGroup layout;
+        [SerializeField] private LevelInfoBox infoBox;
 
         private void Start()
         {
@@ -39,8 +40,10 @@ namespace GalaxyBrain.UI
                     Button button = icon.GetComponent<Button>();
                     Text text = icon.GetComponentInChildren<Text>();
 
+                    bool locked = i > saveData.Data.MaxLevelCompleted;
+
                     //Change name if level is unlocked
-                    if (i > saveData.Data.MaxLevelCompleted)
+                    if (locked)
                     {
                         text.text = "Locked";
                     }
@@ -53,8 +56,8 @@ namespace GalaxyBrain.UI
                         int num = i;
                         //Set button to go to certain floor
                         button.onClick.RemoveAllListeners();
-                        button.onClick.AddListener(delegate { levelProgression.SetCurrentScene(num - 1); });
-                        button.onClick.AddListener(delegate { nextLevelEvent.Raise(); });
+                        //button.onClick.AddListener(delegate { levelProgression.SetCurrentScene(num - 1); });
+                        button.onClick.AddListener(delegate { infoBox?.SetInfo(num+1, levelProgression.ScenesInOrder[num], locked); });
                     }
                 }
 

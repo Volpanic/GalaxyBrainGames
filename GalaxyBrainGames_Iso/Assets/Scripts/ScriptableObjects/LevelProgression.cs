@@ -15,12 +15,10 @@ namespace GalaxyBrain.Systems
 
         public GameObject SceneTransition;
 
-        private int currentScene = -1;
         private Transform canvasRoot;
 
         private void OnEnable()
         {
-            currentScene = -1;
             SceneManager.sceneLoaded += FindCanvasRoot;
 
             if (Application.isPlaying)
@@ -42,27 +40,22 @@ namespace GalaxyBrain.Systems
 
         public void NewGame()
         {
-            currentScene = -1;
+
         }
 
-        public string GetCurrentScene()
+        public string GetNextScene()
         {
-            if (currentScene < 0) currentScene = 0;
-            return ScenesInOrder[currentScene];
-        }
+            string currentScene = SceneManager.GetActiveScene().name;
 
-        public void SetCurrentScene(int index)
-        {
-            currentScene = index;
-        }
-
-        public void IncrementCurrentScene()
-        {
-            currentScene++;
-            if (currentScene >= ScenesInOrder.Count)
+            for(int i = 1; i < ScenesInOrder.Count; i++)
             {
-                currentScene = 0;
+                if(ScenesInOrder[i-1] == currentScene)
+                {
+                    return ScenesInOrder[i];
+                }
             }
+
+            return SceneManager.GetSceneByBuildIndex(0).name;
         }
     }
 }
