@@ -119,6 +119,10 @@ namespace GalaxyBrain.Creatures
 
         private void Update()
         {
+            // If timescale is 0 don't run any code
+            // Most likely game is paused if timescale is 0
+            if (Time.timeScale == 0) return;
+
             stateMachine.UpdateState();
 
             transform.rotation = UpdateRotation(transform.rotation, targetRotation);

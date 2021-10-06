@@ -47,6 +47,7 @@ namespace GalaxyBrain.Audio
 
             //Setup music source
             musicSource = objectPooler.GetRawGameobject();
+            musicSource.gameObject.name = "Music Source";
 
             musicSource.loop = true;
         }

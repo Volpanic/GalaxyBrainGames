@@ -35,7 +35,7 @@ namespace GalaxyBrain.UI
         {
             if (musicMixer != null)
             {
-                //Out of 80 because that's the 
+                //Remapped to -80f and 0 because that how the mixer handles it.
                 musicMixer.audioMixer.SetFloat("musicVolume", musicVolumeSlider.value.Remap(0f, 100f, -80f, 0f));
                 musicMixer.audioMixer.SetFloat("sfxVolume",   soundVolumeSlider.value.Remap(0f, 100f, -80f, 0f));
             }
