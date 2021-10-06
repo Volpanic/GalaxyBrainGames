@@ -25,12 +25,12 @@ namespace GalaxyBrain.UI
         public float DelayBetweenLetter = 0.1f;
         public Transform DialougeDoneIndecator;
         [SerializeField] private Image dialougePortrait;
+        [SerializeField] private RectTransform dialougeBoxRect;
 
         private float timer = 0;
         private int maxCharecter = 1;
         private int messageCount = 0;
 
-        private RectTransform textTransform;
         private RectTransform portraitTransform;
 
         [SerializeField]
@@ -50,7 +50,6 @@ namespace GalaxyBrain.UI
 
         private void Start()
         {
-            textTransform = DialougeText.GetComponent<RectTransform>();
             portraitTransform = dialougePortrait.GetComponent<RectTransform>();
 
             startPortraitPositon = portraitTransform.position;
@@ -178,14 +177,11 @@ namespace GalaxyBrain.UI
             startPortraitPositon = portraitTransform.position;
             targetPortraitSprite = sequence.SpeakerPortrait;
 
-            float width = textTransform.rect.max.x - textTransform.rect.min.x;
-            float xLeft = textTransform.TransformPoint(textTransform.rect.min).x;
-            xLeft -= textTransform.offsetMin.x;
-            width -= textTransform.offsetMax.x;
-            float newXPos = (width) * sequence.NormalizedPortraitPosition;
+            float xPos = Mathf.Lerp(0, dialougeBoxRect.rect.size.x * 0.5f, sequence.NormalizedPortraitPosition);
 
             targetPortraitPivot = new Vector2(sequence.NormalizedPortraitPosition, portraitTransform.pivot.y);
-            targetPortraitPositon = new Vector3(xLeft + newXPos, portraitTransform.position.y, portraitTransform.position.z);
+
+            targetPortraitPositon = new Vector3(xPos, portraitTransform.position.y, portraitTransform.position.z);
 
             portraitTimer = 0;
         }
