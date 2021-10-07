@@ -970,12 +970,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 111573222730208471, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
+      propertyPath: m_XAxis.m_MaxSpeed
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 111573222730208471, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_XAxis.m_MaxValue
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 111573222730208471, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_XAxis.m_MinValue
       value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 111573222730208471, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
+      propertyPath: m_XAxis.m_AccelTime
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 111573222730208471, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
+      propertyPath: m_XAxis.m_DecelTime
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1016,6 +1028,10 @@ PrefabInstance:
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 111573222980486685, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
+      propertyPath: mouseScrollSpeed
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 111573223273415090, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_RootOrder
@@ -2675,7 +2691,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 12181102}
 --- !u!1 &1893333375905558765
@@ -3142,7 +3158,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 1933719352}
 --- !u!1 &1893333376324144653
@@ -3455,7 +3471,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 178091068}
 --- !u!1 &1893333376554819059
@@ -3746,7 +3762,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 1678063389}
 --- !u!33 &1893333377140982181
@@ -4286,7 +4302,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 1711159298}
 --- !u!1 &1893333377533321379
