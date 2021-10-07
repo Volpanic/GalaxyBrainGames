@@ -1,3 +1,4 @@
+using GalaxyBrain.Audio;
 using GalaxyBrain.Systems;
 using GalaxyBrain.Utility;
 using System;
@@ -13,6 +14,7 @@ namespace GalaxyBrain.Effects
         [SerializeField] private RectTransform canvas;
         [SerializeField] private ActionPointData actionPointData;
         [SerializeField] private TextRiseEffect textRisePrefab;
+        [SerializeField] private AudioData effectSound;
 
         private List<TextRiseEffect> effectPool;
         private int effectIndex = 0;
@@ -69,6 +71,8 @@ namespace GalaxyBrain.Effects
 
             effect.SetText("-1",Color.white, newPosition);
             effect.gameObject.SetActive(true);
+
+            effectSound?.Play();
         }
 
         private Vector2 WorldPosToCanvasPos(Vector3 worldPos)
