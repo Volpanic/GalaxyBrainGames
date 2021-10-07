@@ -28,7 +28,7 @@ namespace GalaxyBrain
 
             if (Input.GetMouseButton(1))
             {
-                orbital.m_XAxis.m_InputAxisValue = mouseX;
+                orbital.m_XAxis.m_InputAxisValue = -mouseX;
 
             }
         
