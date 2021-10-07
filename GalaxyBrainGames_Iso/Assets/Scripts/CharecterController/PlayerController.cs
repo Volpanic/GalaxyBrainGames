@@ -187,7 +187,7 @@ namespace GalaxyBrain.Creatures
 
         public void ConsumeActionPoint(int amount = 1)
         {
-            actionPointData?.SubtractActionPoint(amount);
+            actionPointData?.SubtractActionPoint(transform.position,amount);
         }
 
         public void StartMoveAlongPath(List<Vector3> targetList, bool consumeActionPoints)

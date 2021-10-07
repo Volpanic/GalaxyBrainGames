@@ -11,7 +11,7 @@ namespace GalaxyBrain.Effects
     public class ActionPointConsumedEffect : MonoBehaviour
     {
         [SerializeField] private RectTransform canvas;
-        [SerializeField] private CreatureData creatureData;
+        [SerializeField] private ActionPointData actionPointData;
         [SerializeField] private TextRiseEffect textRisePrefab;
 
         private List<TextRiseEffect> effectPool;
@@ -27,7 +27,7 @@ namespace GalaxyBrain.Effects
 
         private void Start()
         {
-            AddEffectToPathEvent();
+            AddEffectToAPEvent();
         }
 
         private void CreateEffectPool(int size)
@@ -44,40 +44,28 @@ namespace GalaxyBrain.Effects
 
         private void OnEnable()
         {
-            AddEffectToPathEvent();
+            AddEffectToAPEvent();
         }
 
         private void OnDisable()
         {
-            RemoveEffectToPathEvent();
+            RemoveEffectToAPEvent();
         }
 
-        private void AddEffectToPathEvent()
+        private void AddEffectToAPEvent()
         {
-            if (creatureData != null)
-            {
-                foreach (Creatures.PlayerController creature in creatureData.CreaturesInLevel)
-                {
-                    creature.OnPathInterval += CreateEffect;
-                }
-            }
+            actionPointData.OnActionPointChanged += CreateEffect;
         }
 
-        private void RemoveEffectToPathEvent()
+        private void RemoveEffectToAPEvent()
         {
-            if (creatureData != null)
-            {
-                foreach (Creatures.PlayerController creature in creatureData.CreaturesInLevel)
-                {
-                    creature.OnPathInterval -= CreateEffect;
-                }
-            }
+            actionPointData.OnActionPointChanged -= CreateEffect;
         }
 
-        private void CreateEffect(Vector3 oldPath, Vector3 newPath)
+        private void CreateEffect(Vector3 position, int amount)
         {
             TextRiseEffect effect = GetEffectInstance();
-            Vector3 newPosition = WorldPosToCanvasPos(newPath);
+            Vector3 newPosition = WorldPosToCanvasPos(position);
 
             effect.SetText("-1",Color.white, newPosition);
             effect.gameObject.SetActive(true);

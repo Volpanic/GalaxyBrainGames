@@ -10,7 +10,7 @@ namespace GalaxyBrain.Systems
     public class ActionPointData : ScriptableObject
     {
         public GameEvent OutOfActionPoints;
-        public Action<int> OnActionPointChanged;
+        public Action<Vector3, int> OnActionPointChanged;
 
         private int currentActionPoint = 15;
 
@@ -19,14 +19,14 @@ namespace GalaxyBrain.Systems
             currentActionPoint = startingPoints;
         }
 
-        public void SubtractActionPoint(int amount = 1)
+        public void SubtractActionPoint(Vector3 consumePosition, int amount = 1)
         {
             if (amount > 0)
             {
                 currentActionPoint -= amount;
                 CheckIfOutOfPoints();
                 currentActionPoint = Mathf.Max(0, currentActionPoint);
-                OnActionPointChanged?.Invoke(currentActionPoint);
+                OnActionPointChanged?.Invoke(consumePosition, currentActionPoint);
             }
         }
 

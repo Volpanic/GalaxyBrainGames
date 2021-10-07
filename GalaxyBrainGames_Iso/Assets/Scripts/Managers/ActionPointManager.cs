@@ -18,7 +18,7 @@ public class ActionPointManager : MonoBehaviour
     void Awake()
     {
         pointData?.ResetActionPoints(actionPointCount);
-        UpdateActionUI(actionPointCount);
+        UpdateActionUI(Vector3.zero,actionPointCount);
     }
 
     private void OnEnable()
@@ -31,7 +31,7 @@ public class ActionPointManager : MonoBehaviour
         if(pointData != null) pointData.OnActionPointChanged -= UpdateActionUI;
     }
 
-    private void UpdateActionUI(int currentAmount)
+    private void UpdateActionUI(Vector3 consumePosition,int currentAmount)
     {
         if (actionPointTextCount == null) return;
 
