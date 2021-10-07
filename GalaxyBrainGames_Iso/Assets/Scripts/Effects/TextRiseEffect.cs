@@ -69,6 +69,7 @@ namespace GalaxyBrain.Effects
 
             text.color = textColor;
 
+            if (rectTransform == null) return;
             rectTransform.position = newPos;
             startPosition = newPos;
             targetPosition = startPosition + positionOffset;

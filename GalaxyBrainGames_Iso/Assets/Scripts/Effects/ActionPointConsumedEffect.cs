@@ -67,6 +67,8 @@ namespace GalaxyBrain.Effects
         private void CreateEffect(Vector3 position, int amount)
         {
             TextRiseEffect effect = GetEffectInstance();
+            if (effect == null) return;
+
             Vector3 newPosition = WorldPosToCanvasPos(position);
 
             effect.SetText("-1",Color.white, newPosition);
@@ -77,6 +79,7 @@ namespace GalaxyBrain.Effects
 
         private Vector2 WorldPosToCanvasPos(Vector3 worldPos)
         {
+            if (cam == null) return Vector2.zero;
             return cam.WorldToScreenPoint(worldPos);
         }
 
