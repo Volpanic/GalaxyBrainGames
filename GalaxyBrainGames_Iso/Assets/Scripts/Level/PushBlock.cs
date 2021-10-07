@@ -159,7 +159,7 @@ namespace GalaxyBrain.Interactables
                 //Point has Changed
                 if (endPoint != tempEndPoint)
                 {
-                    viablePushPath = CheckIfPathIsViable(interactionCardinal.normalized, endPoint.magnitude);
+                    viablePushPath = CheckIfPathIsViable(interactionCardinal.normalized, (int)endPoint.magnitude);
 
                     //Update Grid
                     if (pushBlockRenderer != null)
@@ -194,7 +194,7 @@ namespace GalaxyBrain.Interactables
             return 0;
         }
 
-        private bool CheckIfPathIsViable(Vector3 normalized, float magnitude)
+        private bool CheckIfPathIsViable(Vector3 normalized, int magnitude)
         {
             Vector3 offset = normalized;
 
