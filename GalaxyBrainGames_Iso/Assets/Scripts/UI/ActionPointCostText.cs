@@ -1,3 +1,4 @@
+using GalaxyBrain.Audio;
 using GalaxyBrain.Pathfinding;
 using System;
 using System.Collections;
@@ -14,6 +15,7 @@ namespace GalaxyBrain.UI
         [SerializeField] private TextMeshProUGUI costText;
         [SerializeField] private GridPathfinding pathfinding;
         [SerializeField] private RectTransform canvasRootRect;
+        [SerializeField] private AudioData changedSound;
 
         [SerializeField] private Gradient cheapToExpensiveGradient;
 
@@ -58,6 +60,7 @@ namespace GalaxyBrain.UI
 
                     //Move transform
                     myRectTransform.position = canvasPos;
+                    changedSound?.Play();
                 }
                 else
                 {

@@ -25,6 +25,7 @@ namespace GalaxyBrain.Pathfinding
         private Func<Node, Node, Node, Node, bool> extraNodeConditons;
 
         private Vector3 lastArea;
+        private Vector3 lastCheckedArea;
 
         private List<Vector3> path = new List<Vector3>();
         private Transform owner;
@@ -54,16 +55,20 @@ namespace GalaxyBrain.Pathfinding
                 lastArea = ToGridPos(hit.point + new Vector3(0, 0.1f, 0));
                 Vector3 ownerPos = ToGridPos(owner.position + new Vector3(0,0.5f,0));
 
-                //Path Finding
-                FillGrid(ownerPos, lastArea);
-                List<Node> nodePath = FindPath(ownerPos, lastArea);
+                if (lastArea != lastCheckedArea)
+                {
+                    //Path Finding
+                    FillGrid(ownerPos, lastArea);
+                    List<Node> nodePath = FindPath(ownerPos, lastArea);
 
-                //Visualization
-                UpdatePath(nodePath);
+                    //Visualization
+                    UpdatePath(nodePath);
+                    OnPathChanged?.Invoke();
+                }
+
+                lastCheckedArea = lastArea;
             }
 
-            lastArea = ToGridPos(hit.point + Vector3.up);
-            OnPathChanged?.Invoke();
             LookPathPath = false;
 
             return true;
