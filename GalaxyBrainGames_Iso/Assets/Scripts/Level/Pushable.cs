@@ -48,9 +48,16 @@ namespace GalaxyBrain.Interactables
         {
             if (pushDirection == Vector3.zero) return;
 
-            targetRotation.SetLookRotation(transform.forward,pushDirection);
+            Debug.DrawRay(transform.position,pushDirection * 4,Color.white,5);
+
+            targetRotation = GetPushRotation(pushDirection);
             fallingOver = true;
             pushedOver = true;
+        }
+
+        private Quaternion GetPushRotation(Vector3 pushDirection)
+        {
+            return Quaternion.FromToRotation(Vector3.up,pushDirection) * transform.rotation;
         }
     }
 }
