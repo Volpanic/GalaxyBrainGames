@@ -70,6 +70,7 @@ namespace GalaxyBrain.Utility
             {
                 GameObject obj = new GameObject($"{typeof(T).Name} ({pooledObjects.Count})", typeof(T));
                 obj.SetActive(false);
+                obj.transform.parent = rootObject.transform;
                 pooledObjects.Add(new ObjectPoolItem(obj));
                 return pooledObjects[pooledObjects.Count-1];
             }

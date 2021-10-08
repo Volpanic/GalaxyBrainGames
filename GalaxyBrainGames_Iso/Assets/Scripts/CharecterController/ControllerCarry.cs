@@ -9,7 +9,9 @@ namespace GalaxyBrain.Creatures
     public class ControllerCarry : MonoBehaviour
     {
         [SerializeField] private CharacterController controller;
+        [SerializeField] private Vector3 velocity;
 
+        private Vector3 oldPos;
         private Dictionary<GameObject, CharacterController> cachedControllers = new Dictionary<GameObject, CharacterController>();
         [SerializeField, ReadOnly] private List<CharacterController> passengers = new List<CharacterController>();
 
@@ -30,22 +32,31 @@ namespace GalaxyBrain.Creatures
         private void Start()
         {
             if (controller == null) enabled = false;
+            oldPos = transform.position;
         }
 
         // Update is called once per frame
         void Update()
         {
+            velocity = controller.velocity;
             FindPassengers();
             MovePassengers();
+
+            oldPos = transform.position;
         }
 
         private void MovePassengers()
         {
+            Vector3 posDifference = transform.position - oldPos;
+            if (Mathf.Abs(posDifference.x) <= 0.01f && Mathf.Abs(posDifference.z) <= 0.01f) return;
+
             if (controller.velocity.magnitude != 0)
             {
                 for (int i = 0; i < passengers.Count; i++)
                 {
-                    passengers[i].Move(controller.velocity * Time.deltaTime);
+                    Vector3 movement = (controller.bounds.center + new Vector3(0, controller.bounds.extents.y, 0)) -
+                        (passengers[i].bounds.center - new Vector3(0, passengers[i].bounds.extents.y, 0));
+                    passengers[i].Move(movement);
                 }
             }
         }

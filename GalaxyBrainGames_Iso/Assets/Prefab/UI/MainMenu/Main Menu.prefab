@@ -122,7 +122,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5254268716968582486}
-        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+        m_TargetAssemblyTypeName: GalaxyBrain.UI.MainMenu, Assembly-CSharp
         m_MethodName: PlayGame
         m_Mode: 1
         m_Arguments:
@@ -686,9 +686,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 330b898475f42564892510548a59d949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeManager: {fileID: 0}
-  targetScene: 1
-  changeScene: {fileID: 11400000, guid: 1b0f21220e8df564a952bbf93a1a634e, type: 2}
+  levelProgression: {fileID: 11400000, guid: bbcc253709fa3a747a1ce434b4c02348, type: 2}
 --- !u!1 &5254268716997692636
 GameObject:
   m_ObjectHideFlags: 0

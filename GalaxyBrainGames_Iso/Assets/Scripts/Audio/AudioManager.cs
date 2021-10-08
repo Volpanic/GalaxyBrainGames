@@ -43,10 +43,11 @@ namespace GalaxyBrain.Audio
 
         private void Awake()
         {
-            objectPooler = new ObjectPooler<AudioSource>(20, false);
+            objectPooler = new ObjectPooler<AudioSource>(20, true);
 
             //Setup music source
             musicSource = objectPooler.GetRawGameobject();
+            musicSource.gameObject.name = "Music Source";
 
             musicSource.loop = true;
         }
@@ -65,8 +66,8 @@ namespace GalaxyBrain.Audio
             source.clip = sound.Sound;
             source.outputAudioMixerGroup = sound.SoundMixer;
             source.volume = sound.Volume;
-            source.Play();
             source.gameObject.SetActive(true);
+            source.Play();
             StartCoroutine(DeactivateAfteTime(source.gameObject,source.clip.length));
 
             return source;

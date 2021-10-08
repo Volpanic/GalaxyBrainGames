@@ -30,7 +30,7 @@ namespace GalaxyBrain.Managers
                 if (Input.GetMouseButtonDown(0) &&
                     interactions[selectedObject.collider.gameObject].CheckIfNeaby(selectedCreature.gameObject, 1.25f))
                 {
-                    interactions[selectedObject.collider.gameObject].OnInteract(selectedCreature);
+                    interactions[selectedObject.collider.gameObject].AttemptInteract(selectedCreature);
                     return true;
                 }
             }

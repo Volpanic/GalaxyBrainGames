@@ -33,12 +33,12 @@ namespace GalaxyBrain.UI
         {
             if (fadeIn)
             {
-                FadeInGroup.alpha = Mathf.MoveTowards(FadeInGroup.alpha, 0, Time.deltaTime);
+                FadeInGroup.alpha = Mathf.MoveTowards(FadeInGroup.alpha, 0, Time.unscaledDeltaTime);
                 if (FadeInGroup.alpha == 0) FadeComplete();
             }
             else
             {
-                FadeInGroup.alpha = Mathf.MoveTowards(FadeInGroup.alpha, 1, Time.deltaTime);
+                FadeInGroup.alpha = Mathf.MoveTowards(FadeInGroup.alpha, 1, Time.unscaledDeltaTime);
                 if (FadeInGroup.alpha == 1) FadeComplete();
             }
 

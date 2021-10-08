@@ -21,8 +21,6 @@ namespace GalaxyBrain.Systems
         [ReadOnly]
         public GridPathfinding pathfinding;
 
-        public Dictionary<string, bool> PlayerInventory;
-
         private void OnEnable()
         {
             CreaturesInLevel = new List<PlayerController>();
@@ -49,6 +47,13 @@ namespace GalaxyBrain.Systems
             return CreatureManager?.SelectedCreature;
         }
 
+        public void SetSelectedCreature(int creatureIndex)
+        {
+            if (CreaturesInLevel == null && CreaturesInLevel.Count <= 0) { return; }
+
+            CreatureManager.SelectCreature(creatureIndex);
+        }
+
         public void LogCreature(PlayerController creature)
         {
             if (CreaturesInLevel == null) CreaturesInLevel = new List<PlayerController>();
@@ -72,22 +77,6 @@ namespace GalaxyBrain.Systems
         public void LogManager(CreatureManager manger)
         {
             CreatureManager = manger;
-        }
-
-        public void AddItemToInventory(string item)
-        {
-            PlayerInventory.Add(item, true);
-        }
-
-        public bool CheckAndComsumeItem(string item)
-        {
-            if (PlayerInventory.ContainsKey(item))
-            {
-                PlayerInventory.Remove(item);
-                return true;
-            }
-
-            return false;
         }
     }
 }

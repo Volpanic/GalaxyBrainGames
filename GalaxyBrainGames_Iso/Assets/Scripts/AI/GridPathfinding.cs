@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 namespace GalaxyBrain.Pathfinding
@@ -21,43 +22,67 @@ namespace GalaxyBrain.Pathfinding
         [SerializeField] Gradient nonvalidPathGradiant;
 
         public event Action OnPathChanged;
-        private Func<Node, Node, Node, Node, bool> extraNodeConditons; 
+        private Func<Node, Node, Node, Node, bool> extraNodeConditons;
 
         private Vector3 lastArea;
+        private Vector3 lastCheckedArea;
 
-        private List<Vector3> path;
+        private List<Vector3> path = new List<Vector3>();
+        private List<Vector3> visualPath = new List<Vector3>();
         private Transform owner;
         private Vector3 gridOffset;
         private bool viablePath = false;
 
-        private bool isClimbing = false;
         private bool canSwim = false;
+        private bool canClimb = false;
         private bool ownerMoving = false;
+        bool isClimbing = false;
+
+        public bool LookPathPath = false;
 
         private Dictionary<Vector3, Node> nodeGrid = new Dictionary<Vector3, Node>();
 
         public bool LookForPath(RaycastHit hit)
         {
-            if (owner == null || ownerMoving) return false;
+            if (!LookPathPath || owner == null || ownerMoving)
+            {
+                path.Clear();
+                return false;
+            }
 
+            if(IsObjectOnLayer(hit.collider.gameObject,slopeMask))
+            {
+                return false;
+            }
 
             if (ToGridPos(hit.point + new Vector3(0, 0.5f, 0)) != lastArea)
             {
                 //Convert to grid position
                 lastArea = ToGridPos(hit.point + new Vector3(0, 0.1f, 0));
+                Vector3 ownerPos = ToGridPos(owner.position + new Vector3(0,0.5f,0));
 
-                //Path Finding
-                FillGrid(ToGridPos(owner.position), lastArea);
-                List<Node> nodePath = FindPath(ToGridPos(owner.position), lastArea);
+                if (lastArea != lastCheckedArea)
+                {
+                    //Path Finding
+                    FillGrid(ownerPos, lastArea);
+                    List<Node> nodePath = FindPath(ownerPos, lastArea);
 
-                //Visualization
-                UpdatePath(nodePath);
+                    //Visualization
+                    UpdatePath(nodePath);
+                    OnPathChanged?.Invoke();
+                }
+
+                lastCheckedArea = lastArea;
             }
 
-            lastArea = ToGridPos(hit.point + Vector3.up);
-            OnPathChanged?.Invoke();
+            LookPathPath = false;
 
             return true;
+        }
+
+        private bool IsObjectOnLayer(GameObject gameObject, LayerMask mask)
+        {
+            return mask == (mask | (1 << gameObject.layer));
         }
 
         //Makes it so the path is non viable, meaning it cant be used for the mean time
@@ -66,20 +91,20 @@ namespace GalaxyBrain.Pathfinding
             viablePath = false;
         }
 
-        public void SetOwner(Transform newOwner,bool moving, bool climb = false, bool swim = false, Func<Node, Node, Node, Node, bool> nodeCondtions = null)
+        public void SetOwner(Transform newOwner, bool climb = false, bool swim = false, Func<Node, Node, Node, Node, bool> nodeCondtions = null)
         {
-            if(owner != newOwner)
+            if (owner != newOwner)
             {
                 //We've changed the owner, so scrap the current path
-                if(path != null) path.Clear();
+                if (path != null) path.Clear();
                 viablePath = false;
                 UpdateLineRenderer();
             }
 
             owner = newOwner;
-            ownerMoving = moving;
-            isClimbing = climb;
+            canClimb = climb;
             canSwim = swim;
+            LookPathPath = true;
             extraNodeConditons = nodeCondtions;
         }
 
@@ -92,7 +117,7 @@ namespace GalaxyBrain.Pathfinding
         public Vector3 GetPathEndPoint()
         {
             if (!viablePath || path.Count <= 0) return owner.position;
-            else return path[path.Count-1];
+            else return path[path.Count - 1];
         }
 
         public int GetPathCount()
@@ -104,34 +129,62 @@ namespace GalaxyBrain.Pathfinding
         private void UpdatePath(List<Node> nodePath)
         {
             path = new List<Vector3>();
+            visualPath = new List<Vector3>();
 
             if (nodePath != null && nodePath.Count > 0)
             {
                 path.Add(owner.position);
+                visualPath.Add(owner.position);
 
                 for (int i = 0; i < nodePath.Count; i++)
                 {
-                    //pathRenderer.SetPosition(i + 1, nodePath[i].TemporalPosition);
-
                     Node node = nodePath[i];
-
 
                     if (node.IsSlope)
                     {
-                        Vector3 oldPos = path[path.Count - 1];
+                        Vector3 oldPos = visualPath[visualPath.Count - 1];
                         Vector3 dir = (node.Position - oldPos) * 0.5f;
 
                         dir.y = 0;
                         dir = dir.normalized;
 
-                        path.Add(new Vector3(node.Position.x, oldPos.y, node.Position.z) - (dir * 0.5f));
+                        visualPath.Add(new Vector3(node.Position.x, oldPos.y, node.Position.z) - (dir * 0.5f));
 
-                        //path.Add(node.Position);
 
                         if (i + 1 < nodePath.Count)
                         {
                             Node nextNode = nodePath[i + 1];
-                            path.Add(new Vector3(node.Position.x, nextNode.Position.y, node.Position.z) + (dir * 0.5f));
+                            visualPath.Add(new Vector3(node.Position.x, nextNode.Position.y, node.Position.z) + (dir * 0.5f));
+                        }
+                    }
+                    else
+                    {
+                        visualPath.Add(node.Position);
+                    }
+
+                    //Phyiscal path the player moves along
+                    if(i+1 < nodePath.Count)
+                    {
+                        Node next = nodePath[i+1];
+
+                        //Check if were changing vertically
+                        if(node.Position.x == next.Position.x && node.Position.z == next.Position.z)
+                        {
+                            if(next.Position.y > node.Position.y)
+                            {
+                                if(node.IsGround) path.Add(node.Position);
+
+                                path.Add(node.Position + (Vector3.up));
+                                UnityEngine.Debug.DrawRay(node.Position, Vector3.up, Color.cyan, 5);
+                            }
+                            else
+                            {
+                                path.Add(node.Position);
+                            }
+                        }
+                        else
+                        {
+                            path.Add(node.Position);
                         }
                     }
                     else
@@ -148,17 +201,16 @@ namespace GalaxyBrain.Pathfinding
         {
             if (pathRenderer != null)
             {
-                if (path == null || path.Count < 2)
+                if (visualPath == null || visualPath.Count < 2)
                 {
                     pathRenderer.positionCount = 0;
                     return;
                 }
 
-                pathRenderer.positionCount = path.Count;
-                for (int i = 0; i < path.Count; i++)
+                pathRenderer.positionCount = visualPath.Count;
+                for (int i = 0; i < visualPath.Count; i++)
                 {
-                    if (!isClimbing) pathRenderer.SetPosition(i, path[i] + new Vector3(0, -0.45f, 0));
-                    else pathRenderer.SetPosition(i, path[i]);
+                    pathRenderer.SetPosition(i, visualPath[i] + new Vector3(0, -0.45f, 0));
                 }
 
                 if (viablePath) pathRenderer.colorGradient = validPathGradiant;
@@ -242,13 +294,13 @@ namespace GalaxyBrain.Pathfinding
         private Node CheckNodeConditions(Node node)
         {
             //Check for wall
-            Collider[] wall = Physics.OverlapBox(node.Position + new Vector3(0, 0.25f, 0), new Vector3(0.33f, 0.11f, 0.33f), Quaternion.identity, groundMask);
+            Collider[] wall = Physics.OverlapBox(node.Position + new Vector3(0, 0.25f, 0), new Vector3(0.33f, 0.11f, 0.33f), Quaternion.identity, groundMask, QueryTriggerInteraction.Collide);
 
-            bool climbable = (Physics.OverlapBox(node.Position, new Vector3(0.75f, 0.75f, 0.75f), Quaternion.identity, climbableMask).Length > 0);
-            bool belowClimbable = (Physics.OverlapBox(node.Position + Vector3.down, new Vector3(0.75f, 0.75f, 0.75f), Quaternion.identity, climbableMask).Length > 0);
+            bool climbable = (Physics.OverlapBox(node.Position, new Vector3(0.5f, 0.75f, 0.5f), Quaternion.identity, climbableMask, QueryTriggerInteraction.Collide).Length > 0);
+            bool belowClimbable = (Physics.OverlapBox(node.Position + Vector3.down, new Vector3(0.5f, 0.75f, 0.5f), Quaternion.identity, climbableMask, QueryTriggerInteraction.Collide).Length > 0);
 
             bool sloped = (Physics.OverlapBox(node.Position, new Vector3(0.45f, 0.45f, 0.45f), Quaternion.identity, slopeMask).Length > 0);
-            bool water = (Physics.OverlapBox(node.Position, new Vector3(0.45f, 0.6f, 0.45f), Quaternion.identity, waterMask).Length > 0);
+            bool water = (Physics.OverlapBox(node.Position, new Vector3(0.45f, 0.6f, 0.45f), Quaternion.identity, waterMask, QueryTriggerInteraction.Collide).Length > 0);
 
             //Add the node
             node.IsWall = wall.Length > 0;
@@ -262,7 +314,6 @@ namespace GalaxyBrain.Pathfinding
             {
                 CreateAndStoreNode(node.Position + Vector3.up);
             }
-
 
             //Check if ground
             if (!sloped && wall.Length == 0)
@@ -279,7 +330,7 @@ namespace GalaxyBrain.Pathfinding
                 }
             }
 
-            if(!node.IsWall && !node.IsGround)
+            if (!node.IsWall && !node.IsGround)
             {
                 node.IsWater = water;
             }
@@ -334,75 +385,52 @@ namespace GalaxyBrain.Pathfinding
             Vector3 pos = current.Position;
 
             //Regular get neighbor nodes.
-            if (!isClimbing)
+            //Cardinals
+            if (nodeGrid.ContainsKey(pos + Vector3.right)) adjacentNode.Add(nodeGrid[pos + Vector3.right]);
+            if (nodeGrid.ContainsKey(pos + Vector3.left)) adjacentNode.Add(nodeGrid[pos + Vector3.left]);
+            if (nodeGrid.ContainsKey(pos + Vector3.forward)) adjacentNode.Add(nodeGrid[pos + Vector3.forward]);
+            if (nodeGrid.ContainsKey(pos + Vector3.back)) adjacentNode.Add(nodeGrid[pos + Vector3.back]);
+
+            //Check for down slope
+            if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.right)) adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.right]);
+            if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.left)) adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.left]);
+            if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.forward)) adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.forward]);
+            if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.back)) adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.back]);
+
+            //Check for up the slope
+            if (current.IsSlope)
             {
-                //Cardinals
-                if (nodeGrid.ContainsKey(pos + Vector3.right)) adjacentNode.Add(nodeGrid[pos + Vector3.right]);
-                if (nodeGrid.ContainsKey(pos + Vector3.left)) adjacentNode.Add(nodeGrid[pos + Vector3.left]);
-                if (nodeGrid.ContainsKey(pos + Vector3.forward)) adjacentNode.Add(nodeGrid[pos + Vector3.forward]);
-                if (nodeGrid.ContainsKey(pos + Vector3.back)) adjacentNode.Add(nodeGrid[pos + Vector3.back]);
-
-                //Check for down slope
-                if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.right)) adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.right]);
-                if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.left)) adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.left]);
-                if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.forward)) adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.forward]);
-                if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.back)) adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.back]);
-
-                //Check for up the slope
-                if (current.IsSlope)
+                //Make sure we can only go up the slope on it's axis
+                if (current.slopeNormal.x != 0)
                 {
-                    //Make sure we can only go up the slope on it's axis
-                    if (current.slopeNormal.x != 0)
-                    {
-                        if (nodeGrid.ContainsKey(pos + Vector3.right + Vector3.up)) adjacentNode.Add(nodeGrid[pos + Vector3.right + Vector3.up]);
-                        if (nodeGrid.ContainsKey(pos + Vector3.left + Vector3.up)) adjacentNode.Add(nodeGrid[pos + Vector3.left + Vector3.up]);
+                    if (nodeGrid.ContainsKey(pos + Vector3.right + Vector3.up)) adjacentNode.Add(nodeGrid[pos + Vector3.right + Vector3.up]);
+                    if (nodeGrid.ContainsKey(pos + Vector3.left + Vector3.up)) adjacentNode.Add(nodeGrid[pos + Vector3.left + Vector3.up]);
 
-                        if (nodeGrid.ContainsKey(pos + Vector3.right + Vector3.down)) adjacentNode.Add(nodeGrid[pos + Vector3.right + Vector3.down]);
-                        if (nodeGrid.ContainsKey(pos + Vector3.left + Vector3.down)) adjacentNode.Add(nodeGrid[pos + Vector3.left + Vector3.down]);
-                    }
+                    if (nodeGrid.ContainsKey(pos + Vector3.right + Vector3.down)) adjacentNode.Add(nodeGrid[pos + Vector3.right + Vector3.down]);
+                    if (nodeGrid.ContainsKey(pos + Vector3.left + Vector3.down)) adjacentNode.Add(nodeGrid[pos + Vector3.left + Vector3.down]);
+                }
 
-                    if (current.slopeNormal.z != 0)
-                    {
-                        if (nodeGrid.ContainsKey(pos + Vector3.forward + Vector3.up)) adjacentNode.Add(nodeGrid[pos + Vector3.forward + Vector3.up]);
-                        if (nodeGrid.ContainsKey(pos + Vector3.back + Vector3.up)) adjacentNode.Add(nodeGrid[pos + Vector3.back + Vector3.up]);
+                if (current.slopeNormal.z != 0)
+                {
+                    if (nodeGrid.ContainsKey(pos + Vector3.forward + Vector3.up)) adjacentNode.Add(nodeGrid[pos + Vector3.forward + Vector3.up]);
+                    if (nodeGrid.ContainsKey(pos + Vector3.back + Vector3.up)) adjacentNode.Add(nodeGrid[pos + Vector3.back + Vector3.up]);
 
-                        if (nodeGrid.ContainsKey(pos + Vector3.forward + Vector3.down)) adjacentNode.Add(nodeGrid[pos + Vector3.forward + Vector3.down]);
-                        if (nodeGrid.ContainsKey(pos + Vector3.back + Vector3.down)) adjacentNode.Add(nodeGrid[pos + Vector3.back + Vector3.down]);
-                    }
+                    if (nodeGrid.ContainsKey(pos + Vector3.forward + Vector3.down)) adjacentNode.Add(nodeGrid[pos + Vector3.forward + Vector3.down]);
+                    if (nodeGrid.ContainsKey(pos + Vector3.back + Vector3.down)) adjacentNode.Add(nodeGrid[pos + Vector3.back + Vector3.down]);
                 }
             }
 
-            //climb
-            if (isClimbing)
+            if (canClimb)
             {
-                for (float xx = pos.x - 1; xx <= pos.x + 1; xx++)
-                {
-                    for (float yy = pos.y - 1; yy <= pos.y + 1; yy++)
-                    {
-                        for (float zz = pos.z - 1; zz <= pos.z + 1; zz++)
-                        {
-                            Vector3 newPos = new Vector3(xx, yy, zz);
-
-                            if (newPos == pos) continue;
-                            if ((pos - newPos).magnitude > 1) continue;
-
-                            if (nodeGrid.ContainsKey(new Vector3(xx, yy, zz)))
-                            {
-                                if (nodeGrid[newPos].IsClimbable || nodeGrid[newPos].IsGround)
-                                {
-                                    adjacentNode.Add(nodeGrid[newPos]);
-                                }
-                            }
-                        }
-                    }
-                }
+                if (nodeGrid.ContainsKey(pos)) adjacentNode.Add(nodeGrid[pos]);
+                if (nodeGrid.ContainsKey(pos + Vector3.up)) adjacentNode.Add(nodeGrid[pos + Vector3.up]);
+                if (nodeGrid.ContainsKey(pos + Vector3.down)) adjacentNode.Add(nodeGrid[pos + Vector3.down]);
             }
 
             return adjacentNode;
         }
 
         #endregion
-
         #region Pathfinding
 
         private List<Node> FindPath(Vector3 p1, Vector3 p2)
@@ -415,13 +443,15 @@ namespace GalaxyBrain.Pathfinding
             Node startNode = nodeGrid[p1];
             Node targetNode = nodeGrid[p2];
 
-            Debug.DrawRay(targetNode.Position + (Vector3.down * 0.5f), Vector3.up * 3, Color.yellow, 0.1f);
+            isClimbing = false;
+
+            //Debug.DrawRay(targetNode.Position + (Vector3.down * 0.5f), Vector3.up * 3, Color.yellow, 0.1f);
 
             openList.Add(startNode);
 
             if (openList[0] == null)
             {
-                Debug.Log("No!!! NOOOO");
+                // Debug.Log("No!!! NOOOO");
                 return null;
             }
 
@@ -436,6 +466,26 @@ namespace GalaxyBrain.Pathfinding
                     }
                 }
 
+                //Check if we are now Climbing
+                if (canClimb && openList.Count >= 1)
+                {
+                    Node oldCurrent = openList[openList.Count - 1];
+
+                    if (oldCurrent.Position.x == current.Position.x &&
+                        oldCurrent.Position.z == current.Position.z &&
+                        oldCurrent.Position.y != current.Position.y)
+                    {
+                        //We must be moving vertically
+                        isClimbing = true;
+                        UnityEngine.Debug.DrawRay(current.Position, Vector3.up, Color.red, 0.1f);
+                    }
+                    else
+                    {
+                        isClimbing = false;
+                        UnityEngine.Debug.DrawRay(current.Position, Vector3.up, Color.blue, 0.1f);
+                    }
+                }
+
                 openList.Remove(current);
                 closedList.Add(current);
 
@@ -447,13 +497,16 @@ namespace GalaxyBrain.Pathfinding
                 foreach (Node neighborNode in GetNeighborNodes(current))
                 {
                     //Check node conditions to make sure we can traverse though them.
-                    if(closedList.Contains(neighborNode) || !CheckIfNodeIsViable(startNode,targetNode,current,neighborNode))
+                    if (closedList.Contains(neighborNode) || !CheckIfNodeIsViable(startNode, targetNode, current, neighborNode))
                     {
                         continue;
                     }
 
                     float moveCost = current.gCost + GetManhattenDistance(current, neighborNode);
-                    if (neighborNode.IsWater && !canSwim) moveCost += 10;
+                    //if (neighborNode.IsWater && !canSwim) moveCost += 10;
+
+                    //If were climbing or just not on the ground prefer ground
+                    if (!neighborNode.IsGround && !neighborNode.IsSlope) moveCost += 5;
 
                     if (moveCost < neighborNode.gCost || !openList.Contains(neighborNode))
                     {
@@ -468,22 +521,17 @@ namespace GalaxyBrain.Pathfinding
                     }
                 }
             }
-
             return null;
         }
 
-        private bool CheckIfNodeIsViable(Node startNode, Node endNode, Node current,Node neighborNode)
+        private bool CheckIfNodeIsViable(Node startNode, Node endNode, Node current, Node neighborNode)
         {
-            //Start node should always be viable, because we're there already
-            if(neighborNode == startNode)
-            {
-                return true;
-            }
+            UpdateGridCell(neighborNode.Position);
 
             //Extra conditions
             if (extraNodeConditons != null)
             {
-                if(!extraNodeConditons.Invoke(startNode,endNode,current,neighborNode))
+                if (!extraNodeConditons.Invoke(startNode, endNode, current, neighborNode))
                 {
                     return false;
                 }
@@ -496,63 +544,88 @@ namespace GalaxyBrain.Pathfinding
             }
 
             //Check for dynamic blocks, players etc
-            if(Physics.CheckBox(neighborNode.Position,Vector3.one*0.5f,Quaternion.identity,dynamicPathBlockingMask))
+            Collider[] dynamicBlock = Physics.OverlapBox(neighborNode.Position, Vector3.one * 0.25f, Quaternion.identity, dynamicPathBlockingMask);
+            for (int i = 0; i < dynamicBlock.Length; i++)
             {
-                return false;
+                if (dynamicBlock[i].gameObject.transform != owner)
+                {
+                    return false;
+                }
             }
 
             //Make sure if it's water we can swim
-            if(!current.IsWater && !canSwim && neighborNode.IsWater)
+            if (!canSwim && neighborNode.IsWater)
             {
-                return false;
+                Collider[] dynamicGround = Physics.OverlapBox(neighborNode.Position + Vector3.down, new Vector3(.25f,.6f,.25f), Quaternion.identity, dynamicPathBlockingMask);
+                if (dynamicGround.Length <= 0)
+                {
+                    return false;
+                }
             }
 
-            if (!isClimbing)
+            //Don't sample climbable blocks if they aren't ground level
+            if (neighborNode.IsClimbable && !neighborNode.IsGround)
             {
-                //Don't sample climable blocks if they arent ground level
-                if (neighborNode.IsClimbable && !neighborNode.IsGround)
-                {
-                    //Unless we're climbing of course
-                    if (!isClimbing) return false;
-                }
+                if (!canClimb) return false;
+            }
 
-                //Make sure we go on the slope the correct way
-                if (neighborNode.IsSlope)
+            //Make sure we go on the slope the correct way
+            if (neighborNode.IsSlope)
+            {
+                Vector3 dir = (neighborNode.Position - current.Position);
+                dir.y = 0;
+                dir = dir.normalized;
+                if (dir != neighborNode.slopeNormal && dir != -neighborNode.slopeNormal) return false;
+            }
+            else
+            {
+                //Stepping down one tile
+                if (neighborNode.Position.y < current.Position.y)
                 {
-                    Vector3 dir = (neighborNode.Position - current.Position);
-                    dir.y = 0;
-                    dir = dir.normalized;
-                    if (dir != neighborNode.slopeNormal && dir != -neighborNode.slopeNormal) return false;
-                }
-                else
-                {
-                    if (neighborNode.Position.y < current.Position.y && !neighborNode.IsGround)
+                    if (!neighborNode.IsGround)
                     {
-                        return false;
+                        if (canClimb && neighborNode.IsClimbable) return true;
+                        else return false;
+                    }
+                    else
+                    {
+                        //Climb down if can
+                        if (isClimbing)
+                        {
+                            //Make sure we move vertically to the ground
+                            if (current.Position.x != neighborNode.Position.x
+                                || current.Position.z != neighborNode.Position.z)
+                            {
+                                //return false;
+                            }
+                        }
                     }
                 }
-
-                //Make sure we get off the slope the correct way
-                if (current.IsSlope)
-                {
-                    Vector3 dir = (neighborNode.Position - current.Position);
-                    dir.y = 0;
-                    dir = dir.normalized;
-                    if (dir != current.slopeNormal && dir != -current.slopeNormal) return false;
-                }
             }
-            else //Climbing
+
+            //Make sure we get off the slope the correct way
+            if (current.IsSlope)
+            {
+                Vector3 dir = (neighborNode.Position - current.Position);
+                dir.y = 0;
+                dir = dir.normalized;
+                if (dir != current.slopeNormal && dir != -current.slopeNormal) return false;
+            }
+
+            if (isClimbing) //Climbing
             {
                 //Only go from climbing to ground if it's the target node
                 CreateAndStoreNode(neighborNode.Position + Vector3.down);
-                if (!neighborNode.IsClimbable && !nodeGrid[neighborNode.Position + Vector3.down].IsClimbable)
+
+                //Check if were are moving on the x / Z
+                if (neighborNode.Position.x != current.Position.x ||
+                    neighborNode.Position.z != current.Position.z)
                 {
-                    if (neighborNode != endNode)
+                    if (!neighborNode.IsGround)
                     {
                         return false;
                     }
                 }
-                if (neighborNode.Position == startNode.Position) return false;
             }
 
             return true;
@@ -569,7 +642,14 @@ namespace GalaxyBrain.Pathfinding
             {
                 finalPath.Add(currentNode);
                 currentNode = currentNode.Parent;
-                if (currentNode.IsWater && !canSwim && currentNode != startNode) viable = false;
+                if (currentNode.IsWater && !canSwim && currentNode != startNode)
+                {
+                    Collider[] dynamicGround = Physics.OverlapBox(currentNode.Position + Vector3.down, new Vector3(.25f, .6f, .25f), Quaternion.identity, dynamicPathBlockingMask);
+                    if (dynamicGround.Length <= 0)
+                    {
+                        viable = false;
+                    }
+                }
             }
 
             finalPath.Reverse();
@@ -580,12 +660,12 @@ namespace GalaxyBrain.Pathfinding
 
         private void OnDrawGizmos()
         {
-            foreach(var node in nodeGrid)
+            foreach (var node in nodeGrid)
             {
-                if(node.Value.IsWater)
+                if (node.Value.IsClimbable)
                 {
                     Gizmos.color = Color.blue * 0.2f;
-                    Gizmos.DrawCube(node.Value.Position,Vector3.one);
+                    //Gizmos.DrawCube(node.Value.Position, Vector3.one);
                 }
             }
         }

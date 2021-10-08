@@ -13,6 +13,7 @@ namespace GalaxyBrain.Creatures.Abilities
         private PushBlock block;
         private Vector3 direction;
         private bool done = false;
+        private bool canceled = false;
 
         private bool buffer = false;
 
@@ -23,9 +24,15 @@ namespace GalaxyBrain.Creatures.Abilities
             return (block != null);
         }
 
-        public bool OnAbilityCheckDone()
+        public AbilityDoneType OnAbilityCheckDone()
         {
-            return done;
+            if(done)
+            {
+                if (canceled) return AbilityDoneType.Canceled;
+                return AbilityDoneType.Done;
+            }
+
+            return AbilityDoneType.NotDone;
         }
 
         public void OnAbilityEnd()
@@ -42,6 +49,7 @@ namespace GalaxyBrain.Creatures.Abilities
             direction = interactDirection;
             this.controller = controller;
             done = false;
+            canceled = false;
             buffer = false;
 
             Debug.DrawRay(interactable.transform.position, interactDirection * 15, Color.yellow, 100);
@@ -51,7 +59,14 @@ namespace GalaxyBrain.Creatures.Abilities
         {
             if (buffer)
             {
-                done = block.UpdateAbility(direction);
+                float blockMagnitude = block.UpdateAbility(direction);
+
+                if (blockMagnitude >= 1) done = true;
+                if (blockMagnitude < 0)
+                {
+                    done = true;
+                    canceled = true;
+                }
             }
             buffer = true;
         }

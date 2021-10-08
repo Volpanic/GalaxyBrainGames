@@ -1,3 +1,4 @@
+using GalaxyBrain.Systems;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,18 +8,24 @@ namespace GalaxyBrain.UI
 {
     public class MainMenu : MonoBehaviour
     {
-        [SerializeField] Fade fadeManager;
-        [SerializeField, Min(0)] int targetScene = 1;
-        [SerializeField] GameEvent changeScene;
-
+        [SerializeField] LevelProgression levelProgression;
+       
         private bool shouldChangeScene = true;
+        private Fade fade;
+
+        private void Start()
+        {
+            //Created dynamically, so we need to find it dynamically
+            //It's cached and the title screen so the performance cost is fine
+            fade = FindObjectOfType<Fade>();
+        }
 
         //Triggered by button on click event, starts fadeout.
         public void PlayGame()
         {
             if (shouldChangeScene)
             {
-                changeScene?.Raise();
+                fade.FadeOut(() => SceneManager.LoadScene(levelProgression.ScenesInOrder[0]));
                 shouldChangeScene = false;
             }
         }

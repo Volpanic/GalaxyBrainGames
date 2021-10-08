@@ -33,8 +33,7 @@ namespace GalaxyBrain.Managers
 
         private void ChangeSceneAfterFade()
         {
-            levelProg.IncrementCurrentScene();
-            targetIndex = levelProg.GetCurrentScene();
+            targetIndex = levelProg.GetNextScene();
 
             SceneManager.LoadScene(targetIndex);
         }

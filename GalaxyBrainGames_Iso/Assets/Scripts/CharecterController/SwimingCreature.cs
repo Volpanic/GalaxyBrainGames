@@ -22,7 +22,8 @@ namespace GalaxyBrain.Creatures
         [Header("Settings")]
         [SerializeField] private float FastSpeed = 0.1f;
         [SerializeField] private float SlowSpeed = 0.2f;
-        [SerializeField] private float waterSubmergeDepth = 0.25f;
+        [SerializeField] private float waterSubmergeDepth = 0.5f;
+        [SerializeField] private float weighedDownDepth = 0.1f;
 
         private Vector3 worldModelOriginalPos;
         private bool submerge = false;
@@ -53,7 +54,7 @@ namespace GalaxyBrain.Creatures
         {
             submerge = false;
 
-            if (Physics.CheckBox(nextPos + (Vector3.down*0.1f),myCollider.bounds.extents ,transform.rotation,waterMask))
+            if (Physics.CheckBox(nextPos + (Vector3.down*0.1f),myCollider.bounds.extents ,transform.rotation,waterMask,QueryTriggerInteraction.Collide))
             {
                 submerge = true;
             }
@@ -61,17 +62,17 @@ namespace GalaxyBrain.Creatures
 
         private void Update()
         {
-            if(submerge)
+            if (submerge)
             {
-                Vector3 targetPos = worldModelOriginalPos + (Vector3.down * waterSubmergeDepth);
-                if(controller.WeighedDown) targetPos += Vector3.down* waterSubmergeDepth;
+                Vector3 targetPos = worldModelOriginalPos + (Vector3.up * waterSubmergeDepth);
+                if (controller.WeighedDown) targetPos += Vector3.down * weighedDownDepth;
                 worldModel.localPosition = Vector3.MoveTowards(worldModel.localPosition, targetPos,
-                    Time.deltaTime*4);
+                    Time.deltaTime * 4);
             }
             else
             {
                 worldModel.localPosition = Vector3.MoveTowards(worldModel.localPosition, worldModelOriginalPos,
-                    Time.deltaTime*4);
+                    Time.deltaTime * 4);
             }
 
             controller.WeighedDown = controllerCarry.SteppedOn;

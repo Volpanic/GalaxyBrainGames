@@ -1,4 +1,5 @@
 using GalaxyBrain.Creatures.Abilities;
+using GalaxyBrain.Creatures.States;
 using GalaxyBrain.Interactables;
 using GalaxyBrain.Pathfinding;
 using GalaxyBrain.Systems;
@@ -32,18 +33,37 @@ namespace GalaxyBrain.Creatures
         [SerializeField] private PlayerTypes playerType;
         [SerializeField] private bool canClimb;
         [SerializeField] private bool canSwim;
+        [SerializeField] private LayerMask waterLayer;
 
         [SerializeField] private GridPathfinding pathfinding;
 
         [HideInInspector] public bool Selected = false;
         [HideInInspector] public bool IsClimbing = false;
+        [HideInInspector] public bool InteruptNextPathInterval = false;
 
         //Controls when we can leave water when in it
         [HideInInspector] public bool WeighedDown = false;
 
+        public event Action<Vector3, Vector3> OnPathInterval;
+        private Quaternion targetRotation;
+
+        public bool CanClimb { get { return canClimb; } }
+        public bool CanSwim { get { return canSwim; } }
+
+        public Quaternion TargetRotation
+        {
+            get { return targetRotation; }
+            set { targetRotation = value; }
+        }
+
         public bool Grounded
         {
             get { return controller.isGrounded; }
+        }
+
+        public CharacterController Controller
+        {
+            get { return controller; }
         }
 
         public PlayerTypes PlayerType
@@ -54,29 +74,6 @@ namespace GalaxyBrain.Creatures
             }
         }
 
-        /// <summary>
-        /// Called when a point in the path has been reached,
-        /// Most likely in the center of a grid cell
-        /// v3 = PreviousGridCellPos, v3 = new nextGridCellpos
-        /// </summary>
-        public event Action<Vector3,Vector3> OnPathInterval;
-
-        private List<Vector3> path;
-        private bool manualMove = false;
-
-        //Moving Along Path
-        private bool moving = false;
-        private bool canMove = true;
-        private bool consumeActionPoints = true;
-        private float moveTimer = 0;
-        private float moveMaxTime = 0;
-        private int currentPathIndex = 0;
-
-        private List<ICreatureAbility> abilites = new List<ICreatureAbility>();
-        private int currentRunningAbility = -1;
-
-        private Quaternion targetRotation;
-
         public Bounds ColliderBounds
         {
             get
@@ -85,10 +82,10 @@ namespace GalaxyBrain.Creatures
             }
         }
 
-        public void AddAbility(ICreatureAbility ability)
-        {
-            if (abilites != null) abilites.Add(ability);
-        }
+        private PlayerStateMachine stateMachine;
+        private PlayerDefaultState defaultState;
+        private PlayerPathfindState pathfindState;
+        private PlayerAbilityState abilityState;
 
         private void Awake()
         {
@@ -104,60 +101,40 @@ namespace GalaxyBrain.Creatures
 
                 controller.enabled = true;
             }
+
+            //Create States
+            defaultState = new PlayerDefaultState(this, pathfinding,waterLayer);
+            pathfindState = new PlayerPathfindState(this, movementSpeed);
+            abilityState = new PlayerAbilityState(this);
+
+            stateMachine = new PlayerStateMachine(defaultState);
+            stateMachine.AddState(pathfindState);
+            stateMachine.AddState(abilityState);
+        }
+
+        public void AddAbility(ICreatureAbility ability)
+        {
+            abilityState.AddAbility(ability);
         }
 
         private void Update()
         {
+            // If timescale is 0 don't run any code
+            // Most likely game is paused if timescale is 0
+            if (Time.timeScale == 0) return;
 
-            if (currentRunningAbility < 0)
-            {
-                if (Selected)
-                {
-                    pathfinding.SetOwner(transform, moving, canClimb && IsClimbing, canSwim,ExtraNodeConditions);
+            stateMachine.UpdateState();
 
-                    if (!moving) MovementSelection();
-                }
-
-                if (moving && canMove) MoveAlongPath();
-                else
-                {
-                    if (!manualMove)
-                    {
-                        controller.SimpleMove(Vector3.zero);
-                    }
-                }
-            }
-            else
-            {
-                abilites[currentRunningAbility].OnAbilityUpdate();
-                if (abilites[currentRunningAbility].OnAbilityCheckDone())
-                {
-                    abilites[currentRunningAbility].OnAbilityEnd();
-                    currentRunningAbility = -1;
-                }
-            }
-
-            manualMove = false;
             transform.rotation = UpdateRotation(transform.rotation, targetRotation);
         }
 
-        private bool ExtraNodeConditions(Node startNode, Node endNode, Node current, Node neighborNode)
-        {
-            if(WeighedDown && !neighborNode.IsWater)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private Quaternion UpdateRotation(Quaternion current, Quaternion target)
+        public Quaternion UpdateRotation(Quaternion current, Quaternion target)
         {
             //Rotate towards target rotation, rotate speed * 1440 (being 360*4)
             return Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * (rotateSpeed * 1440f));
         }
 
-        private Quaternion GetDirectionOfMovement()
+        public Quaternion GetDirectionOfMovement()
         {
             if (controller.velocity.x == 0 && controller.velocity.z == 0) return targetRotation;
             Vector3 lookAt = controller.velocity + transform.position;
@@ -166,165 +143,72 @@ namespace GalaxyBrain.Creatures
             return Quaternion.LookRotation(lookAt - transform.position);
         }
 
-        private void MoveAlongPath()
-        {
-            //Move the player along the path
-            moveTimer += Time.deltaTime;
-
-            // Get current point and the next point on path
-            Vector3 oldPos = path[currentPathIndex];
-            Vector3 targetPos = path[currentPathIndex + 1];
-
-            //Lerp between the two points
-            Vector3 transitionalPos = Vector3.Lerp(oldPos, targetPos, moveTimer / moveMaxTime);
-
-            //Find how much we need to move to get to that point
-            Vector3 velocity = transitionalPos - transform.position;
-
-            controller.Move(velocity);
-            targetRotation = GetDirectionOfMovement();
-
-            if (moveTimer >= moveMaxTime)
-            {
-                currentPathIndex++;
-                if(consumeActionPoints) actionPointData?.SubtractActionPoint(1);
-                moveTimer = 0;
-
-                // Stop if we wan't to move the player manually
-                // or we've reached the end of the path
-                if (manualMove || currentPathIndex + 1 >= path.Count)
-                {
-                    OnPathInterval?.Invoke(path[currentPathIndex - 1], path[currentPathIndex]);
-                    StopMoveAlongPath();
-                }
-                else
-                {
-                    OnPathInterval?.Invoke(path[currentPathIndex - 1], path[currentPathIndex]);
-                }
-            }
-        }
-
-        private void StopMoveAlongPath()
-        {
-            moving = false;
-            IsClimbing = false;
-            moveTimer = 0;
-            currentPathIndex = 0;
-
-            SnapToGridPosition();
-        }
-
-        private void SnapToGridPosition()
-        {
-            Vector3 snapPos = pathfinding.ToGridPos(transform.position);
-            snapPos.y = transform.position.y;
-
-            controller.Move(transform.position - snapPos);
-        }
-
-        private void MovementSelection()
-        {
-            controller.SimpleMove(Vector3.zero);
-            if (pathfinding == null) return;
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                StartMoveAlongPath(pathfinding.GetPath());
-            }
-        }
-
-        private void StartMoveAlongPath(List<Vector3> path, bool consumeActionPoints = true)
-        {
-            //Make sure we have a path with 2 points
-            if (path != null && path.Count >= 2)
-            {
-                moving = true;
-                moveMaxTime = movementSpeed;
-                moveTimer = 0;
-                currentPathIndex = 0;
-                this.path = path;
-                this.consumeActionPoints = consumeActionPoints;
-            }
-        }
-
-        public float CorrectYPos(float y)
-        {
-            return y + controller.bounds.extents.y;
-        }
-
-        private void OnDrawGizmos()
-        {
-            if (pathfinding != null)
-            {
-                Gizmos.color = Color.green;
-                Gizmos.DrawWireCube(pathfinding.ToGridPos(transform.position), Vector3.one);
-            }
-        }
-
         public void AttemptInteract(Interactalbe interact)
         {
-            for (int i = 0; i < abilites.Count; i++)
+            if (stateMachine.InDefaultState)
             {
-                if (abilites[i].OnAbilityCheckCondition(interact))
+                if(abilityState.AttemptInteract(interact))
                 {
-                    Vector3 pos = interact.transform.position;
-                    Vector3 pos2 = controller.transform.position;
-
-                    pos.y = 0;
-                    pos2.y = 0;
-
-                    Vector3 interactDirection = (pos - pos2).normalized;
-                    abilites[i].OnAbilityStart(this, interact, MakeCardinal(interactDirection));
-                    currentRunningAbility = i;
-                    break;
+                    //Check again in case the interact changes state
+                    if (stateMachine.InDefaultState)
+                    {
+                        stateMachine.ChangeState(typeof(PlayerAbilityState));
+                    }
                 }
             }
         }
 
         public void ShiftPlayer(Vector3 offset)
         {
-            if (!moving)
+            if (stateMachine.InDefaultState)
             {
                 List<Vector3> targetList = new List<Vector3>();
 
                 targetList.Add(pathfinding.ToGridPos(transform.position));
                 targetList.Add(pathfinding.ToGridPos(transform.position) + offset);
 
-                StartMoveAlongPath(targetList,false);
+                StartMoveAlongPath(targetList, false);
             }
-            manualMove = true;
+            else
+            {
+                InteruptNextPathInterval = true;
+            }
         }
-        
+
         public void MoveToTarget(Vector3 target)
         {
-            if (!moving)
-            {
-                List<Vector3> targetList = new List<Vector3>();
+            List<Vector3> targetList = new List<Vector3>();
 
-                targetList.Add(pathfinding.ToGridPos(transform.position));
-                targetList.Add(pathfinding.ToGridPos(target));
+            targetList.Add(pathfinding.ToGridPos(transform.position));
+            targetList.Add(pathfinding.ToGridPos(target));
 
-                StartMoveAlongPath(targetList,false);
-            }
-            manualMove = true;
+            StartMoveAlongPath(targetList, false);
+        }
+
+        public void ConsumeActionPoint(int amount = 1)
+        {
+            actionPointData?.SubtractActionPoint(transform.position,amount);
+        }
+
+        public void StartMoveAlongPath(List<Vector3> targetList, bool consumeActionPoints)
+        {
+            if (targetList == null || targetList.Count < 2) return;
+
+            InteruptNextPathInterval = false;
+            pathfindState.SetPath(targetList.ToArray());
+            pathfindState.ConsumeActionPoints = consumeActionPoints;
+            stateMachine.ChangeState(typeof(PlayerPathfindState));
+        }
+
+        public void PathInterval(Vector3 previousGridCell, Vector3 nextGridCell)
+        {
+            OnPathInterval?.Invoke(previousGridCell, nextGridCell);
         }
 
         public void LockMovement()
         {
-            canMove = false;
-        }
-
-        private Vector3 MakeCardinal(Vector3 direction)
-        {
-            float absX = Mathf.Abs(direction.x);
-            float absY = Mathf.Abs(direction.y);
-            float absZ = Mathf.Abs(direction.z);
-
-            if (absX > absY && absX > absZ) return new Vector3(Mathf.Sign(direction.x), 0, 0);
-            if (absY > absX && absY > absZ) return new Vector3(0, Mathf.Sign(direction.y), 0);
-            if (absZ > absX && absZ > absY) return new Vector3(0, 0, Mathf.Sign(direction.z));
-
-            return Vector3.zero;
+            stateMachine.ChangeToDefaultState();
+            stateMachine.LockState = true;
         }
     }
 }
