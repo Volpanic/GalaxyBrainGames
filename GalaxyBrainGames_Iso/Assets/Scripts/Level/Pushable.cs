@@ -50,9 +50,17 @@ namespace GalaxyBrain.Interactables
 
             Debug.DrawRay(transform.position,pushDirection * 4,Color.white,5);
 
+            FaceDirection(pushDirection);
             targetRotation = GetPushRotation(pushDirection);
             fallingOver = true;
             pushedOver = true;
+        }
+
+        private void FaceDirection(Vector3 direction)
+        {
+            Vector3 tartgetEuler = Quaternion.LookRotation(direction,Vector3.up).eulerAngles;
+            transform.rotation = Quaternion.Euler(tartgetEuler.x, tartgetEuler.y + 90, tartgetEuler.z);
+            initalRotation = transform.rotation;
         }
 
         private Quaternion GetPushRotation(Vector3 pushDirection)
