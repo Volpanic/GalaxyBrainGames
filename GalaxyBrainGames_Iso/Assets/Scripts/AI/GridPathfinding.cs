@@ -28,6 +28,7 @@ namespace GalaxyBrain.Pathfinding
         private Vector3 lastCheckedArea;
 
         private List<Vector3> path = new List<Vector3>();
+        private List<Vector3> visualPath = new List<Vector3>();
         private Transform owner;
         private Vector3 gridOffset;
         private bool viablePath = false;
@@ -46,6 +47,11 @@ namespace GalaxyBrain.Pathfinding
             if (!LookPathPath || owner == null || ownerMoving)
             {
                 path.Clear();
+                return false;
+            }
+
+            if(IsObjectOnLayer(hit.collider.gameObject,slopeMask))
+            {
                 return false;
             }
 
@@ -72,6 +78,11 @@ namespace GalaxyBrain.Pathfinding
             LookPathPath = false;
 
             return true;
+        }
+
+        private bool IsObjectOnLayer(GameObject gameObject, LayerMask mask)
+        {
+            return mask == (mask | (1 << gameObject.layer));
         }
 
         //Makes it so the path is non viable, meaning it cant be used for the mean time
@@ -118,34 +129,62 @@ namespace GalaxyBrain.Pathfinding
         private void UpdatePath(List<Node> nodePath)
         {
             path = new List<Vector3>();
+            visualPath = new List<Vector3>();
 
             if (nodePath != null && nodePath.Count > 0)
             {
                 path.Add(owner.position);
+                visualPath.Add(owner.position);
 
                 for (int i = 0; i < nodePath.Count; i++)
                 {
-                    //pathRenderer.SetPosition(i + 1, nodePath[i].TemporalPosition);
-
                     Node node = nodePath[i];
-
 
                     if (node.IsSlope)
                     {
-                        Vector3 oldPos = path[path.Count - 1];
+                        Vector3 oldPos = visualPath[visualPath.Count - 1];
                         Vector3 dir = (node.Position - oldPos) * 0.5f;
 
                         dir.y = 0;
                         dir = dir.normalized;
 
-                        path.Add(new Vector3(node.Position.x, oldPos.y, node.Position.z) - (dir * 0.5f));
+                        visualPath.Add(new Vector3(node.Position.x, oldPos.y, node.Position.z) - (dir * 0.5f));
 
-                        //path.Add(node.Position);
 
                         if (i + 1 < nodePath.Count)
                         {
                             Node nextNode = nodePath[i + 1];
-                            path.Add(new Vector3(node.Position.x, nextNode.Position.y, node.Position.z) + (dir * 0.5f));
+                            visualPath.Add(new Vector3(node.Position.x, nextNode.Position.y, node.Position.z) + (dir * 0.5f));
+                        }
+                    }
+                    else
+                    {
+                        visualPath.Add(node.Position);
+                    }
+
+                    //Phyiscal path the player moves along
+                    if(i+1 < nodePath.Count)
+                    {
+                        Node next = nodePath[i+1];
+
+                        //Check if were changing vertically
+                        if(node.Position.x == next.Position.x && node.Position.z == next.Position.z)
+                        {
+                            if(next.Position.y > node.Position.y)
+                            {
+                                if(node.IsGround) path.Add(node.Position);
+
+                                path.Add(node.Position + (Vector3.up));
+                                UnityEngine.Debug.DrawRay(node.Position, Vector3.up, Color.cyan, 5);
+                            }
+                            else
+                            {
+                                path.Add(node.Position);
+                            }
+                        }
+                        else
+                        {
+                            path.Add(node.Position);
                         }
                     }
                     else
@@ -162,16 +201,16 @@ namespace GalaxyBrain.Pathfinding
         {
             if (pathRenderer != null)
             {
-                if (path == null || path.Count < 2)
+                if (visualPath == null || visualPath.Count < 2)
                 {
                     pathRenderer.positionCount = 0;
                     return;
                 }
 
-                pathRenderer.positionCount = path.Count;
-                for (int i = 0; i < path.Count; i++)
+                pathRenderer.positionCount = visualPath.Count;
+                for (int i = 0; i < visualPath.Count; i++)
                 {
-                    pathRenderer.SetPosition(i, path[i] + new Vector3(0, -0.45f, 0));
+                    pathRenderer.SetPosition(i, visualPath[i] + new Vector3(0, -0.45f, 0));
                 }
 
                 if (viablePath) pathRenderer.colorGradient = validPathGradiant;
