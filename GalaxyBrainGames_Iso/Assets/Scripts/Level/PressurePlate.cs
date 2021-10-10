@@ -20,7 +20,7 @@ namespace GalaxyBrain.Interactables
         [SerializeField] private AudioData onPressedSound;
         [SerializeField] private AudioData onReleasedSound;
 
-        private Collider collider;
+        private Collider myCollider;
         private bool pressedDown = false;
         private int startCollisionCount = 0;
 
@@ -29,7 +29,7 @@ namespace GalaxyBrain.Interactables
 
         private void Awake()
         {
-            collider = GetComponent<Collider>();
+            myCollider = GetComponent<Collider>();
 
             // Most likely 1, we keep track of this because
             // the pressure plate is most likely in the ground slightly
@@ -39,7 +39,7 @@ namespace GalaxyBrain.Interactables
 
         private int GetCollidersTouching()
         {
-            return Physics.OverlapBox(collider.bounds.center, collider.bounds.extents, Quaternion.identity, ALL_LAYERS, QueryTriggerInteraction.Ignore).Length;
+            return Physics.OverlapBox(myCollider.bounds.center, myCollider.bounds.extents, Quaternion.identity, ALL_LAYERS, QueryTriggerInteraction.Ignore).Length;
         }
 
         private void FixedUpdate()

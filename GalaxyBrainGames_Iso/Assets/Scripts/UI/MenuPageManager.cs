@@ -11,8 +11,6 @@ namespace GalaxyBrain.UI
         [SerializeField] private float pageFadeDuration;
 
         private CanvasGroup oldInterfacePage;
-        private float timer = 0;
-        private int currentPage = 0;
 
         private void Start()
         {

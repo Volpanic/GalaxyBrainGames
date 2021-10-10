@@ -20,8 +20,6 @@ namespace GalaxyBrain.Creatures
         [SerializeField] private GameObject waterParticles;
 
         [Header("Settings")]
-        [SerializeField] private float FastSpeed = 0.1f;
-        [SerializeField] private float SlowSpeed = 0.2f;
         [SerializeField] private float waterSubmergeDepth = 0.5f;
         [SerializeField] private float weighedDownDepth = 0.1f;
 

@@ -14,7 +14,6 @@ namespace GalaxyBrain.Interactables
         [SerializeField] private CreatureData creatureData;
         [SerializeField] private Collider myCollider;
 
-        private bool pushedOver = false;
         private bool fallingOver = false;
         private float fallingTimer = 0;
 
@@ -53,7 +52,6 @@ namespace GalaxyBrain.Interactables
             FaceDirection(pushDirection);
             targetRotation = GetPushRotation(pushDirection);
             fallingOver = true;
-            pushedOver = true;
         }
 
         private void FaceDirection(Vector3 direction)
