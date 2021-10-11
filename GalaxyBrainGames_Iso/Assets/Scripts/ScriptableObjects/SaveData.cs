@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 namespace GalaxyBrain.Systems
 {
@@ -80,16 +81,14 @@ namespace GalaxyBrain.Systems
         {
             string currentIndex = SceneManager.GetActiveScene().name;
 
-            for (int i = Data.MaxLevelCompleted + 1; i < progression.ScenesInOrder.Count; i++)
-            {
-                if (progression.ScenesInOrder[i] == currentIndex)
-                {
-                    Data.MaxLevelCompleted = i;
-                    return;
-                }
-            }
+            int completeIndex = progression.ScenesInOrder.FindIndex(0,scn => scn == currentIndex);
 
-            SaveGame();
+            if (completeIndex >= Data.MaxLevelCompleted)
+            {
+                Data.MaxLevelCompleted = completeIndex + 1;
+                SaveGame();
+                return;
+            }
         }
     }
 }

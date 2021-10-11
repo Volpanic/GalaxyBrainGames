@@ -50,7 +50,7 @@ namespace GalaxyBrain.UI
                     }
                     else
                     {
-                        text.text = i.ToString();
+                        text.text = (i+1).ToString();
 
                         // Store i in num so it can be used in the delegate
                         // would return the value i is at the end of loop otherwise
