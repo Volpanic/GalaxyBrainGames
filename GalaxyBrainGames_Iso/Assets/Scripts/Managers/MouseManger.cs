@@ -59,6 +59,11 @@ namespace GalaxyBrain.Managers
                 //Nothing is obstructing, so path find
                 if (pathfinding != null && pathfinding.LookForPath(selectedObject)) return;
             }
+            else
+            {
+                //Disable pathfinding path, because we're not on it.
+                pathfinding?.ClearPath();
+            }
         }
 
         private bool ObjectIsOnLayer(int layer, LayerMask layerMask)

@@ -91,6 +91,14 @@ namespace GalaxyBrain.Pathfinding
             viablePath = false;
         }
 
+        public void ClearPath()
+        {
+            path?.Clear();
+            visualPath?.Clear();
+            UpdateLineRenderer();
+            OnPathChanged?.Invoke();
+        }
+
         public void SetOwner(Transform newOwner, bool climb = false, bool swim = false, Func<Node, Node, Node, Node, bool> nodeCondtions = null)
         {
             if (owner != newOwner)
