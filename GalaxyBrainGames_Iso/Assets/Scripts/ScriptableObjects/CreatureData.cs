@@ -21,6 +21,11 @@ namespace GalaxyBrain.Systems
         [ReadOnly]
         public GridPathfinding pathfinding;
 
+        [Header("Creature Icons")]
+        public Sprite ChildIcon;
+        public Sprite StrongIcon;
+        public Sprite WaterIcon;
+
         private void OnEnable()
         {
             CreaturesInLevel = new List<PlayerController>();

@@ -80,14 +80,16 @@ namespace GalaxyBrain.UI
         {
             TextMeshProUGUI textBase = creatureUIBlockPrefab.GetComponentInChildren<TextMeshProUGUI>();
             Button button = creatureUIBlockPrefab.GetComponentInChildren<Button>();
+            Image creatureIcon = creatureUIBlockPrefab.GetComponentsInChildren<Image>()[1];
 
             for (int i = 0; i < creatureData.GetCreatureCount(); i++)
             {
                 PlayerController creature = creatureData.GetCreature(i);
                 if (creature != null)
                 {
-                    textBase.text = creature.gameObject.name;
+                    textBase.text = (i+1).ToString();
 
+                    SetCreatureIcon(creature,creatureIcon);
 
                     CreatureSelectionIcon icon = Instantiate(creatureUIBlockPrefab, layoutGroup.transform).GetComponent<CreatureSelectionIcon>();
 
@@ -101,6 +103,16 @@ namespace GalaxyBrain.UI
 
                     lastObject.Add(icon);
                 }
+            }
+        }
+
+        private void SetCreatureIcon(PlayerController creature,Image creatureIcon)
+        {
+            switch(creature.PlayerType)
+            {
+                case PlayerController.PlayerTypes.Child:  creatureIcon.sprite = creatureData.ChildIcon; break;
+                case PlayerController.PlayerTypes.Strong: creatureIcon.sprite = creatureData.StrongIcon; break;
+                case PlayerController.PlayerTypes.Water:  creatureIcon.sprite = creatureData.WaterIcon; break;
             }
         }
     }
