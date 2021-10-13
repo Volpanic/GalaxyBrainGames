@@ -78,7 +78,7 @@ namespace GalaxyBrain.UI
 
         private void Update()
         {
-            timer += Time.deltaTime;
+            timer += Time.unscaledDeltaTime;
 
             group.alpha = Mathf.Lerp(alphaStart, alphaEnd, timer / fadeDuration);
 
