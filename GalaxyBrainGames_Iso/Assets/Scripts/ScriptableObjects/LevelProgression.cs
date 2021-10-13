@@ -2,6 +2,7 @@ using GalaxyBrain.Attributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -55,7 +56,7 @@ namespace GalaxyBrain.Systems
                 }
             }
 
-            return SceneManager.GetSceneByBuildIndex(0).name;
+            return Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(0));
         }
     }
 }
