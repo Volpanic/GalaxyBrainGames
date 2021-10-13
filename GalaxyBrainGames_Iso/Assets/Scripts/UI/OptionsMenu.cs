@@ -18,6 +18,8 @@ namespace GalaxyBrain.UI
         [SerializeField] private Slider soundVolumeSlider;
         [SerializeField] private Slider ambianceVolumeSlider;
 
+        [SerializeField] private Toggle fullscreenToggle;
+
         [Header("Audio")]
         [SerializeField] private AudioMixerGroup musicMixer;
         [SerializeField] private AudioMixerGroup soundEffectMixer;
@@ -28,7 +30,24 @@ namespace GalaxyBrain.UI
         {
             SetInitalSliderValues();
             SetMixerVolume();
+            SetFullscreenToggle();
+            SetFullscreenMode();
             initilized = true;
+        }
+
+        private void SetFullscreenMode()
+        {
+            if (saveData.Data.Fullscreen)
+            {
+                Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, false);
+                Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+            }
+            else Screen.fullScreenMode = FullScreenMode.Windowed;
+        }
+
+        private void SetFullscreenToggle()
+        {
+            fullscreenToggle.isOn = saveData.Data.Fullscreen;
         }
 
         private void SetMixerVolume()
@@ -59,6 +78,13 @@ namespace GalaxyBrain.UI
             if (ambianceVolumeSlider != null) saveData.Data.AmbianceVolume = ambianceVolumeSlider.value / 100;
 
             SetMixerVolume();
+        }
+
+        public void FullscreenToggleChanged()
+        {
+            saveData.Data.Fullscreen = fullscreenToggle.isOn;
+            SetFullscreenMode();
+            saveData.SaveGame();
         }
 
         public void SaveChanges()

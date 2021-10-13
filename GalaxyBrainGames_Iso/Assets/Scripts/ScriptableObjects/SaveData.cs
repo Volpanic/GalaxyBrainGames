@@ -11,11 +11,13 @@ namespace GalaxyBrain.Systems
     [System.Serializable]
     public struct GameData
     {
-        public GameData(float musicVol, float soundVol, float ambVol)
+        public GameData(float musicVol, float soundVol, float ambVol, bool fullscreen)
         {
             MusicVolume = musicVol;
             SoundVolume = soundVol;
             AmbianceVolume = ambVol;
+
+            Fullscreen = fullscreen;
 
             MaxLevelCompleted = 0;
         }
@@ -23,6 +25,8 @@ namespace GalaxyBrain.Systems
         [Range(0f, 1f)] public float MusicVolume;
         [Range(0f, 1f)] public float SoundVolume;
         [Range(0f, 1f)] public float AmbianceVolume;
+
+        public bool Fullscreen;
 
         [Min(0)] public int MaxLevelCompleted;
     }
@@ -56,7 +60,7 @@ namespace GalaxyBrain.Systems
         [ContextMenu("Reset Save Data")]
         public void ResetSave()
         {
-            Data = new GameData(0.5f, 0.5f, 0.5f);
+            Data = new GameData(0.5f, 0.5f, 0.5f,true);
         }
 
         [ContextMenu("Save Data")]
