@@ -36,6 +36,7 @@ namespace GalaxyBrain.Creatures
         [SerializeField] private LayerMask waterLayer;
 
         [SerializeField] private GridPathfinding pathfinding;
+        [SerializeField] private Animator animator;
 
         [HideInInspector] public bool Selected = false;
         [HideInInspector] public bool IsClimbing = false;
@@ -80,6 +81,11 @@ namespace GalaxyBrain.Creatures
             {
                 return controller.bounds;
             }
+        }
+
+        public Animator Animator
+        {
+            get { return animator; }
         }
 
         private PlayerStateMachine stateMachine;

@@ -34,6 +34,12 @@ namespace GalaxyBrain.Creatures.States
         {
             moveTimer = 0;
             currentPathIndex = 0;
+            controller.Animator.SetBool("Walk", true);
+        }
+
+        public override void OnStateEnd()
+        {
+            controller.Animator.SetBool("Walk",false);
         }
 
         public override void OnStateUpdate()
