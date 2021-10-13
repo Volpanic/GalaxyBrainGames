@@ -50,7 +50,7 @@ namespace GalaxyBrain.Pathfinding
                 return false;
             }
 
-            if(IsObjectOnLayer(hit.collider.gameObject,slopeMask))
+            if (IsObjectOnLayer(hit.collider.gameObject, slopeMask))
             {
                 return false;
             }
@@ -59,7 +59,7 @@ namespace GalaxyBrain.Pathfinding
             {
                 //Convert to grid position
                 lastArea = ToGridPos(hit.point + new Vector3(0, 0.1f, 0));
-                Vector3 ownerPos = ToGridPos(owner.position + new Vector3(0,0.5f,0));
+                Vector3 ownerPos = ToGridPos(owner.position + new Vector3(0,0.25f,0));
 
                 if (lastArea != lastCheckedArea)
                 {
@@ -171,16 +171,16 @@ namespace GalaxyBrain.Pathfinding
                     }
 
                     //Phyiscal path the player moves along
-                    if(i+1 < nodePath.Count)
+                    if (i + 1 < nodePath.Count)
                     {
-                        Node next = nodePath[i+1];
+                        Node next = nodePath[i + 1];
 
                         //Check if were changing vertically
-                        if(node.Position.x == next.Position.x && node.Position.z == next.Position.z)
+                        if (node.Position.x == next.Position.x && node.Position.z == next.Position.z)
                         {
-                            if(next.Position.y > node.Position.y)
+                            if (next.Position.y > node.Position.y)
                             {
-                                if(node.IsGround) path.Add(node.Position);
+                                if (node.IsGround) path.Add(node.Position);
 
                                 path.Add(node.Position + (Vector3.up));
                                 UnityEngine.Debug.DrawRay(node.Position, Vector3.up, Color.cyan, 5);
@@ -564,7 +564,7 @@ namespace GalaxyBrain.Pathfinding
             //Make sure if it's water we can swim
             if (!canSwim && neighborNode.IsWater)
             {
-                Collider[] dynamicGround = Physics.OverlapBox(neighborNode.Position + Vector3.down, new Vector3(.25f,.6f,.25f), Quaternion.identity, dynamicPathBlockingMask);
+                Collider[] dynamicGround = Physics.OverlapBox(neighborNode.Position + Vector3.down, new Vector3(.25f, .6f, .25f), Quaternion.identity, dynamicPathBlockingMask);
                 if (dynamicGround.Length <= 0)
                 {
                     return false;
