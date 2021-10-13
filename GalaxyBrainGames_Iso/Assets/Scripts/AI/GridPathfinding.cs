@@ -595,19 +595,6 @@ namespace GalaxyBrain.Pathfinding
                         if (canClimb && neighborNode.IsClimbable) return true;
                         else return false;
                     }
-                    else
-                    {
-                        //Climb down if can
-                        if (isClimbing)
-                        {
-                            //Make sure we move vertically to the ground
-                            if (current.Position.x != neighborNode.Position.x
-                                || current.Position.z != neighborNode.Position.z)
-                            {
-                                //return false;
-                            }
-                        }
-                    }
                 }
             }
 
