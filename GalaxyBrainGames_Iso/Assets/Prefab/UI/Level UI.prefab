@@ -1651,6 +1651,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1020886905633283694}
     m_Modifications:
+    - target: {fileID: 2921405892476179468, guid: 19e731dcdbe59244f8a765ec2341ff6e, type: 3}
+      propertyPath: fullscreenToggle
+      value: 
+      objectReference: {fileID: 2905328748502156830}
     - target: {fileID: 3668314423888094281, guid: 19e731dcdbe59244f8a765ec2341ff6e, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1835,6 +1839,22 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6102997038720276199, guid: 19e731dcdbe59244f8a765ec2341ff6e, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6082416189611164917}
+    - target: {fileID: 6102997038720276199, guid: 19e731dcdbe59244f8a765ec2341ff6e, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: FullscreenToggleChanged
+      objectReference: {fileID: 0}
+    - target: {fileID: 6102997038720276199, guid: 19e731dcdbe59244f8a765ec2341ff6e, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GalaxyBrain.UI.OptionsMenu, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6102997038720276199, guid: 19e731dcdbe59244f8a765ec2341ff6e, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 8044197360679741456, guid: 19e731dcdbe59244f8a765ec2341ff6e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -1887,3 +1907,25 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3668314423888094281, guid: 19e731dcdbe59244f8a765ec2341ff6e, type: 3}
   m_PrefabInstance: {fileID: 8999316178150969593}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6082416189611164917 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2921405892476179468, guid: 19e731dcdbe59244f8a765ec2341ff6e, type: 3}
+  m_PrefabInstance: {fileID: 8999316178150969593}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09339905c54a26d4888db43d313c0cdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2905328748502156830 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6102997038720276199, guid: 19e731dcdbe59244f8a765ec2341ff6e, type: 3}
+  m_PrefabInstance: {fileID: 8999316178150969593}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
