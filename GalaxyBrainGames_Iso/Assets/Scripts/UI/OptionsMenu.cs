@@ -39,7 +39,7 @@ namespace GalaxyBrain.UI
         {
             if (saveData.Data.Fullscreen)
             {
-                Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, false);
+                Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
                 Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
             }
             else Screen.fullScreenMode = FullScreenMode.Windowed;
