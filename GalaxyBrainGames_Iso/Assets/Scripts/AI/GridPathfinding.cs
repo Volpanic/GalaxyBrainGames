@@ -97,6 +97,10 @@ namespace GalaxyBrain.Pathfinding
             visualPath?.Clear();
             UpdateLineRenderer();
             OnPathChanged?.Invoke();
+
+            //Set last area to impossible last area
+            lastArea = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+            lastCheckedArea = lastArea;
         }
 
         public void SetOwner(Transform newOwner, bool climb = false, bool swim = false, Func<Node, Node, Node, Node, bool> nodeCondtions = null)

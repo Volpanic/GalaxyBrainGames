@@ -40,6 +40,7 @@ namespace GalaxyBrain.Managers
                 selectedCreature = WrapNumber(newSelection, 0, creatureData.CreaturesInLevel.Count);
                 creatureData.CreaturesInLevel[selectedCreature].Selected = true;
                 if (oldCreature != selectedCreature) OnSelectedChanged?.Invoke(oldCreature, selectedCreature);
+                pathfinding?.ClearPath();
             }
         }
 
