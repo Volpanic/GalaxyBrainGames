@@ -31,6 +31,8 @@ namespace GalaxyBrain.Managers
 
         public void SelectCreature(int newSelection)
         {
+            if (!creatureData.CreaturesInLevel[selectedCreature].InDefaultState) return;
+
             if (creatureData.CreaturesInLevel != null && creatureData.CreaturesInLevel.Count != 0)
             {
                 int oldCreature = selectedCreature;
@@ -64,6 +66,7 @@ namespace GalaxyBrain.Managers
         // Update is called once per frame
         private void Update()
         {
+
             if (Input.GetKeyDown(KeyCode.Q)) SelectCreature(selectedCreature - 1);
             if (Input.GetKeyDown(KeyCode.E)) SelectCreature(selectedCreature + 1);
 

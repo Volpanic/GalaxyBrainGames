@@ -83,6 +83,11 @@ namespace GalaxyBrain.Creatures
             }
         }
 
+        public bool InDefaultState
+        {
+            get { return stateMachine.InDefaultState; }
+        }
+
         public Animator Animator
         {
             get { return animator; }
