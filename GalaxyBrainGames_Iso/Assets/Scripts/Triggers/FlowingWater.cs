@@ -11,6 +11,7 @@ namespace GalaxyBrain.Creatures
         [SerializeField] private PlayerController.PlayerTypes targetType;
 
         private HashSet<PlayerController> swimmers = new HashSet<PlayerController>();
+        private HashSet<GameObject> blockers = new HashSet<GameObject>();
 
         private void OnTriggerEnter(Collider other)
         {
@@ -27,8 +28,14 @@ namespace GalaxyBrain.Creatures
                     {
                         swimmers.Add(targetCreatures[i]);
                     }
-                    break;
+                    return;
                 }
+            }
+
+            //No creature, so must be a blocker?
+            if(!blockers.Contains(other.gameObject))
+            {
+                blockers.Add(other.gameObject);
             }
         }
 
@@ -47,13 +54,21 @@ namespace GalaxyBrain.Creatures
                     {
                         swimmers.Remove(targetCreatures[i]);
                     }
-                    break;
+                    return;
                 }
+            }
+
+            //No creature, so must be a blocker?
+            if (blockers.Contains(other.gameObject))
+            {
+                blockers.Remove(other.gameObject);
             }
         }
 
         private void Update()
         {
+            if (blockers.Count > 0) return;
+
             foreach(PlayerController swimmer in swimmers)
             {
                 swimmer.ShiftPlayer(transform.forward);
