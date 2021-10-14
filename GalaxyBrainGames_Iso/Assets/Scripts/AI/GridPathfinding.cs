@@ -308,7 +308,7 @@ namespace GalaxyBrain.Pathfinding
             //Check for wall
             Collider[] wall = Physics.OverlapBox(node.Position + new Vector3(0, 0.25f, 0), new Vector3(0.33f, 0.11f, 0.33f), Quaternion.identity, groundMask, QueryTriggerInteraction.Collide);
 
-            bool climbable = (Physics.OverlapBox(node.Position, new Vector3(0.5f, 0.75f, 0.5f), Quaternion.identity, climbableMask, QueryTriggerInteraction.Collide).Length > 0);
+            bool climbable = (Physics.OverlapBox(node.Position, new Vector3(0.5f, 0.5f, 0.5f), Quaternion.identity, climbableMask, QueryTriggerInteraction.Collide).Length > 0);
             bool belowClimbable = (Physics.OverlapBox(node.Position + Vector3.down, new Vector3(0.5f, 0.75f, 0.5f), Quaternion.identity, climbableMask, QueryTriggerInteraction.Collide).Length > 0);
 
             bool sloped = (Physics.OverlapBox(node.Position, new Vector3(0.45f, 0.45f, 0.45f), Quaternion.identity, slopeMask).Length > 0);
@@ -434,9 +434,12 @@ namespace GalaxyBrain.Pathfinding
 
             if (canClimb)
             {
-                if (nodeGrid.ContainsKey(pos)) adjacentNode.Add(nodeGrid[pos]);
-                if (nodeGrid.ContainsKey(pos + Vector3.up)) adjacentNode.Add(nodeGrid[pos + Vector3.up]);
-                if (nodeGrid.ContainsKey(pos + Vector3.down)) adjacentNode.Add(nodeGrid[pos + Vector3.down]);
+                if (current.IsClimbable)
+                {
+                    if (nodeGrid.ContainsKey(pos)) adjacentNode.Add(nodeGrid[pos]);
+                    if (nodeGrid.ContainsKey(pos + Vector3.up)) adjacentNode.Add(nodeGrid[pos + Vector3.up]);
+                    if (nodeGrid.ContainsKey(pos + Vector3.down)) adjacentNode.Add(nodeGrid[pos + Vector3.down]);
+                }
             }
 
             return adjacentNode;
