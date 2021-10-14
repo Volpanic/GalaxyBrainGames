@@ -5511,13 +5511,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1.5
-  m_Radius: 0.35
+  m_Height: 0.75
+  m_Radius: 0.2
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.04
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.25, z: 0}
+  m_Center: {x: 0, y: -0.15, z: 0}
 --- !u!114 &8722944019424231986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12342,15 +12342,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5792408655331486560, guid: f96e0cd36de79ad40bcd02871712fa82, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.7763568e-15
+      value: 0.0000000037252907
       objectReference: {fileID: 0}
     - target: {fileID: 5792408655331486560, guid: f96e0cd36de79ad40bcd02871712fa82, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.65
+      value: -0.6500001
       objectReference: {fileID: 0}
     - target: {fileID: 5792408655331486560, guid: f96e0cd36de79ad40bcd02871712fa82, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.12500001
+      value: -4.440892e-16
       objectReference: {fileID: 0}
     - target: {fileID: 5792408655331486560, guid: f96e0cd36de79ad40bcd02871712fa82, type: 3}
       propertyPath: m_LocalRotation.w
