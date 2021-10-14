@@ -11,7 +11,7 @@ namespace GalaxyBrain.UI
 {
     public class CreatureSelectionGridUI : MonoBehaviour
     {
-        [SerializeField] private HorizontalLayoutGroup layoutGroup;
+        [SerializeField] private VerticalLayoutGroup layoutGroup;
         [SerializeField] private GameObject creatureUIBlockPrefab;
         [SerializeField] private CreatureData creatureData;
 
