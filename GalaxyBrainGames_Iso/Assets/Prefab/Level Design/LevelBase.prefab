@@ -576,10 +576,10 @@ MonoBehaviour:
   pathRenderer: {fileID: 8722944020809297047}
   validPathGradiant:
     serializedVersion: 2
-    key0: {r: 0.28109956, g: 1, b: 0, a: 0}
+    key0: {r: 0.28109956, g: 1, b: 0, a: 1}
     key1: {r: 1, g: 0.8065459, b: 0.41037738, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 1}
-    key3: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 1}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
@@ -593,19 +593,19 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 7132
+    atime1: 52621
     atime2: 52621
-    atime3: 0
+    atime3: 52621
     atime4: 0
     atime5: 0
     atime6: 0
     atime7: 0
     m_Mode: 0
     m_NumColorKeys: 2
-    m_NumAlphaKeys: 3
+    m_NumAlphaKeys: 2
   nonvalidPathGradiant:
     serializedVersion: 2
-    key0: {r: 1, g: 0.055296198, b: 0, a: 0}
+    key0: {r: 1, g: 0.055296198, b: 0, a: 1}
     key1: {r: 1, g: 0.41176474, b: 0.74482316, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 1}
     key3: {r: 0, g: 0, b: 0, a: 0}
@@ -622,7 +622,7 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 7132
+    atime1: 52621
     atime2: 52621
     atime3: 0
     atime4: 0
@@ -631,7 +631,7 @@ MonoBehaviour:
     atime7: 0
     m_Mode: 0
     m_NumColorKeys: 2
-    m_NumAlphaKeys: 3
+    m_NumAlphaKeys: 2
   LookPathPath: 0
 --- !u!1 &8722944019424231990
 GameObject:
@@ -5746,7 +5746,7 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.28109956, g: 1, b: 0, a: 0}
+      key0: {r: 0.28109956, g: 1, b: 0, a: 1}
       key1: {r: 1, g: 0.8065459, b: 0.41037738, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 1}
       key3: {r: 0, g: 0, b: 0, a: 1}
@@ -5763,7 +5763,7 @@ LineRenderer:
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 7132
+      atime1: 52621
       atime2: 52621
       atime3: 60909
       atime4: 64379
@@ -5772,7 +5772,7 @@ LineRenderer:
       atime7: 0
       m_Mode: 0
       m_NumColorKeys: 2
-      m_NumAlphaKeys: 3
+      m_NumAlphaKeys: 2
     numCornerVertices: 4
     numCapVertices: 4
     alignment: 0
