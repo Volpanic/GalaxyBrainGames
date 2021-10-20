@@ -24,6 +24,7 @@ namespace GalaxyBrain.Interactables
         private Camera cam;
 
         private bool moving = false;
+        private bool pathLocked = false;
         private Vector3 startPos = Vector3.zero;
         private Vector3 targetPos = Vector3.zero;
         private Vector3 oldMovement = Vector3.zero;
@@ -33,6 +34,11 @@ namespace GalaxyBrain.Interactables
         private bool viablePushPath = true;
         private bool firstSnap = true;
         private bool firstLand = true;
+
+        public bool PathLocked
+        {
+            get { return pathLocked; }
+        }
 
         public void UpdatePlane()
         {
@@ -179,7 +185,8 @@ namespace GalaxyBrain.Interactables
                         return endPoint.magnitude;
                     }
 
-                    StartPush(endPoint);
+                    targetPos = (endPoint);
+                    pathLocked = true;
                     return endPoint.magnitude;
                 }
 
@@ -250,16 +257,18 @@ namespace GalaxyBrain.Interactables
             pushBlockRenderer.color = (viablePushPath) ? ViablePathColor : UnvialbePathColor; 
         }
 
-        public void StartPush(Vector3 localEndPoint)
+        public void StartPush()
         {
             startPos = Vector3.zero;
-            targetPos = localEndPoint;
             pushTimer = 0;
             oldMovement = Vector3.zero;
             moving = true;
             firstLand = false;
             firstSnap = false;
 
+            UpdateTileIdecator(Vector3.zero, 0);
+
+            pathLocked = false;
             pushMaxTime = 1;
         }
     }

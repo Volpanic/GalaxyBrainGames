@@ -28,8 +28,14 @@ namespace GalaxyBrain.Creatures.Abilities
         {
             if(done)
             {
+                if (controller.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
+                {
+                    controller.Animator.SetBool("Push", false);
+                    block?.StartPush();
+                    return AbilityDoneType.Done;
+                }
+
                 if (canceled) return AbilityDoneType.Canceled;
-                return AbilityDoneType.Done;
             }
 
             return AbilityDoneType.NotDone;
@@ -41,6 +47,7 @@ namespace GalaxyBrain.Creatures.Abilities
             block = null;
             done = false;
             buffer = false;
+            controller.Animator.SetBool("Push", false);
         }
 
         public void OnAbilityStart(PlayerController controller, Interactalbe interactable, Vector3 interactDirection)
@@ -57,15 +64,23 @@ namespace GalaxyBrain.Creatures.Abilities
 
         public void OnAbilityUpdate()
         {
-            if (buffer)
+            if (buffer && !done)
             {
                 float blockMagnitude = block.UpdateAbility(direction);
 
-                if (blockMagnitude >= 1) done = true;
-                if (blockMagnitude < 0)
+                if (block.PathLocked)
                 {
-                    done = true;
-                    canceled = true;
+                    if (blockMagnitude >= 1)
+                    {
+                        done = true;
+                        controller.Animator.SetBool("Push", true);
+                    }
+
+                    if (blockMagnitude < 0)
+                    {
+                        done = true;
+                        canceled = true;
+                    }
                 }
             }
             buffer = true;
