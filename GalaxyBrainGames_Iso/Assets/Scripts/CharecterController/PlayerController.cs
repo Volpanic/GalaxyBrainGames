@@ -154,6 +154,15 @@ namespace GalaxyBrain.Creatures
             return Quaternion.LookRotation(lookAt - transform.position);
         }
 
+        public Quaternion GetRotationOfDirection(Vector3 direction)
+        {
+            if (direction.x == 0 && direction.z == 0) return targetRotation;
+            Vector3 lookAt = direction + transform.position;
+            lookAt.y = transform.position.y;
+
+            return Quaternion.LookRotation(lookAt - transform.position);
+        }
+
         public void AttemptInteract(Interactalbe interact)
         {
             if (stateMachine.InDefaultState)

@@ -60,6 +60,9 @@ namespace GalaxyBrain.Creatures.States
                     pos2.y = 0;
 
                     Vector3 interactDirection = (pos - pos2).normalized;
+
+                    controller.TargetRotation = controller.GetRotationOfDirection(interactDirection);
+
                     abilites[i].OnAbilityStart(controller, interact,interactDirection.MakeCardinal());
                     currentRunningAbility = i;
                     return true;
