@@ -24,6 +24,8 @@ namespace GalaxyBrain.Creatures.States
         private bool consumeActionPoints = false;
         //private ActionPointData actionPointData;
 
+        private const float TURN_FORGIVENESS = 0.98f;
+
         public bool ConsumeActionPoints
         {
             get { return consumeActionPoints; }
@@ -54,6 +56,9 @@ namespace GalaxyBrain.Creatures.States
 
         private void MoveAlongPath()
         {
+            //Don't move horizontally if we're rotating to face a new direction
+            if (Quaternion.Dot(controller.TargetRotation, controller.transform.rotation) < TURN_FORGIVENESS) return;
+
             //Move the player along the path
             moveTimer += Time.deltaTime;
 
