@@ -36,6 +36,19 @@ namespace GalaxyBrain.Utility.Extnesion
             return sinPosition.Remap(-1f,1f,from,to);
         }
 
+        public static float SinWave(float from, float to, float duration, float offset, float timer)
+        {
+            float normalizedTime = (timer / duration);
+
+            //apply offset
+            normalizedTime = (normalizedTime + offset).Wrap(0f, 1f);
+
+            float sinPosition = Mathf.Sin(normalizedTime * (Mathf.PI * 2f));
+
+            return sinPosition.Remap(-1f, 1f, from, to);
+        }
+
+
         public static Vector3 MakeCardinal(this Vector3 direction)
         {
             float absX = Mathf.Abs(direction.x);
