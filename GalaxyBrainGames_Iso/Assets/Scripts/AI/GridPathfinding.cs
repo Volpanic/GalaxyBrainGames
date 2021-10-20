@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using UnityEngine;
 
 namespace GalaxyBrain.Pathfinding
@@ -27,7 +28,7 @@ namespace GalaxyBrain.Pathfinding
         private Vector3 lastArea;
         private Vector3 lastCheckedArea;
 
-        private List<Vector3> path = new List<Vector3>();
+        private List<PathNodeInfo> path = new List<PathNodeInfo>();
         private List<Vector3> visualPath = new List<Vector3>();
         private Transform owner;
         private Vector3 gridOffset;
@@ -121,7 +122,7 @@ namespace GalaxyBrain.Pathfinding
         }
 
         //Path info
-        public List<Vector3> GetPath()
+        public List<PathNodeInfo> GetPath()
         {
             return (viablePath) ? path : null;
         }
@@ -129,7 +130,7 @@ namespace GalaxyBrain.Pathfinding
         public Vector3 GetPathEndPoint()
         {
             if (!viablePath || path.Count <= 0) return owner.position;
-            else return path[path.Count - 1];
+            else return path[path.Count - 1].Position;
         }
 
         public int GetPathCount()
@@ -140,12 +141,12 @@ namespace GalaxyBrain.Pathfinding
 
         private void UpdatePath(List<Node> nodePath)
         {
-            path = new List<Vector3>();
+            path = new List<PathNodeInfo>();
             visualPath = new List<Vector3>();
 
             if (nodePath != null && nodePath.Count > 0)
             {
-                path.Add(owner.position);
+                path.Add(new PathNodeInfo(CreateAndStoreNode(owner.position), false, false, true));
                 visualPath.Add(owner.position);
 
                 for (int i = 0; i < nodePath.Count; i++)
@@ -161,7 +162,6 @@ namespace GalaxyBrain.Pathfinding
                         dir = dir.normalized;
 
                         visualPath.Add(new Vector3(node.Position.x, oldPos.y, node.Position.z) - (dir * 0.5f));
-
 
                         if (i + 1 < nodePath.Count)
                         {
@@ -184,24 +184,24 @@ namespace GalaxyBrain.Pathfinding
                         {
                             if (next.Position.y > node.Position.y)
                             {
-                                if (node.IsGround) path.Add(node.Position);
+                                if (node.IsGround) path.Add(new PathNodeInfo(node,true,false,true));
 
-                                path.Add(node.Position + (Vector3.up));
+                                path.Add(new PathNodeInfo(CreateAndStoreNode(node.Position + (Vector3.up)),true,false,false));
                                 UnityEngine.Debug.DrawRay(node.Position, Vector3.up, Color.cyan, 5);
                             }
                             else
                             {
-                                path.Add(node.Position);
+                                path.Add(new PathNodeInfo(node, false, false, true));
                             }
                         }
                         else
                         {
-                            path.Add(node.Position);
+                            path.Add(new PathNodeInfo(node, false, false, true));
                         }
                     }
                     else
                     {
-                        path.Add(node.Position);
+                        path.Add(new PathNodeInfo(node, false, false, true));
                     }
                 }
             }
@@ -453,7 +453,7 @@ namespace GalaxyBrain.Pathfinding
             viablePath = false;
 
             List<Node> openList = new List<Node>();
-            HashSet<Node> closedList = new HashSet<Node>();
+            HashSet<PathNodeInfo> closedList = new HashSet<PathNodeInfo>();
 
             Node startNode = nodeGrid[p1];
             Node targetNode = nodeGrid[p2];
@@ -502,7 +502,7 @@ namespace GalaxyBrain.Pathfinding
                 }
 
                 openList.Remove(current);
-                closedList.Add(current);
+                closedList.Add(new PathNodeInfo(current,isClimbing,current.IsWater,true));
 
                 if (current == targetNode)
                 {
@@ -512,7 +512,7 @@ namespace GalaxyBrain.Pathfinding
                 foreach (Node neighborNode in GetNeighborNodes(current))
                 {
                     //Check node conditions to make sure we can traverse though them.
-                    if (closedList.Contains(neighborNode) || !CheckIfNodeIsViable(startNode, targetNode, current, neighborNode))
+                    if (closedList.Any((x) => x.ReferenceNode == neighborNode) || !CheckIfNodeIsViable(startNode, targetNode, current, neighborNode))
                     {
                         continue;
                     }
