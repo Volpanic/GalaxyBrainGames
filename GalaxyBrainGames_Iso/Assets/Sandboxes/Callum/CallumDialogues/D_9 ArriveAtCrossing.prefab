@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &5619490480748096091
+--- !u!1001 &4367947777940998706
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -93,54 +93,79 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1503807423637055562, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: m_Name
-      value: Dialouge
+      value: D_9 ArriveAtCrossing
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.size
-      value: 8
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[0].DialougeText
-      value: 'Are you lost?
+      value: 'We made it! I didn''t think - I wasn''t sure we''d get this far. But
+        we''re here.
 
 '
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[1].DialougeText
-      value: "It's been a long time since I saw anyone like you. A human. \r\n"
+      value: 'That''s the crossing point. I know it doesn''t look like much now,
+        but - Oh!
+
+'
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[2].DialougeText
-      value: "Do you know how you got here?\r"
+      value: "We... we don't have much time, I guess. But I need you to trust me
+        for this to work. \r\n"
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[3].DialougeText
-      value: ...
+      value: "I just have to get you there in time.  \r\n"
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[4].DialougeText
-      value: "Guess not. \r\n"
-      objectReference: {fileID: 0}
-    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
-      propertyPath: playingSequence.Array.data[5].DialougeText
-      value: "That's okay. It's not your fault humans don't teach anyone anything
-        about *important* things like magic. \r\n"
-      objectReference: {fileID: 0}
-    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
-      propertyPath: playingSequence.Array.data[6].DialougeText
       value: ...
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[5].DialougeText
+      value: 'We''re almost there. '
+      objectReference: {fileID: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[6].DialougeText
+      value: "Because the wilds were alive! The stories grew and so did we. \r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[7].DialougeText
-      value: "You want to go back home, right? I can help you. \r\n"
+      value: 'But we were cut off, couldn''t cross over as easy anymore. And they...
+        left us behind. '
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[8].DialougeText
-      value: "Do you know how you got here?\r"
+      value: It wasn't all at once. But that was when everyone else started to fade.
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[9].DialougeText
-      value: "Do you know how you got here?\r"
+      value: "I was getting to that! You could ask the Wilder. \rThis one looks strong."
+      objectReference: {fileID: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[3].SpeakerPortrait
+      value: 
+      objectReference: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[4].SpeakerPortrait
+      value: 
+      objectReference: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[5].SpeakerPortrait
+      value: 
+      objectReference: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[6].SpeakerPortrait
+      value: 
+      objectReference: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[0].NormalizedPortraitPosition
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b762a03e787cbb04aa363042e8495c53, type: 3}

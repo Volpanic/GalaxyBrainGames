@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &5619490480748096091
+--- !u!1001 &4367947777940998706
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -93,54 +93,83 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1503807423637055562, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: m_Name
-      value: Dialouge
+      value: D_11 CantDoThis
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.size
-      value: 8
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[0].DialougeText
-      value: 'Are you lost?
+      value: The wilders...
+      objectReference: {fileID: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[1].DialougeText
+      value: They came to - to see you off! I - I guess they really did like you,
+        huh?
+      objectReference: {fileID: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[2].DialougeText
+      value: They know I... I can't stop now. They know that. It's the only way we
+        -
+      objectReference: {fileID: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[3].DialougeText
+      value: (Wilder ROARS)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[4].DialougeText
+      value: 'What?
 
 '
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
-      propertyPath: playingSequence.Array.data[1].DialougeText
-      value: "It's been a long time since I saw anyone like you. A human. \r\n"
-      objectReference: {fileID: 0}
-    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
-      propertyPath: playingSequence.Array.data[2].DialougeText
-      value: "Do you know how you got here?\r"
-      objectReference: {fileID: 0}
-    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
-      propertyPath: playingSequence.Array.data[3].DialougeText
-      value: ...
-      objectReference: {fileID: 0}
-    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
-      propertyPath: playingSequence.Array.data[4].DialougeText
-      value: "Guess not. \r\n"
-      objectReference: {fileID: 0}
-    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[5].DialougeText
-      value: "That's okay. It's not your fault humans don't teach anyone anything
-        about *important* things like magic. \r\n"
+      value: (WILDER CHIRPS)
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[6].DialougeText
-      value: ...
+      value: Just... relax and let me in.
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[7].DialougeText
-      value: "You want to go back home, right? I can help you. \r\n"
+      value: Just... relax and let me in.
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[8].DialougeText
-      value: "Do you know how you got here?\r"
+      value: Just... relax and let me in.
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[9].DialougeText
-      value: "Do you know how you got here?\r"
+      value: "I was getting to that! You could ask the Wilder. \rThis one looks strong."
+      objectReference: {fileID: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[3].SpeakerPortrait
+      value: 
+      objectReference: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[4].SpeakerPortrait
+      value: 
+      objectReference: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[5].SpeakerPortrait
+      value: 
+      objectReference: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[6].SpeakerPortrait
+      value: 
+      objectReference: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[7].SpeakerPortrait
+      value: 
+      objectReference: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[8].SpeakerPortrait
+      value: 
+      objectReference: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[0].NormalizedPortraitPosition
+      value: 0.8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
