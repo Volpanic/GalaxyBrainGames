@@ -1,11 +1,12 @@
 using GalaxyBrain.Creatures.Abilities;
 using GalaxyBrain.Systems;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 namespace GalaxyBrain.Creatures
 {
+    /// <summary>
+    /// Controls breaking creature specific abilities and effects.
+    /// </summary>
     public class BreakingCreature : MonoBehaviour
     {
         [SerializeField] private PlayerController controller;

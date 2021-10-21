@@ -1,12 +1,11 @@
-using GalaxyBrain.Creatures.Abilities;
 using GalaxyBrain.Systems;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GalaxyBrain.Creatures
 {
+    /// <summary>
+    /// Controls child creature specific abilities and effects.
+    /// </summary>
     public class ChildCreature : MonoBehaviour
     {
         [SerializeField] private PlayerController controller;
@@ -16,11 +15,5 @@ namespace GalaxyBrain.Creatures
         {
             creatureData.LogCreature(controller);
         }
-
-        private void Start()
-        {
-
-        }
-
     }
 }

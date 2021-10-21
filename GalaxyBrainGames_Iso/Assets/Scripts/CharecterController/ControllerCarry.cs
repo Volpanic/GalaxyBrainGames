@@ -1,11 +1,12 @@
 using GalaxyBrain.Attributes;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace GalaxyBrain.Creatures
 {
+    /// <summary>
+    /// Allows character controllers to carry other character controllers
+    /// </summary>
     public class ControllerCarry : MonoBehaviour
     {
         [SerializeField] private CharacterController controller;
@@ -35,8 +36,7 @@ namespace GalaxyBrain.Creatures
             oldPos = transform.position;
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
             velocity = controller.velocity;
             FindPassengers();
@@ -47,9 +47,11 @@ namespace GalaxyBrain.Creatures
 
         private void MovePassengers()
         {
+            //Make sure we have moved at all
             Vector3 posDifference = transform.position - oldPos;
             if (Mathf.Abs(posDifference.x) <= 0.01f && Mathf.Abs(posDifference.z) <= 0.01f) return;
 
+            //Loop through all passengers and move them to the top of our charecter controller
             if (controller.velocity.magnitude != 0)
             {
                 for (int i = 0; i < passengers.Count; i++)
@@ -63,13 +65,16 @@ namespace GalaxyBrain.Creatures
 
         private void FindPassengers()
         {
+            //Get all colliders above us
             Collider[] colls = Physics.OverlapBox(controller.bounds.center + (Vector3.up * 0.5f), controller.bounds.extents, transform.rotation);
             passengers.Clear();
 
+            //Check if they have character controllers
             for (int i = 0; i < colls.Length; i++)
             {
                 if (colls[i].gameObject == gameObject) continue;
 
+                //Find a character controller, or get a cached one if it's a repeat passenger
                 CharacterController cc = null;
                 if (!cachedControllers.ContainsKey(colls[i].gameObject))
                 {

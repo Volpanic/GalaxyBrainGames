@@ -1,11 +1,13 @@
-using GalaxyBrain.Creatures;
 using GalaxyBrain.Interactables;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GalaxyBrain.Creatures.Abilities
 {
+    /// <summary>
+    /// Ability that allows the player to line up the direction
+    /// the block needs to be pushed in and distance.
+    /// Plays an animation on mouse click and then pushed the block.
+    /// </summary>
     public class PushBlockAbility : ICreatureAbility
     {
         private Interactalbe currentObject;

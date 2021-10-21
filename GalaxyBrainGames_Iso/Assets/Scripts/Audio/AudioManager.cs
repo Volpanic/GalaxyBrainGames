@@ -1,15 +1,19 @@
 using GalaxyBrain.Utility;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace GalaxyBrain.Audio
 {
+    /// <summary>
+    /// A component that manages audio in the game
+    /// This component is a singleton created when the Instance is called in the getter
+    /// This allow for easy playback of sound effects and switching of music.
+    /// </summary>
     public class AudioManager : MonoBehaviour
     {
-        public Dictionary<string, AudioClip> soundLookup;
-        public ObjectPooler<AudioSource> objectPooler;
+        public Dictionary<string, AudioClip> SoundLookup;
+        public ObjectPooler<AudioSource> ObjectPooler;
 
         private static AudioManager instance;
 
@@ -43,10 +47,10 @@ namespace GalaxyBrain.Audio
 
         private void Awake()
         {
-            objectPooler = new ObjectPooler<AudioSource>(20, true);
+            ObjectPooler = new ObjectPooler<AudioSource>(20, true);
 
             //Setup music source
-            musicSource = objectPooler.GetRawGameobject();
+            musicSource = ObjectPooler.GetRawGameobject();
             musicSource.gameObject.name = "Music Source";
 
             musicSource.loop = true;
@@ -54,7 +58,7 @@ namespace GalaxyBrain.Audio
 
         public AudioSource GetSoundObject()
         {
-            ObjectPooler<AudioSource>.ObjectPoolItem go = objectPooler.GetPooledObject();
+            ObjectPooler<AudioSource>.ObjectPoolItem go = ObjectPooler.GetPooledObject();
 
             return go.component;
         }
@@ -63,6 +67,7 @@ namespace GalaxyBrain.Audio
         {
             AudioSource source = GetSoundObject();
 
+            //Set pooled objects info
             source.clip = sound.Sound;
             source.outputAudioMixerGroup = sound.SoundMixer;
             source.volume = sound.Volume;
@@ -77,6 +82,7 @@ namespace GalaxyBrain.Audio
         {
             if (sound.Sound != musicSource.clip)
             {
+                //Set music sources info
                 musicSource.clip = sound.Sound;
                 musicSource.volume = sound.Volume;
                 musicSource.outputAudioMixerGroup = sound.SoundMixer;
@@ -86,6 +92,7 @@ namespace GalaxyBrain.Audio
             return musicSource;
         }
 
+        // Used to disable audio sources after there sound has played.
         private IEnumerator DeactivateAfteTime(GameObject obj,float time)
         {
             yield return new WaitForSeconds(time);

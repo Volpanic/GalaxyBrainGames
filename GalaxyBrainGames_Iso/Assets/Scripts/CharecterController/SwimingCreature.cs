@@ -1,13 +1,11 @@
 using GalaxyBrain.Systems;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace GalaxyBrain.Creatures
 {
-
+    /// <summary>
+    /// Controls swimming creature specific abilities and effects.
+    /// </summary>
     public class SwimingCreature : MonoBehaviour
     {
         [Header("References")]

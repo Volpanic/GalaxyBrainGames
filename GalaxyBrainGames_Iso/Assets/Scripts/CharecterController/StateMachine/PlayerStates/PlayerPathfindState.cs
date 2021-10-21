@@ -1,10 +1,12 @@
 using GalaxyBrain.Pathfinding;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GalaxyBrain.Creatures.States
 {
+    /// <summary>
+    /// Moves along the a desired path, then returns
+    /// to the default state when compelted.
+    /// </summary>
     public class PlayerPathfindState : PlayerState
     {
         public PlayerPathfindState(PlayerController controller, float moveSpeed) : base(controller)

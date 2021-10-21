@@ -5,13 +5,14 @@ using GalaxyBrain.Interactables;
 using GalaxyBrain.Pathfinding;
 using GalaxyBrain.Systems;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace GalaxyBrain.Creatures
 {
+    /// <summary>
+    /// Controls the grid based movement through the games scene
+    /// </summary>
     [System.Serializable, SelectionBase]
     public class PlayerController : MonoBehaviour
     {

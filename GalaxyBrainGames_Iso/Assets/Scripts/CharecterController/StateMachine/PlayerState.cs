@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace GalaxyBrain.Creatures.States
 {
+    /// <summary>
+    /// Base class for different states in the players state machine
+    /// </summary>
     public abstract class PlayerState
     {
         protected PlayerController controller;

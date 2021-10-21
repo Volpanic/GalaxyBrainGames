@@ -1,12 +1,17 @@
 using GalaxyBrain.Creatures.Abilities;
 using GalaxyBrain.Interactables;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GalaxyBrain.Utility.Extnesion;
 
 namespace GalaxyBrain.Creatures.States
 {
+    /// <summary>
+    /// Handles player abilities (pushing blocks, pulling levers etc)
+    /// Checks if they have a ICreatureAbility the meets the criteria
+    /// of the interacted with object, the runs ICreatureAbility's events
+    /// when necessary.
+    /// </summary>
     public class PlayerAbilityState : PlayerState
     {
         private int currentRunningAbility = -1;

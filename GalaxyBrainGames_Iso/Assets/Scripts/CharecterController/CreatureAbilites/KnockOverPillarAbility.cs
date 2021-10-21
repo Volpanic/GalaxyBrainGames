@@ -1,11 +1,13 @@
-using GalaxyBrain.Creatures;
 using GalaxyBrain.Interactables;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GalaxyBrain.Creatures.Abilities
 {
+    /// <summary>
+    /// Controls knocking over pillars,
+    /// plays and animation than knock over the pillar
+    /// when the animation is nearly done.
+    /// </summary>
     public class KnockOverPillarAbility : ICreatureAbility
     {
         private Pushable pillar;

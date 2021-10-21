@@ -1,10 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
 namespace GalaxyBrain.Audio
 {
+    /// <summary>
+    /// Used to store audio clips and easily play them.
+    /// Also allows for sounds to be changed without having
+    /// to replace all links to it.
+    /// </summary>
     [CreateAssetMenu]
     public class AudioData : ScriptableObject
     {
