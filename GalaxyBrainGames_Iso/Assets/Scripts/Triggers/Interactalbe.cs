@@ -59,6 +59,7 @@ namespace GalaxyBrain.Interactables
                         OnInteracted.Invoke();
                         activated = true;
                         canBeInteractedWith = true;
+                        if (consumeActionPoint) x.ConsumeActionPoint();
                     } );
 
                 }
@@ -66,6 +67,7 @@ namespace GalaxyBrain.Interactables
                 {
                     OnInteracted.Invoke();
                     activated = true;
+                    if (consumeActionPoint) player.ConsumeActionPoint();
                 }
             }
         }
