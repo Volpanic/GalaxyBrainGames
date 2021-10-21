@@ -183,6 +183,8 @@ namespace GalaxyBrain.UI
 
             targetPortraitPositon = new Vector3(xPos, portraitTransform.position.y, portraitTransform.position.z);
 
+            dialougePortrait.sprite = sequence.SpeakerPortrait;
+
             portraitTimer = 0;
         }
 

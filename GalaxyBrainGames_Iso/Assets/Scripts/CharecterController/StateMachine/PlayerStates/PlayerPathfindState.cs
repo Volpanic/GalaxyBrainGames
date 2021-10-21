@@ -1,3 +1,4 @@
+using GalaxyBrain.Pathfinding;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,12 +18,15 @@ namespace GalaxyBrain.Creatures.States
         /// v3 = PreviousGridCellPos, v3 = new nextGridCellpos
         /// </summary>
 
-        private Vector3[] path;
+        private PathNodeInfo[] path;
         private float moveTimer = 0;
         private int currentPathIndex = 0;
         private float moveMaxTime = 0;
         private bool consumeActionPoints = false;
         //private ActionPointData actionPointData;
+
+        private const float TURN_FORGIVENESS = 0.98f;
+        private const float CLIMB_SPEED_MODIFIER = 2f;
 
         public bool ConsumeActionPoints
         {
@@ -40,6 +44,9 @@ namespace GalaxyBrain.Creatures.States
         public override void OnStateEnd()
         {
             controller.Animator.SetBool("Walk",false);
+
+            if (controller.PlayerType == PlayerController.PlayerTypes.Child)
+                controller.Animator.SetBool("Climb",false);
         }
 
         public override void OnStateUpdate()
@@ -47,22 +54,40 @@ namespace GalaxyBrain.Creatures.States
             MoveAlongPath();
         }
 
-        public void SetPath(Vector3[] path)
+        public void SetPath(PathNodeInfo[] path)
         {
             this.path = path;
         }
 
         private void MoveAlongPath()
         {
+
+            //Don't move horizontally if we're rotating to face a new direction
+            if (Quaternion.Dot(controller.TargetRotation, controller.transform.rotation) < TURN_FORGIVENESS) return;
+
+            //Make sure index is in array
+            if (currentPathIndex + 1 >= path.Length)
+            {
+                controller.PathInterval(path[currentPathIndex - 1].Position, path[currentPathIndex].Position);
+                StopMoveAlongPath();
+                return;
+            }
+
             //Move the player along the path
             moveTimer += Time.deltaTime;
 
             // Get current point and the next point on path
-            Vector3 oldPos = path[currentPathIndex];
-            Vector3 targetPos = path[currentPathIndex + 1];
+            Vector3 oldPos = path[currentPathIndex].Position;
+            Vector3 targetPos = path[currentPathIndex + 1].Position;
+
+            //ClimbAnimation
+            if(controller.PlayerType == PlayerController.PlayerTypes.Child)
+                controller.Animator.SetBool("Climb", path[currentPathIndex].IsClimbing);
 
             //Lerp between the two points
-            Vector3 transitionalPos = Vector3.Lerp(oldPos, targetPos, moveTimer / moveMaxTime);
+            float moveTime = moveMaxTime;
+            if (path[currentPathIndex].IsClimbing) moveTime *= CLIMB_SPEED_MODIFIER;
+            Vector3 transitionalPos = Vector3.Lerp(oldPos, targetPos, moveTimer / moveTime);
 
             //Find how much we need to move to get to that point
             Vector3 velocity = transitionalPos - controller.transform.position;
@@ -70,22 +95,22 @@ namespace GalaxyBrain.Creatures.States
             controller.Controller.Move(velocity);
             controller.TargetRotation = controller.GetDirectionOfMovement();
 
-            if (moveTimer >= moveMaxTime)
+            if (moveTimer >= moveTime)
             {
+                if (consumeActionPoints && path[currentPathIndex + 1].ConsumePoint) controller.ConsumeActionPoint(1);
                 currentPathIndex++;
-                if (consumeActionPoints) controller.ConsumeActionPoint(1);
                 moveTimer = 0;
 
-                // Stop if we wan't to move the player manually
+                // Stop if we want to move the player manually
                 // or we've reached the end of the path
                 if (currentPathIndex + 1 >= path.Length)
                 {
-                    controller.PathInterval(path[currentPathIndex - 1], path[currentPathIndex]);
+                    controller.PathInterval(path[currentPathIndex - 1].Position, path[currentPathIndex].Position);
                     StopMoveAlongPath();
                 }
                 else
                 {
-                    controller.PathInterval(path[currentPathIndex - 1], path[currentPathIndex]);
+                    controller.PathInterval(path[currentPathIndex - 1].Position, path[currentPathIndex].Position);
                 }
 
                 if(controller.InteruptNextPathInterval)

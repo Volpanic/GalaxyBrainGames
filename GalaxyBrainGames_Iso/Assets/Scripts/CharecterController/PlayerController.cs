@@ -83,6 +83,11 @@ namespace GalaxyBrain.Creatures
             }
         }
 
+        public bool InDefaultState
+        {
+            get { return stateMachine.InDefaultState; }
+        }
+
         public Animator Animator
         {
             get { return animator; }
@@ -149,6 +154,15 @@ namespace GalaxyBrain.Creatures
             return Quaternion.LookRotation(lookAt - transform.position);
         }
 
+        public Quaternion GetRotationOfDirection(Vector3 direction)
+        {
+            if (direction.x == 0 && direction.z == 0) return targetRotation;
+            Vector3 lookAt = direction + transform.position;
+            lookAt.y = transform.position.y;
+
+            return Quaternion.LookRotation(lookAt - transform.position);
+        }
+
         public void AttemptInteract(Interactalbe interact)
         {
             if (stateMachine.InDefaultState)
@@ -168,10 +182,13 @@ namespace GalaxyBrain.Creatures
         {
             if (stateMachine.InDefaultState)
             {
-                List<Vector3> targetList = new List<Vector3>();
+                List<PathNodeInfo> targetList = new List<PathNodeInfo>();
 
-                targetList.Add(pathfinding.ToGridPos(transform.position));
-                targetList.Add(pathfinding.ToGridPos(transform.position) + offset);
+                PathNodeInfo startNode = new PathNodeInfo(pathfinding.CreateAndStoreNode(pathfinding.ToGridPos(transform.position)), false, false, false);
+                PathNodeInfo endNode = new PathNodeInfo(pathfinding.CreateAndStoreNode(pathfinding.ToGridPos(transform.position) + offset), false, false, false);
+
+                targetList.Add(startNode);
+                targetList.Add(endNode);
 
                 StartMoveAlongPath(targetList, false);
             }
@@ -183,10 +200,13 @@ namespace GalaxyBrain.Creatures
 
         public void MoveToTarget(Vector3 target)
         {
-            List<Vector3> targetList = new List<Vector3>();
+            List<PathNodeInfo> targetList = new List<PathNodeInfo>();
 
-            targetList.Add(pathfinding.ToGridPos(transform.position));
-            targetList.Add(pathfinding.ToGridPos(target));
+            PathNodeInfo startNode = new PathNodeInfo(pathfinding.CreateAndStoreNode(pathfinding.ToGridPos(transform.position)), false, false, false);
+            PathNodeInfo endNode = new PathNodeInfo(pathfinding.CreateAndStoreNode(pathfinding.ToGridPos(target)), false, false, false);
+
+            targetList.Add(startNode);
+            targetList.Add(endNode);
 
             StartMoveAlongPath(targetList, false);
         }
@@ -196,7 +216,7 @@ namespace GalaxyBrain.Creatures
             actionPointData?.SubtractActionPoint(transform.position,amount);
         }
 
-        public void StartMoveAlongPath(List<Vector3> targetList, bool consumeActionPoints)
+        public void StartMoveAlongPath(List<PathNodeInfo> targetList, bool consumeActionPoints)
         {
             if (targetList == null || targetList.Count < 2) return;
 
