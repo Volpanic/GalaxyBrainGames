@@ -5,6 +5,7 @@ using GalaxyBrain.Pathfinding;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace GalaxyBrain.Systems
@@ -63,6 +64,9 @@ namespace GalaxyBrain.Systems
         {
             if (CreaturesInLevel == null) CreaturesInLevel = new List<PlayerController>();
             CreaturesInLevel.Add(creature);
+
+            //Sort Creatures
+            CreaturesInLevel = CreaturesInLevel.OrderBy((x) => x.PlayerType).ToList();
 
             CleanCreatureData();
         }
