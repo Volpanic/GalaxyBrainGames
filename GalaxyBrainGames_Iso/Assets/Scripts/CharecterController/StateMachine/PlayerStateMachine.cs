@@ -1,10 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace GalaxyBrain.Creatures.States
 {
+    /// <summary>
+    /// Handles management and transitioning of the players state.
+    /// </summary>
     public class PlayerStateMachine
     {
         private Dictionary<Type, PlayerState> stateLookup;

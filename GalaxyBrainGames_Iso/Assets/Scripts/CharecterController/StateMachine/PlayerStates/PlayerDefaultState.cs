@@ -1,11 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using GalaxyBrain.Pathfinding;
-using System;
 
 namespace GalaxyBrain.Creatures.States
 {
+    /// <summary>
+    /// The players default state, handles finding a path to eventually move 
+    /// on in the pathfind state, also prevents the water creature from
+    /// leaving water if they're carrying a charecter controller;
+    /// </summary>
     public class PlayerDefaultState : PlayerState
     {
         private GridPathfinding pathfinding;
