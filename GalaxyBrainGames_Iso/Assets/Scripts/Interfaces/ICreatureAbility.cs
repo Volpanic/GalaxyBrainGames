@@ -1,7 +1,4 @@
-using GalaxyBrain.Creatures;
 using GalaxyBrain.Interactables;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GalaxyBrain.Creatures.Abilities
@@ -13,6 +10,10 @@ namespace GalaxyBrain.Creatures.Abilities
         Canceled
     }
 
+    /// <summary>
+    /// Interface for creature abilities to implement useful events
+    /// and notify the player on the abilities state.
+    /// </summary>
     public interface ICreatureAbility
     {
         public bool OnAbilityCheckCondition(Interactalbe interactable); // Used to check if we should use this ability

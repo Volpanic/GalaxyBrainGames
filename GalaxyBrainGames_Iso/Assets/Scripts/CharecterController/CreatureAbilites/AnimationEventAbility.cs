@@ -2,12 +2,16 @@
 using GalaxyBrain.Creatures.Abilities;
 using GalaxyBrain.Interactables;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GalaxyBrain.Assets.Scripts.CharecterController.CreatureAbilites
 {
+    /// <summary>
+    /// An ability that can be used in place of different things
+    /// currently breaking block and pulling levers.
+    /// Simply set a animation bool to true than runs and event 
+    /// after a certain point in the animation is reached.
+    /// </summary>
     class AnimationEventAbility : ICreatureAbility
     {
         private string animationBoolName = "";
