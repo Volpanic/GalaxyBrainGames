@@ -248,5 +248,11 @@ namespace GalaxyBrain.Creatures
             animationEventAbility.SetEventInfo(boolName,normalizedTimeForEvent,onEvent);
             abilityState.ForceAbility(interaction,animationEventAbility);
         }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireCube(pathfinding.ToGridPos(transform.position), Vector3.one);
+        }
     }
 }
