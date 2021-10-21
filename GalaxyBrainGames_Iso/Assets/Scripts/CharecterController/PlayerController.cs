@@ -1,3 +1,4 @@
+using GalaxyBrain.Assets.Scripts.CharecterController.CreatureAbilites;
 using GalaxyBrain.Creatures.Abilities;
 using GalaxyBrain.Creatures.States;
 using GalaxyBrain.Interactables;
@@ -98,6 +99,8 @@ namespace GalaxyBrain.Creatures
         private PlayerPathfindState pathfindState;
         private PlayerAbilityState abilityState;
 
+        private AnimationEventAbility animationEventAbility;
+
         private void Awake()
         {
             transform.position = pathfinding.ToGridPos(transform.position);
@@ -121,6 +124,9 @@ namespace GalaxyBrain.Creatures
             stateMachine = new PlayerStateMachine(defaultState);
             stateMachine.AddState(pathfindState);
             stateMachine.AddState(abilityState);
+
+            animationEventAbility = new AnimationEventAbility();
+            AddAbility(animationEventAbility);
         }
 
         public void AddAbility(ICreatureAbility ability)
@@ -235,6 +241,12 @@ namespace GalaxyBrain.Creatures
         {
             stateMachine.ChangeToDefaultState();
             stateMachine.LockState = true;
+        }
+
+        public void AnimationEvent(Interactalbe interaction,string boolName, float normalizedTimeForEvent, Action<PlayerController> onEvent)
+        {
+            animationEventAbility.SetEventInfo(boolName,normalizedTimeForEvent,onEvent);
+            abilityState.ForceAbility(interaction,animationEventAbility);
         }
     }
 }

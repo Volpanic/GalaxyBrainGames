@@ -9,12 +9,21 @@ namespace GalaxyBrain.Interactables
         [HideInInspector] public PlayerController lastInteractedWithCreature = null;
         [HideInInspector] public Collider myCollider = null;
 
+        [Header("Creature Info")]
         [SerializeField] private PlayerController.PlayerTypes requiredType;
         [SerializeField] private bool allTypes = false;
         [SerializeField] private bool onlyOnce = true;
+        [SerializeField] private bool consumeActionPoint = false;
+
+        [Header("Creature Animation Info")]
+        [SerializeField] private bool setAnimatorBool = false;
+        [SerializeField] private string animatorBoolName;
+        [SerializeField,Range(0f,1f)] private float normlaizedTimeToActivate;
 
         [SerializeField] private GameEvent OnInteractedEvent;
         [SerializeField] private UnityEvent OnInteracted;
+
+        private bool canBeInteractedWith = true;
 
         public PlayerController.PlayerTypes RequiredType
         {
@@ -37,9 +46,28 @@ namespace GalaxyBrain.Interactables
 
         public void Interact(PlayerController player)
         {
-            lastInteractedWithCreature = player;
-            OnInteracted.Invoke();
-            activated = true;
+            if (canBeInteractedWith && player.InDefaultState)
+            {
+                lastInteractedWithCreature = player;
+
+                if(setAnimatorBool && animatorBoolName != string.Empty)
+                {
+                    canBeInteractedWith = false;
+
+                    player.AnimationEvent(this,animatorBoolName,normlaizedTimeToActivate,(x) => 
+                    {
+                        OnInteracted.Invoke();
+                        activated = true;
+                        canBeInteractedWith = true;
+                    } );
+
+                }
+                else
+                {
+                    OnInteracted.Invoke();
+                    activated = true;
+                }
+            }
         }
 
         public bool IsRequiredType(PlayerController.PlayerTypes playerType)

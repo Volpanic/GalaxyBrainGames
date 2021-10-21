@@ -71,5 +71,27 @@ namespace GalaxyBrain.Creatures.States
 
             return false;
         }
+
+        public void ForceAbility(Interactalbe interactObject,ICreatureAbility abilityToForce)
+        {
+            for (int i = 0; i < abilites.Count; i++)
+            {
+                if(abilites[i] == abilityToForce)
+                {
+                    Vector3 pos = interactObject.transform.position;
+                    Vector3 pos2 = controller.transform.position;
+
+                    pos.y = 0;
+                    pos2.y = 0;
+
+                    Vector3 interactDirection = (pos - pos2).normalized;
+
+                    currentRunningAbility = i;
+                    abilites[i].OnAbilityStart(controller, interactObject,interactDirection.MakeCardinal());
+                    machine.ChangeState(typeof(PlayerAbilityState));
+                    return;
+                }
+            }
+        }
     }
 }
