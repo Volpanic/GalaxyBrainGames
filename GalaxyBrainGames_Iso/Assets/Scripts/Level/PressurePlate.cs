@@ -1,12 +1,13 @@
 using GalaxyBrain.Audio;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace GalaxyBrain.Interactables
 {
+    /// <summary>
+    /// Runs events when the pressure plate is stepped on
+    /// and when it's stepped off.
+    /// </summary>
     public class PressurePlate : MonoBehaviour
     {
         [Header("Events")]

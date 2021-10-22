@@ -1,13 +1,13 @@
 using GalaxyBrain.Systems;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Volpanic.Easing;
 
 namespace GalaxyBrain.Interactables
 {
+    /// <summary>
+    /// Controls a block that can be pushed by the strong creature
+    /// an amount of tiles infront of it.
+    /// </summary>
     public class PushBlock : MonoBehaviour
     {
         [SerializeField] private SpriteRenderer pushBlockRenderer;
