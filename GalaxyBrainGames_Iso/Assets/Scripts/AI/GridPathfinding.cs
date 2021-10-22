@@ -136,7 +136,7 @@ namespace GalaxyBrain.Pathfinding
         public int GetPathCount()
         {
             if (!viablePath || path.Count <= 0) return 0;
-            else return path.Count;
+            else return path.Where((x) => x.ConsumePoint).Count();
         }
 
         private void UpdatePath(List<Node> nodePath)
