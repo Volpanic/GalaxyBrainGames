@@ -42,7 +42,7 @@ namespace GalaxyBrain.Interactables
 
         public void UpdatePlane()
         {
-            plane.SetNormalAndPosition(Vector3.up, transform.position);
+            plane.SetNormalAndPosition(Vector3.up, transform.position + (Vector3.down*0.5f));
         }
 
         // Start is called before the first frame update
@@ -157,7 +157,7 @@ namespace GalaxyBrain.Interactables
             {
                 Vector3 hit = ray.GetPoint(enter);
 
-                Vector3 endPoint = new Vector3(Mathf.Ceil(hit.x), transform.position.y, Mathf.Ceil(hit.z)) - transform.position;
+                Vector3 endPoint = new Vector3(Mathf.Ceil(hit.x), transform.position.y, Mathf.RoundToInt(hit.z)) - transform.position;
                 endPoint.x *= interactionCardinal.normalized.x;
                 endPoint.z *= interactionCardinal.normalized.z;
                 endPoint = Vector3.ClampMagnitude(endPoint, maxPushRange).magnitude * interactionCardinal;
@@ -165,7 +165,7 @@ namespace GalaxyBrain.Interactables
                 //Point has Changed
                 if (endPoint != tempEndPoint)
                 {
-                    viablePushPath = CheckIfPathIsViable(interactionCardinal.normalized, (int)endPoint.magnitude);
+                    viablePushPath = CheckIfPathIsViable(interactionCardinal.normalized, Mathf.FloorToInt(endPoint.magnitude));
 
                     //Update Grid
                     if (pushBlockRenderer != null)
