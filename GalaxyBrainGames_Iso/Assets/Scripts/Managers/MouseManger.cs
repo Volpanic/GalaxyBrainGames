@@ -1,14 +1,12 @@
-using GalaxyBrain.Interactables;
 using GalaxyBrain.Pathfinding;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GalaxyBrain.Managers
 {
-    //Manages most camera to world raycasts
-    //Mainly to block movement if something else is happening
+    /// <summary>
+    /// Manages raycasts from the camera, mainly to make sure
+    /// certain things take priority.
+    /// </summary>
     public class MouseManger : MonoBehaviour
     {
         [Header("References")]
@@ -48,12 +46,8 @@ namespace GalaxyBrain.Managers
                 //Check if we hit a interactable first
                 if (interaction != null && interaction.LookForInteractables(selectedObject))
                 {
-                    //Make sure we can still path find on climbable areas
-                    if (!ObjectIsOnLayer(selectedObject.collider.gameObject.layer, climableLayer))
-                    {
-                        pathfinding.ForceUnvialblePath();
-                        return;
-                    }
+                    pathfinding.ForceUnvialblePath();
+                    return;
                 }
 
                 //Nothing is obstructing, so path find
@@ -64,11 +58,6 @@ namespace GalaxyBrain.Managers
                 //Disable pathfinding path, because we're not on it.
                 pathfinding?.ClearPath();
             }
-        }
-
-        private bool ObjectIsOnLayer(int layer, LayerMask layerMask)
-        {
-            return layerMask == (layerMask | (1 << layer));
         }
     }
 }

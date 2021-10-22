@@ -1,10 +1,11 @@
 using GalaxyBrain.Utility.Extnesion;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GalaxyBrain
 {
+    /// <summary>
+    /// Slowly float the wisp object up and down
+    /// </summary>
     public class Wisp : MonoBehaviour
     {
         [SerializeField] private float floatRange = 0.25f;

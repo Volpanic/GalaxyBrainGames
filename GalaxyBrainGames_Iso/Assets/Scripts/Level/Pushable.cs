@@ -1,12 +1,12 @@
 using GalaxyBrain.Systems;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Volpanic.Easing;
 
 namespace GalaxyBrain.Interactables
 {
+    /// <summary>
+    /// Controls knocking over a pillar.
+    /// </summary>
     [SelectionBase]
     public class Pushable : MonoBehaviour
     {
