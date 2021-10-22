@@ -14,6 +14,8 @@ namespace GalaxyBrain
 
         [SerializeField, Range(0f, 1f)] private float sinWaveHeightPercent = 0.5f;
 
+        [SerializeField] private bool rainbow = false;
+
         private EventTrigger buttonEvents;
         private RectTransform rectTransform;
         private bool textChanged = false;
@@ -58,11 +60,63 @@ namespace GalaxyBrain
         {
             //StartCoroutine(ShakeText(.25f));
             StartCoroutine(WaveText(.25f));
+            if(rainbow) StartCoroutine(RainbowFlash(.25f));
         }
 
         public void OnClick()
         {
             StartCoroutine(WaveText(.25f));
+        }
+
+        private IEnumerator RainbowFlash(float duration)
+        {
+            float timer = 0;
+            float shakeAmount = (rectTransform.rect.yMax - rectTransform.rect.yMin) * sinWaveHeightPercent;
+
+            while (timer <= duration)
+            {
+                timer += Time.unscaledDeltaTime;
+
+                int characterCount = buttonText.textInfo.characterCount;
+
+                for (int i = 0; i < characterCount; i++)
+                {
+                    TMP_CharacterInfo charInfo = buttonText.textInfo.characterInfo[i];
+
+                    if (!charInfo.isVisible)
+                        continue;
+
+                    int materialIndex = charInfo.materialReferenceIndex;
+                    int vertexIndex = charInfo.vertexIndex;
+
+                    Color32[] sourceColors = originalMeshInfo[materialIndex].colors32;
+                    Color32[] destinationColors = originalMeshInfo[materialIndex].colors32;
+
+                    float normalizedPosition = i / (float)characterCount;
+                    float randomHue = NumberExtensions.SinWave(0f, 1f, duration, normalizedPosition, timer * 0.25f);
+                    Color32 targetColor = Color.HSVToRGB(randomHue,1f,1f);
+                    targetColor = Color32.Lerp(targetColor, sourceColors[vertexIndex + 0], timer / duration);
+
+                    destinationColors[vertexIndex + 0] = targetColor;
+                    destinationColors[vertexIndex + 1] = targetColor;
+                    destinationColors[vertexIndex + 2] = targetColor;
+                    destinationColors[vertexIndex + 3] = targetColor;
+
+                    buttonText.textInfo.meshInfo[materialIndex].colors32 = destinationColors;
+                }
+
+                // Push changes into meshes
+                for (int i = 0; i < buttonText.textInfo.meshInfo.Length; i++)
+                {
+                    buttonText.textInfo.meshInfo[i].mesh.colors32 = buttonText.textInfo.meshInfo[i].colors32;
+                    buttonText.UpdateGeometry(buttonText.textInfo.meshInfo[i].mesh, i);
+                }
+
+
+                //Update at the end of frame, to apply the changes
+                yield return new WaitForFixedUpdate();
+                buttonText.ForceMeshUpdate();
+            }
         }
 
         private IEnumerator ShakeText(float duration)
