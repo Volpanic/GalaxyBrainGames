@@ -43,6 +43,8 @@ namespace GalaxyBrain.Pathfinding
 
         private Dictionary<Vector3, Node> nodeGrid = new Dictionary<Vector3, Node>();
 
+        private readonly Vector3 searchPointOffset = new Vector3(0, .3f,0);
+
         public bool LookForPath(RaycastHit hit)
         {
             if (!LookPathPath || owner == null || ownerMoving)
@@ -56,11 +58,11 @@ namespace GalaxyBrain.Pathfinding
                 return false;
             }
 
-            if (ToGridPos(hit.point + new Vector3(0, 0.5f, 0)) != lastArea)
+            if (ToGridPos(hit.point + searchPointOffset) != lastArea)
             {
                 //Convert to grid position
-                lastArea = ToGridPos(hit.point + new Vector3(0, 0.1f, 0));
-                Vector3 ownerPos = ToGridPos(owner.position + new Vector3(0,0.25f,0));
+                lastArea = ToGridPos(hit.point + searchPointOffset);
+                Vector3 ownerPos = ToGridPos(owner.position + searchPointOffset);
 
                 if (lastArea != lastCheckedArea)
                 {
