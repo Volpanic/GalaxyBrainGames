@@ -35,6 +35,11 @@ namespace GalaxyBrain.Interactables
         private bool firstSnap = true;
         private bool firstLand = true;
 
+        public bool Moving
+        {
+            get { return moving; }
+        }
+
         public bool PathLocked
         {
             get { return pathLocked; }
