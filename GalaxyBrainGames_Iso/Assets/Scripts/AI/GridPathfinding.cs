@@ -78,7 +78,7 @@ namespace GalaxyBrain.Pathfinding
 
             LookPathPath = false;
 
-            return true;
+            return path.Count > 0;
         }
 
         private bool IsObjectOnLayer(GameObject gameObject, LayerMask mask)
