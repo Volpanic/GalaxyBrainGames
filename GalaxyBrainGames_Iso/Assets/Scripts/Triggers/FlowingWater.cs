@@ -22,16 +22,28 @@ namespace GalaxyBrain.Creatures
 
         private void Start()
         {
-            Collider[] forwardObjects = Physics.OverlapBox(transform.position + transform.forward,Vector3.one,Quaternion.identity,~0,QueryTriggerInteraction.Collide);
+            Collider[] forwardObjects = Physics.OverlapBox(transform.position + transform.forward,Vector3.one * 0.5f,Quaternion.identity,~0,QueryTriggerInteraction.Collide);
 
             for(int i = 0; i < forwardObjects.Length; i++)
             {
                 FlowingWater forward = forwardObjects[i].GetComponent<FlowingWater>();
 
-                if(forward != null && forward != this)
+                if(forward != null)
                 {
-                    forwardWater = forward;
-                    break;
+                    if (forward != this)
+                    {
+                        if (forwardWater == null)
+                        {
+                            forwardWater = forward;
+                        }
+                        else
+                        {
+                            if (Vector3.Distance(transform.position, forward.transform.position) < Vector3.Distance(transform.position, forwardWater.transform.position))
+                            {
+                                forwardWater = forward;
+                            }
+                        }
+                    }
                 }
             }
         }
