@@ -599,7 +599,7 @@ namespace GalaxyBrain.Pathfinding
                 //Stepping down one tile
                 if (neighborNode.Position.y < current.Position.y)
                 {
-                    if (!neighborNode.IsGround)
+                    if (!neighborNode.IsGround && !neighborNode.IsWater)
                     {
                         if (canClimb && neighborNode.IsClimbable) return true;
                         else return false;
