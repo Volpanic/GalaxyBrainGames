@@ -571,7 +571,7 @@ namespace GalaxyBrain.Pathfinding
             }
 
             //Make sure if it's water we can swim
-            if (neighborNode.IsWater)
+            if (!canSwim && neighborNode.IsWater)
             {
                 Collider[] dynamicGround = Physics.OverlapBox(neighborNode.Position + Vector3.down, new Vector3(.25f, .6f, .25f), Quaternion.identity, dynamicPathBlockingMask);
                 if (dynamicGround.Length <= 0)
