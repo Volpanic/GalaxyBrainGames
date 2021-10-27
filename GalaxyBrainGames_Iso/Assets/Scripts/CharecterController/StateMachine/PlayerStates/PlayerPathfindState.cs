@@ -63,7 +63,6 @@ namespace GalaxyBrain.Creatures.States
 
         private void MoveAlongPath()
         {
-
             //Don't move horizontally if we're rotating to face a new direction
             if (Quaternion.Dot(controller.TargetRotation, controller.transform.rotation) < TURN_FORGIVENESS) return;
 
@@ -101,6 +100,7 @@ namespace GalaxyBrain.Creatures.States
             {
                 if (consumeActionPoints && path[currentPathIndex + 1].ConsumePoint) controller.ConsumeActionPoint(1);
                 currentPathIndex++;
+
                 moveTimer = 0;
 
                 // Stop if we want to move the player manually
@@ -113,6 +113,12 @@ namespace GalaxyBrain.Creatures.States
                 else
                 {
                     controller.PathInterval(path[currentPathIndex - 1].Position, path[currentPathIndex].Position);
+
+                    Debug.DrawRay(path[currentPathIndex].Position,Vector3.up*4,Color.red,0.1f);
+                    if (!QuickNodeCheck(path[currentPathIndex + 1].Position, path[currentPathIndex].Position))
+                    {
+                        StopMoveAlongPath();
+                    }
                 }
 
                 if(controller.InteruptNextPathInterval)
@@ -121,6 +127,11 @@ namespace GalaxyBrain.Creatures.States
                     controller.InteruptNextPathInterval = false;
                 }
             }
+        }
+
+        private bool QuickNodeCheck(Vector3 targetPos,Vector3 currentPos)
+        {
+            return controller.Pathfinding.CheckNode(targetPos, currentPos);
         }
 
         private void StopMoveAlongPath()

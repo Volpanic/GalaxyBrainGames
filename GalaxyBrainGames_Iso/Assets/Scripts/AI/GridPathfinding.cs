@@ -674,6 +674,14 @@ namespace GalaxyBrain.Pathfinding
             }
         }
 
+        public bool CheckNode(Vector3 position, Vector3 currentPosition)
+        {
+            Vector3 gridPostarget = ToGridPos(position);
+            Vector3 gridPoscurrent = ToGridPos(currentPosition);
+
+            return CheckIfNodeIsViable(null, null, nodeGrid[gridPoscurrent], nodeGrid[gridPostarget]);
+        }
+
         #endregion
     }
 }

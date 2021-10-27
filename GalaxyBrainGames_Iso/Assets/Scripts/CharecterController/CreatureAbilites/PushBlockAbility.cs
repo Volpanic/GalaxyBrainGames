@@ -23,21 +23,26 @@ namespace GalaxyBrain.Creatures.Abilities
         {
             block = interactable.GetComponent<PushBlock>();
 
-            return (block != null);
+            if(block != null && !block.Moving)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public AbilityDoneType OnAbilityCheckDone()
         {
             if(done)
             {
+                if (canceled) return AbilityDoneType.Canceled;
+
                 if (controller.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
                 {
                     controller.Animator.SetBool("Push", false);
                     block?.StartPush();
                     return AbilityDoneType.Done;
                 }
-
-                if (canceled) return AbilityDoneType.Canceled;
             }
 
             return AbilityDoneType.NotDone;
@@ -72,17 +77,17 @@ namespace GalaxyBrain.Creatures.Abilities
 
                 if (block.PathLocked)
                 {
-                    if (blockMagnitude >= 1)
+                    if (blockMagnitude >= .9)
                     {
                         done = true;
                         controller.Animator.SetBool("Push", true);
                     }
+                }
 
-                    if (blockMagnitude < 0)
-                    {
-                        done = true;
-                        canceled = true;
-                    }
+                if (blockMagnitude < 0)
+                {
+                    done = true;
+                    canceled = true;
                 }
             }
             buffer = true;

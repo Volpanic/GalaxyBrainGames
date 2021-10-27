@@ -95,6 +95,11 @@ namespace GalaxyBrain.Creatures
             get { return animator; }
         }
 
+        public GridPathfinding Pathfinding
+        {
+            get { return pathfinding; }
+        }
+
         private PlayerStateMachine stateMachine;
         private PlayerDefaultState defaultState;
         private PlayerPathfindState pathfindState;
