@@ -67,7 +67,7 @@ namespace GalaxyBrain.Interactables
             {
                 if (Physics.BoxCast(controller.bounds.center, controller.bounds.extents * 0.98f, Vector3.down, Quaternion.identity, 0.025f)) 
                 {
-                    SmoothSnapToGrid();
+                    //SmoothSnapToGrid();
 
                     if (!firstLand)
                     {
@@ -115,7 +115,7 @@ namespace GalaxyBrain.Interactables
 
                 creatureData.pathfinding.UpdateNodeCells(startPos - Vector3.one, startPos + Vector3.one);
                 moving = false;
-                SmoothSnapToGrid();
+                //SmoothSnapToGrid();
             }
         }
 

@@ -19,6 +19,8 @@ namespace GalaxyBrain.Creatures.Abilities
 
         private bool buffer = false;
 
+        private const string PUSH_ANIMATION_NAME = "strongPush";
+
         public bool OnAbilityCheckCondition(Interactalbe interactable)
         {
             block = interactable.GetComponent<PushBlock>();
@@ -37,7 +39,7 @@ namespace GalaxyBrain.Creatures.Abilities
             {
                 if (canceled) return AbilityDoneType.Canceled;
 
-                if (controller.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
+                if (controller.Animator.GetCurrentAnimatorStateInfo(0).IsName(PUSH_ANIMATION_NAME) && controller.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.75f)
                 {
                     controller.Animator.SetBool("Push", false);
                     block?.StartPush();
@@ -55,6 +57,7 @@ namespace GalaxyBrain.Creatures.Abilities
             done = false;
             buffer = false;
             controller.Animator.SetBool("Push", false);
+            controller.Animator.SetBool("Stand", false);
         }
 
         public void OnAbilityStart(PlayerController controller, Interactalbe interactable, Vector3 interactDirection)
@@ -65,6 +68,8 @@ namespace GalaxyBrain.Creatures.Abilities
             done = false;
             canceled = false;
             buffer = false;
+
+            controller.Animator.SetBool("Stand", true);
 
             Debug.DrawRay(interactable.transform.position, interactDirection * 15, Color.yellow, 100);
         }
@@ -80,6 +85,7 @@ namespace GalaxyBrain.Creatures.Abilities
                     if (blockMagnitude >= .9)
                     {
                         done = true;
+                        controller.Animator.SetBool("Stand", false);
                         controller.Animator.SetBool("Push", true);
                     }
                 }
@@ -88,6 +94,7 @@ namespace GalaxyBrain.Creatures.Abilities
                 {
                     done = true;
                     canceled = true;
+                    controller.Animator.SetBool("Stand", false);
                 }
             }
             buffer = true;
