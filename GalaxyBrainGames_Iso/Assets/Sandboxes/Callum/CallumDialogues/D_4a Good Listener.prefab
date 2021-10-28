@@ -93,11 +93,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1503807423637055562, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: m_Name
-      value: Dialouge (3)
+      value: D_4a Good Listener
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.size
-      value: 9
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[0].DialougeText
@@ -109,11 +109,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[2].DialougeText
-      value: "It gets lonely here sometimes, just me and the Wilders, and - \r\n"
+      value: "It gets lonely here sometimes, just me and the Wilders, and... and
+        they're great, they are! \r\n"
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[3].DialougeText
-      value: (ROARS)
+      value: 'But it''s not the same as it was. And not like you and me. '
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[4].DialougeText
@@ -143,6 +144,14 @@ PrefabInstance:
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[9].DialougeText
       value: "I was getting to that! You could ask the Wilder. \rThis one looks strong."
+      objectReference: {fileID: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[0].NormalizedPortraitPosition
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[1].NormalizedPortraitPosition
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
