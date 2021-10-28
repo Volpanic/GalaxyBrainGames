@@ -39,7 +39,7 @@ namespace GalaxyBrain.Managers
                 //Check if were in the creatures default state and in range
                 if (selectedCreature.InDefaultState && interactions[selectedObject.collider.gameObject].CheckIfNeaby(selectedCreature.gameObject, 1.05f))
                 {
-                    if(Input.GetMouseButtonDown(0))
+                    if(selectedCreature.LeftClicked)
                     {
                         interactions[selectedObject.collider.gameObject].AttemptInteract(selectedCreature);
                     }

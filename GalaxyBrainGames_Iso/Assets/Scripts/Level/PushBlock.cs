@@ -1,3 +1,4 @@
+using GalaxyBrain.Creatures;
 using GalaxyBrain.Systems;
 using UnityEngine;
 using Volpanic.Easing;
@@ -57,7 +58,7 @@ namespace GalaxyBrain.Interactables
             cam = Camera.main;
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (moving)
             {
@@ -85,7 +86,7 @@ namespace GalaxyBrain.Interactables
 
         private void UpdateBlockMoving()
         {
-            pushTimer += Time.deltaTime;
+            pushTimer += Time.fixedDeltaTime;
             float lerpPos = Easingf.OutSine(0f, 1f, pushTimer / pushMaxTime);
             Vector3 target = Vector3.Lerp(startPos, targetPos, lerpPos);
 
@@ -142,7 +143,7 @@ namespace GalaxyBrain.Interactables
             Vector3 targetSnap = creatureData.pathfinding.ToGridPos(transform.position);
 
             controller.enabled = false;
-            transform.position = Vector3.MoveTowards(transform.position, targetSnap, Time.deltaTime * 4);
+            transform.position = Vector3.MoveTowards(transform.position, targetSnap, Time.fixedDeltaTime * 4);
             controller.enabled = true;
 
             if (!firstSnap)
@@ -152,7 +153,7 @@ namespace GalaxyBrain.Interactables
             }
         }
 
-        public float UpdateAbility(Vector3 interactionCardinal)
+        public float UpdateAbility(PlayerController controller,Vector3 interactionCardinal)
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             float enter = 0;
@@ -179,7 +180,7 @@ namespace GalaxyBrain.Interactables
                     }
                 }
 
-                if (viablePushPath && Input.GetMouseButtonDown(0))
+                if (viablePushPath && controller.LeftClicked)
                 {
                     pushBlockRenderer.gameObject.SetActive(false);
                     tempEndPoint = Vector3.zero;
@@ -196,7 +197,7 @@ namespace GalaxyBrain.Interactables
                 }
 
                 //Cancel
-                if(Input.GetMouseButtonDown(1))
+                if(controller.RightClicked)
                 {
                     pushBlockRenderer.gameObject.SetActive(false);
                     tempEndPoint = Vector3.zero;

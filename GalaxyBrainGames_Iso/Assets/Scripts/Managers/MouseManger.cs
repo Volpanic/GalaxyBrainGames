@@ -1,4 +1,5 @@
 using GalaxyBrain.Pathfinding;
+using System;
 using UnityEngine;
 
 namespace GalaxyBrain.Managers
@@ -30,7 +31,7 @@ namespace GalaxyBrain.Managers
         }
 
         // Update is called once per frame
-        private void Update()
+        private void FixedUpdate()
         {
             MouseControl();
         }

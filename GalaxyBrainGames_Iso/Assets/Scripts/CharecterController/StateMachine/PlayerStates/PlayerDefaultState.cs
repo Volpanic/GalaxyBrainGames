@@ -54,7 +54,7 @@ namespace GalaxyBrain.Creatures.States
         {
             if (pathfinding == null) return;
 
-            if (Input.GetMouseButtonDown(0))
+            if (controller.LeftClicked)
             {
                 //Change to pathfinding state
                 controller.StartMoveAlongPath(pathfinding.GetPath(), true);

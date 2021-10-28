@@ -48,6 +48,7 @@ namespace GalaxyBrain.Managers
         {
             creatureData.LogManager(this);
             creatureData.pathfinding = pathfinding;
+            Application.targetFrameRate = -1;
         }
 
         // Start is called before the first frame update

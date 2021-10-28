@@ -25,11 +25,11 @@ namespace GalaxyBrain.Interactables
             initalRotation = transform.rotation;
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (fallingOver)
             {
-                fallingTimer += Time.deltaTime;
+                fallingTimer += Time.fixedDeltaTime;
                 float lerpPos = Easingf.InExpo(0,1,fallingTimer);
                 transform.rotation = Quaternion.Lerp(initalRotation, targetRotation, lerpPos);
 

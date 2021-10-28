@@ -75,7 +75,7 @@ namespace GalaxyBrain.Creatures.States
             }
 
             //Move the player along the path
-            moveTimer += Time.deltaTime;
+            moveTimer += Time.fixedDeltaTime;
 
             // Get current point and the next point on path
             Vector3 oldPos = path[currentPathIndex].Position;

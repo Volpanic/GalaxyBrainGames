@@ -78,7 +78,7 @@ namespace GalaxyBrain.Creatures.Abilities
         {
             if (buffer && !done)
             {
-                float blockMagnitude = block.UpdateAbility(direction);
+                float blockMagnitude = block.UpdateAbility(controller,direction);
 
                 if (block.PathLocked)
                 {

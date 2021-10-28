@@ -100,7 +100,7 @@ namespace GalaxyBrain.Creatures
             }
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (Blocked) return;
             if(forwardWater != null && forwardWater.Blocked)

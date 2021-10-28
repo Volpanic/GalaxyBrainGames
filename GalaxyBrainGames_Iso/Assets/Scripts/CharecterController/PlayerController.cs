@@ -49,6 +49,8 @@ namespace GalaxyBrain.Creatures
 
         public event Action<Vector3, Vector3> OnPathInterval;
         private Quaternion targetRotation;
+        private bool leftClicked  = false;
+        private bool rightClicked = false;
 
         public bool CanClimb { get { return canClimb; } }
         public bool CanSwim { get { return canSwim; } }
@@ -62,6 +64,16 @@ namespace GalaxyBrain.Creatures
         public bool Grounded
         {
             get { return controller.isGrounded; }
+        }
+
+        public bool LeftClicked
+        {
+            get { return leftClicked; }
+        }
+
+        public bool RightClicked
+        {
+            get { return rightClicked; }
         }
 
         public CharacterController Controller
@@ -142,6 +154,12 @@ namespace GalaxyBrain.Creatures
 
         private void Update()
         {
+            if (!leftClicked) leftClicked = Input.GetMouseButtonDown(0);
+            if (!rightClicked) rightClicked = Input.GetMouseButtonDown(1);
+        }
+
+        private void FixedUpdate()
+        {
             // If timescale is 0 don't run any code
             // Most likely game is paused if timescale is 0
             if (Time.timeScale == 0) return;
@@ -149,12 +167,15 @@ namespace GalaxyBrain.Creatures
             stateMachine.UpdateState();
 
             transform.rotation = UpdateRotation(transform.rotation, targetRotation);
+
+            leftClicked = false;
+            rightClicked = false;
         }
 
         public Quaternion UpdateRotation(Quaternion current, Quaternion target)
         {
             //Rotate towards target rotation, rotate speed * 1440 (being 360*4)
-            return Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * (rotateSpeed * 1440f));
+            return Quaternion.RotateTowards(transform.rotation, targetRotation, Time.fixedDeltaTime * (rotateSpeed * 1440f));
         }
 
         public Quaternion GetDirectionOfMovement()

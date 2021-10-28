@@ -36,7 +36,7 @@ namespace GalaxyBrain.Creatures
             oldPos = transform.position;
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             velocity = controller.velocity;
             FindPassengers();
