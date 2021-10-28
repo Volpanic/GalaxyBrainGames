@@ -346,6 +346,10 @@ MonoBehaviour:
   requiredType: 2
   allTypes: 0
   onlyOnce: 0
+  consumeActionPoint: 0
+  setAnimatorBool: 0
+  animatorBoolName: 
+  normlaizedTimeToActivate: 0
   OnInteractedEvent: {fileID: 0}
   OnInteracted:
     m_PersistentCalls:
@@ -369,7 +373,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 9
-  maxPushRange: 3
+  maxPushRange: 10
   ViablePathColor: {r: 0.7058824, g: 1, b: 0.46666667, a: 1}
   UnvialbePathColor: {r: 1, g: 0.4666667, b: 0.5721092, a: 1}
 --- !u!143 &1942340471600068356
