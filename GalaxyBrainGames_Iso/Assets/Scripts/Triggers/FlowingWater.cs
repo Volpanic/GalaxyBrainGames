@@ -1,6 +1,7 @@
 using GalaxyBrain.Systems;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace GalaxyBrain.Creatures
@@ -68,7 +69,7 @@ namespace GalaxyBrain.Creatures
             }
 
             //No creature, so must be a blocker?
-            if(!blockers.Contains(other.gameObject))
+            if(!blockers.Contains(other.gameObject) && !creatureData.CreaturesInLevel.Any((x) => x.transform == other.transform))
             {
                 blockers.Add(other.gameObject);
             }
@@ -94,7 +95,7 @@ namespace GalaxyBrain.Creatures
             }
 
             //No creature, so must be a blocker?
-            if (blockers.Contains(other.gameObject))
+            if (blockers.Contains(other.gameObject) && !creatureData.CreaturesInLevel.Any((x) => x.transform == other.transform))
             {
                 blockers.Remove(other.gameObject);
             }
