@@ -58,18 +58,18 @@ namespace GalaxyBrain.Creatures
 
         private void FixedUpdate()
         {
-            if (submerge)
-            {
-                Vector3 targetPos = worldModelOriginalPos + (Vector3.up * waterSubmergeDepth);
-                if (controller.WeighedDown) targetPos += Vector3.down * weighedDownDepth;
-                worldModel.localPosition = Vector3.MoveTowards(worldModel.localPosition, targetPos,
-                    Time.fixedDeltaTime * 4);
-            }
-            else
-            {
-                worldModel.localPosition = Vector3.MoveTowards(worldModel.localPosition, worldModelOriginalPos,
-                    Time.fixedDeltaTime * 4);
-            }
+            //if (submerge)
+            //{
+            //    Vector3 targetPos = worldModelOriginalPos + (Vector3.up * waterSubmergeDepth);
+            //    if (controller.WeighedDown) targetPos += Vector3.down * weighedDownDepth;
+            //    worldModel.localPosition = Vector3.MoveTowards(worldModel.localPosition, targetPos,
+            //        Time.fixedDeltaTime * 4);
+            //}
+            //else
+            //{
+            //    worldModel.localPosition = Vector3.MoveTowards(worldModel.localPosition, worldModelOriginalPos,
+            //        Time.fixedDeltaTime * 4);
+            //}
 
             controller.WeighedDown = controllerCarry.SteppedOn;
         }

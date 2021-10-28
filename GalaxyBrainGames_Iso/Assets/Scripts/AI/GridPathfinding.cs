@@ -45,6 +45,11 @@ namespace GalaxyBrain.Pathfinding
 
         private readonly Vector3 searchPointOffset = new Vector3(0, .3f,0);
 
+        public Vector3 SearchPointOffset
+        {
+            get {return searchPointOffset; }
+        }
+
         public bool LookForPath(RaycastHit hit)
         {
             if (!LookPathPath || owner == null || ownerMoving)
@@ -189,22 +194,21 @@ namespace GalaxyBrain.Pathfinding
                                 if (node.IsGround) path.Add(new PathNodeInfo(node,true,false,true));
 
                                 path.Add(new PathNodeInfo(CreateAndStoreNode(node.Position + (Vector3.up)),true,false,false));
-                                UnityEngine.Debug.DrawRay(node.Position, Vector3.up, Color.cyan, 5);
+                                continue;
                             }
-                            else
-                            {
-                                path.Add(new PathNodeInfo(node, false, false, true));
-                            }
-                        }
-                        else
-                        {
-                            path.Add(new PathNodeInfo(node, false, false, true));
                         }
                     }
-                    else
+
+                    //Deep Water
+                    if(node.IsWater && canSwim)
                     {
-                        path.Add(new PathNodeInfo(node, false, false, true));
+                        PathNodeInfo waterPathNode = new PathNodeInfo(node, false, true, true);
+                        waterPathNode.Offset += Vector3.down * 0.75f;
+                        path.Add(waterPathNode);
+                        continue;
                     }
+
+                    path.Add(new PathNodeInfo(node, false, false, true));
                 }
             }
 
@@ -314,7 +318,7 @@ namespace GalaxyBrain.Pathfinding
             bool belowClimbable = (Physics.OverlapBox(node.Position + Vector3.down, new Vector3(0.5f, 0.75f, 0.5f), Quaternion.identity, climbableMask, QueryTriggerInteraction.Collide).Length > 0);
 
             bool sloped = (Physics.OverlapBox(node.Position, new Vector3(0.45f, 0.45f, 0.45f), Quaternion.identity, slopeMask).Length > 0);
-            bool water = (Physics.OverlapBox(node.Position, new Vector3(0.45f, 0.6f, 0.45f), Quaternion.identity, waterMask, QueryTriggerInteraction.Collide).Length > 0);
+            bool water = (Physics.OverlapBox(node.Position, new Vector3(0.45f, 0.75f, 0.45f), Quaternion.identity, waterMask, QueryTriggerInteraction.Collide).Length > 0);
 
             //Add the node
             node.IsWall = wall.Length > 0;
@@ -344,7 +348,7 @@ namespace GalaxyBrain.Pathfinding
                 }
             }
 
-            if (!node.IsWall && !node.IsGround)
+            if (!node.IsWall)
             {
                 node.IsWater = water;
             }
@@ -666,7 +670,7 @@ namespace GalaxyBrain.Pathfinding
         {
             foreach (var node in nodeGrid)
             {
-                if (node.Value.IsClimbable)
+                if (node.Value.IsWater)
                 {
                     Gizmos.color = Color.blue * 0.2f;
                     //Gizmos.DrawCube(node.Value.Position, Vector3.one);

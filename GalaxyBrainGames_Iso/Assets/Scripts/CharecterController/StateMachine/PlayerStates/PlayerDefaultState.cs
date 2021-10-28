@@ -36,7 +36,7 @@ namespace GalaxyBrain.Creatures.States
         private bool SubmergedInWater()
         {
             Vector3 extents = controller.ColliderBounds.extents;
-            return Physics.CheckBox(controller.Controller.bounds.center + (Vector3.up * extents.y * 2f), extents, controller.transform.rotation,
+            return Physics.CheckBox(controller.Controller.bounds.center, extents, controller.transform.rotation,
                 waterLayer, QueryTriggerInteraction.Collide);
         }
 
