@@ -217,8 +217,20 @@ namespace GalaxyBrain.Creatures
             {
                 List<PathNodeInfo> targetList = new List<PathNodeInfo>();
 
-                PathNodeInfo startNode = new PathNodeInfo(pathfinding.CreateAndStoreNode(pathfinding.ToGridPos(transform.position)), false, false, false);
-                PathNodeInfo endNode = new PathNodeInfo(pathfinding.CreateAndStoreNode(pathfinding.ToGridPos(transform.position) + offset), false, false, false);
+                PathNodeInfo startNode = new PathNodeInfo(pathfinding.CreateAndStoreNode(pathfinding.ToGridPos(transform.position + pathfinding.SearchPointOffset)), false, false, false);
+                PathNodeInfo endNode = new PathNodeInfo(pathfinding.CreateAndStoreNode(pathfinding.ToGridPos(transform.position + pathfinding.SearchPointOffset) + offset), false, false, false);
+
+                if (startNode.ReferenceNode.IsWater && canSwim)
+                {
+                    startNode.IsSwimming = true;
+                    startNode.Offset += Vector3.down * 0.75f;
+                }
+
+                if (endNode.ReferenceNode.IsWater && canSwim)
+                {
+                    endNode.IsSwimming = true;
+                    endNode.Offset += Vector3.down * 0.75f;
+                }
 
                 targetList.Add(startNode);
                 targetList.Add(endNode);

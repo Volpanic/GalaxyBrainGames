@@ -215,7 +215,7 @@ namespace GalaxyBrain.Interactables
             for(int i = 0; i < magnitude; i++)
             {
                 //Check for a wall
-                if (PlaceMeeting(offset,0.95f))
+                if (PlaceMeeting(offset,0.8f))
                 {
                     return false;
                 }
@@ -235,7 +235,7 @@ namespace GalaxyBrain.Interactables
 
         private bool CheckIfOffMap(Vector3 position, float downDistance)
         {
-            return !Physics.BoxCast(position, controller.bounds.extents * 0.95f, Vector3.down, transform.rotation, downDistance, groundMask);
+            return !Physics.BoxCast(position, controller.bounds.extents * 0.8f, Vector3.down, transform.rotation, downDistance, groundMask);
         }
 
         private void UpdateTileIdecator(Vector3 normalized, float magnitude)
