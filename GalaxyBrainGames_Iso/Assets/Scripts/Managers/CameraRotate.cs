@@ -10,13 +10,9 @@ namespace GalaxyBrain
         
         public float mouseSensitivity = 10000f;
         public float mouseScrollSpeed = 2f;
+        public float keyScrollSpeed = 0.2f;
 
         public CinemachineVirtualCamera vcam;
-
-        private void Start()
-        {
-
-        }
 
         // Update is called once per frame
         void Update()
@@ -31,7 +27,17 @@ namespace GalaxyBrain
                 orbital.m_XAxis.m_InputAxisValue = -mouseX;
 
             }
-        
+
+            if (Input.GetKey("a"))
+            {
+                orbital.m_XAxis.Value -= keyScrollSpeed;
+            }
+
+            if (Input.GetKey("d"))
+            {
+                orbital.m_XAxis.Value += keyScrollSpeed;
+            }
+
         }
     }
 }
