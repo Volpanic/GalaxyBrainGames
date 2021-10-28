@@ -64,7 +64,8 @@ namespace GalaxyBrain.Creatures.States
         private void MoveAlongPath()
         {
             //Don't move horizontally if we're rotating to face a new direction
-            if (Quaternion.Dot(controller.TargetRotation, controller.transform.rotation) < TURN_FORGIVENESS) return;
+            float rotationDot = Quaternion.Dot(controller.TargetRotation, controller.transform.rotation);
+            if (Mathf.Abs(rotationDot) < TURN_FORGIVENESS) return;
 
             //Make sure index is in array
             if (currentPathIndex + 1 >= path.Length)
