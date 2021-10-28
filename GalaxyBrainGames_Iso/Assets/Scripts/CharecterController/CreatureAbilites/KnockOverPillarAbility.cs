@@ -14,6 +14,10 @@ namespace GalaxyBrain.Creatures.Abilities
         private PlayerController creature;
 
         private Vector3 cardinalDirection;
+        private bool standing = false;
+
+        private const string PUSH_ANIMATION_NAME = "strongPush";
+        private const string STAND_IDLE_ANIMATION_NAME = "strongStandIdle";
 
         public bool OnAbilityCheckCondition(Interactalbe interactable)
         {
@@ -24,17 +28,30 @@ namespace GalaxyBrain.Creatures.Abilities
 
         public AbilityDoneType OnAbilityCheckDone()
         {
-            if (creature.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
+            AnimatorStateInfo animationState = creature.Animator.GetCurrentAnimatorStateInfo(0);
+
+            if (!standing)
             {
-                creature.Animator.SetBool("Push", false);
-                pillar?.Push(cardinalDirection);
-                return (pillar != null) ? AbilityDoneType.Done : AbilityDoneType.NotDone;
+                standing = animationState.IsName(STAND_IDLE_ANIMATION_NAME);
+            }
+            else
+            {
+                creature.Animator.SetBool("Stand", false);
+                creature.Animator.SetBool("Push", true);
+
+                if (animationState.IsName(PUSH_ANIMATION_NAME) && animationState.normalizedTime >= 0.75f)
+                {
+                    pillar?.Push(cardinalDirection);
+                    return (pillar != null) ? AbilityDoneType.Done : AbilityDoneType.NotDone;
+                }
             }
             return AbilityDoneType.NotDone;
         }
 
         public void OnAbilityEnd()
         {
+            creature.Animator.SetBool("Stand", false);
+            creature.Animator.SetBool("Push", false);
             creature = null;
             pillar = null;
         }
@@ -42,8 +59,9 @@ namespace GalaxyBrain.Creatures.Abilities
         public void OnAbilityStart(PlayerController controller, Interactalbe interactable, Vector3 interactDirection)
         {
             creature = controller;
-            creature.Animator.SetBool("Push",true);
+            creature.Animator.SetBool("Stand",true);
             cardinalDirection = interactDirection;
+            standing = false;
         }
 
         public void OnAbilityUpdate()
