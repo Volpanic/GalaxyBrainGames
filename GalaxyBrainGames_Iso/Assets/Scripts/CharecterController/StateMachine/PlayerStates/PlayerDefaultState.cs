@@ -1,5 +1,6 @@
 using UnityEngine;
 using GalaxyBrain.Pathfinding;
+using System;
 
 namespace GalaxyBrain.Creatures.States
 {
@@ -12,6 +13,7 @@ namespace GalaxyBrain.Creatures.States
     {
         private GridPathfinding pathfinding;
         private LayerMask waterLayer;
+        private bool waterSnap = false;
 
         public PlayerDefaultState(PlayerController controller, GridPathfinding pathfinding, LayerMask waterLayer) : base(controller)
         {
@@ -19,17 +21,45 @@ namespace GalaxyBrain.Creatures.States
             this.waterLayer = waterLayer;
         }
 
+        public override void OnStateStart()
+        {
+            waterSnap = false;
+        }
+
         public override void OnStateUpdate()
         {
             if (!SubmergedInWater())
             {
                 controller.Controller.SimpleMove(Vector3.zero);
+                waterSnap = false;
+            }
+            else
+            {
+                SnapToCorrectWaterPosition();
             }
 
             if (controller.Selected && !machine.LockState)
             {
                 pathfinding.SetOwner(controller.transform, controller.CanClimb, controller.CanSwim, ExtraNodeConditions);
                 MovementSelection();
+            }
+        }
+
+        private void SnapToCorrectWaterPosition()
+        {
+            if(!waterSnap)
+            {
+                if (controller.PlayerType == PlayerController.PlayerTypes.Water)
+                {
+                    Vector3 targetPos = pathfinding.ToGridPos(controller.transform.position + pathfinding.SearchPointOffset);
+                    targetPos += Vector3.down * pathfinding.WATER_FLOAT_POINT;
+
+                    controller.Controller.enabled = false;
+                    controller.transform.position = targetPos;
+                    controller.Controller.enabled = true;
+                }
+
+                waterSnap = true;
             }
         }
 
