@@ -66,7 +66,7 @@ namespace GalaxyBrain.Creatures
         private void FindPassengers()
         {
             //Get all colliders above us
-            Collider[] colls = Physics.OverlapBox(controller.bounds.center + (Vector3.up * 0.5f), controller.bounds.extents, transform.rotation);
+            Collider[] colls = Physics.OverlapBox(controller.bounds.center + (Vector3.up), controller.bounds.extents, transform.rotation);
             passengers.Clear();
 
             //Check if they have character controllers
