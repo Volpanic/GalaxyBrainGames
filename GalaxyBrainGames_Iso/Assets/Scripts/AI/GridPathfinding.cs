@@ -334,7 +334,7 @@ namespace GalaxyBrain.Pathfinding
             }
 
             //Check if ground
-            if (!sloped && wall.Length == 0)
+            if (!sloped && wall.Length <= 0)
             {
                 RaycastHit hit;
                 if (Physics.Raycast(new Ray(node.Position, Vector3.down), out hit, 0.8f, groundMask))

@@ -288,6 +288,12 @@ namespace GalaxyBrain.Creatures
             abilityState.ForceAbility(interaction,animationEventAbility);
         }
 
+        public void HardPlayAnimationEvent(Interactalbe interaction, string animationName, float normalizedTimeForEvent, Action<PlayerController> onEvent)
+        {
+            animationEventAbility.SetEventInfoHard(animationName, normalizedTimeForEvent, onEvent);
+            abilityState.ForceAbility(interaction, animationEventAbility);
+        }
+
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.green;
