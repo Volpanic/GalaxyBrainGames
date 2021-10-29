@@ -223,13 +223,13 @@ namespace GalaxyBrain.Creatures
                 if (startNode.ReferenceNode.IsWater && canSwim)
                 {
                     startNode.IsSwimming = true;
-                    startNode.Offset += Vector3.down * 0.75f;
+                    startNode.Offset += Vector3.down * pathfinding.WATER_FLOAT_POINT;
                 }
 
                 if (endNode.ReferenceNode.IsWater && canSwim)
                 {
                     endNode.IsSwimming = true;
-                    endNode.Offset += Vector3.down * 0.75f;
+                    endNode.Offset += Vector3.down * pathfinding.WATER_FLOAT_POINT;
                 }
 
                 targetList.Add(startNode);
@@ -286,6 +286,12 @@ namespace GalaxyBrain.Creatures
         {
             animationEventAbility.SetEventInfo(boolName,normalizedTimeForEvent,onEvent);
             abilityState.ForceAbility(interaction,animationEventAbility);
+        }
+
+        public void HardPlayAnimationEvent(Interactalbe interaction, string animationName, float normalizedTimeForEvent, Action<PlayerController> onEvent)
+        {
+            animationEventAbility.SetEventInfoHard(animationName, normalizedTimeForEvent, onEvent);
+            abilityState.ForceAbility(interaction, animationEventAbility);
         }
 
         private void OnDrawGizmos()

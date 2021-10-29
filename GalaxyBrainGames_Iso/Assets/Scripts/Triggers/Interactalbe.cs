@@ -19,6 +19,7 @@ namespace GalaxyBrain.Interactables
         [SerializeField] private bool setAnimatorBool = false;
         [SerializeField] private string animatorBoolName;
         [SerializeField,Range(0f,1f)] private float normlaizedTimeToActivate;
+        [SerializeField] private string hardPlayAnimationName;
 
         [SerializeField] private GameEvent OnInteractedEvent;
         [SerializeField] private UnityEvent OnInteracted;
@@ -50,18 +51,32 @@ namespace GalaxyBrain.Interactables
             {
                 lastInteractedWithCreature = player;
 
-                if(setAnimatorBool && animatorBoolName != string.Empty)
+                if(setAnimatorBool)
                 {
                     canBeInteractedWith = false;
 
-                    player.AnimationEvent(this,animatorBoolName,normlaizedTimeToActivate,(x) => 
+                    if (animatorBoolName != string.Empty)
                     {
-                        OnInteracted.Invoke();
-                        activated = true;
-                        canBeInteractedWith = true;
-                        if (consumeActionPoint) x.ConsumeActionPoint();
-                    } );
+                        canBeInteractedWith = false;
 
+                        player.AnimationEvent(this, animatorBoolName, normlaizedTimeToActivate, (x) =>
+                           {
+                               OnInteracted.Invoke();
+                               activated = true;
+                               canBeInteractedWith = true;
+                               if (consumeActionPoint) x.ConsumeActionPoint();
+                           });
+                    }
+                    else
+                    {
+                        player.HardPlayAnimationEvent(this, hardPlayAnimationName, normlaizedTimeToActivate, (x) =>
+                        {
+                            OnInteracted.Invoke();
+                            activated = true;
+                            canBeInteractedWith = true;
+                            if (consumeActionPoint) x.ConsumeActionPoint();
+                        });
+                    }
                 }
                 else
                 {

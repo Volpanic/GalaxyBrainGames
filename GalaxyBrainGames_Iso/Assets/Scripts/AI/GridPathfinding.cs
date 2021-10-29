@@ -44,6 +44,7 @@ namespace GalaxyBrain.Pathfinding
         private Dictionary<Vector3, Node> nodeGrid = new Dictionary<Vector3, Node>();
 
         private readonly Vector3 searchPointOffset = new Vector3(0, .3f,0);
+        public readonly float WATER_FLOAT_POINT = 0.75f;
 
         public Vector3 SearchPointOffset
         {
@@ -203,7 +204,7 @@ namespace GalaxyBrain.Pathfinding
                     if(node.IsWater && canSwim)
                     {
                         PathNodeInfo waterPathNode = new PathNodeInfo(node, false, true, true);
-                        waterPathNode.Offset += Vector3.down * 0.75f;
+                        waterPathNode.Offset += Vector3.down * WATER_FLOAT_POINT;
                         path.Add(waterPathNode);
                         continue;
                     }
@@ -334,7 +335,7 @@ namespace GalaxyBrain.Pathfinding
             }
 
             //Check if ground
-            if (!sloped && wall.Length == 0)
+            if (!sloped && wall.Length <= 0)
             {
                 RaycastHit hit;
                 if (Physics.Raycast(new Ray(node.Position, Vector3.down), out hit, 0.8f, groundMask))
