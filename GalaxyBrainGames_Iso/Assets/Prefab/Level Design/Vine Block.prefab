@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 6237290962835124109}
   - component: {fileID: 6237290962835124111}
   - component: {fileID: 513118697869162630}
+  - component: {fileID: 8081396198713681475}
   m_Layer: 0
   m_Name: Vine Block
   m_TagString: Untagged
@@ -349,6 +350,11 @@ MonoBehaviour:
   requiredType: 2
   allTypes: 0
   onlyOnce: 0
+  consumeActionPoint: 0
+  setAnimatorBool: 0
+  animatorBoolName: 
+  normlaizedTimeToActivate: 0
+  hardPlayAnimationName: 
   OnInteractedEvent: {fileID: 0}
   OnInteracted:
     m_PersistentCalls:
@@ -372,7 +378,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 9
-  maxPushRange: 3
+  maxPushRange: 10
   ViablePathColor: {r: 0.7058824, g: 1, b: 0.46666667, a: 1}
   UnvialbePathColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!143 &6237290962835124111
@@ -406,6 +412,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.99, y: 0.99, z: 0.99}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8081396198713681475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6237290962835124106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dbcb3b501a4d5a4db2364c1d1239751, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 6237290962835124111}
+  velocity: {x: 0, y: 0, z: 0}
+  passengers: []
 --- !u!1 &8678085443806840528
 GameObject:
   m_ObjectHideFlags: 0
