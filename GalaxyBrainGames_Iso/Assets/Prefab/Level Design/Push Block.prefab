@@ -350,6 +350,7 @@ MonoBehaviour:
   setAnimatorBool: 0
   animatorBoolName: 
   normlaizedTimeToActivate: 0
+  hardPlayAnimationName: 
   OnInteractedEvent: {fileID: 0}
   OnInteracted:
     m_PersistentCalls:
@@ -514,6 +515,10 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 86fa08dbe982c5d42a1227135f80808f, type: 3}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 86fa08dbe982c5d42a1227135f80808f, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 86fa08dbe982c5d42a1227135f80808f, type: 3}
       propertyPath: m_LocalPosition.x
