@@ -315,7 +315,7 @@ namespace GalaxyBrain.Pathfinding
             //Check for wall
             Collider[] wall = Physics.OverlapBox(node.Position + new Vector3(0, 0.25f, 0), new Vector3(0.33f, 0.11f, 0.33f), Quaternion.identity, groundMask, QueryTriggerInteraction.Collide);
 
-            bool climbable = (Physics.OverlapBox(node.Position, new Vector3(0.5f, 0.5f, 0.5f), Quaternion.identity, climbableMask, QueryTriggerInteraction.Collide).Length > 0);
+            Collider[] climbable = Physics.OverlapBox(node.Position + new Vector3(0,-.2f,0), new Vector3(0.5f, 0.6f, 0.5f), Quaternion.identity, climbableMask, QueryTriggerInteraction.Collide);
             bool belowClimbable = (Physics.OverlapBox(node.Position + Vector3.down, new Vector3(0.5f, 0.75f, 0.5f), Quaternion.identity, climbableMask, QueryTriggerInteraction.Collide).Length > 0);
 
             bool sloped = (Physics.OverlapBox(node.Position, new Vector3(0.45f, 0.45f, 0.45f), Quaternion.identity, slopeMask).Length > 0);
@@ -327,11 +327,21 @@ namespace GalaxyBrain.Pathfinding
             node.IsWater = false;
             node.IsSlope = false;
             node.TemporalPosition = node.Position - new Vector3(0, 0.45f, 0);
-            node.IsClimbable = climbable || belowClimbable;
+            node.IsClimbable = (climbable.Length > 0) || belowClimbable;
 
-            if (climbable)
+            if (climbable.Length > 0)
             {
                 CreateAndStoreNode(node.Position + Vector3.up);
+
+                //Mark climable directions
+                for(int i = 0; i < climbable.Length; i++)
+                {
+                    Vector3 direction = climbable[i].transform.position - node.Position;
+                    direction.y = 0;
+                    direction = MakeCardinal(direction.normalized);
+
+                    node.SetClimbDirection(direction, true);
+                }
             }
 
             //Check if ground
@@ -373,6 +383,19 @@ namespace GalaxyBrain.Pathfinding
             }
 
             return node;
+        }
+
+        public Vector3 MakeCardinal(Vector3 direction)
+        {
+            float absX = Mathf.Abs(direction.x);
+            float absY = Mathf.Abs(direction.y);
+            float absZ = Mathf.Abs(direction.z);
+
+            if (absX > absY && absX > absZ) return new Vector3(Mathf.Sign(direction.x), 0, 0);
+            if (absY > absX && absY > absZ) return new Vector3(0, Mathf.Sign(direction.y), 0);
+            if (absZ > absX && absZ > absY) return new Vector3(0, 0, Mathf.Sign(direction.z));
+
+            return Vector3.zero;
         }
 
         private void UpdateGridCell(Vector3 positon)
@@ -460,7 +483,7 @@ namespace GalaxyBrain.Pathfinding
             viablePath = false;
 
             List<Node> openList = new List<Node>();
-            HashSet<PathNodeInfo> closedList = new HashSet<PathNodeInfo>();
+            List<PathNodeInfo> closedList = new List<PathNodeInfo>();
 
             Node startNode = nodeGrid[p1];
             Node targetNode = nodeGrid[p2];
@@ -489,22 +512,20 @@ namespace GalaxyBrain.Pathfinding
                 }
 
                 //Check if we are now Climbing
-                if (canClimb && openList.Count >= 1)
+                if (canClimb && closedList.Count >= 1)
                 {
-                    Node oldCurrent = openList[openList.Count - 1];
+                    Node oldCurrent = closedList[closedList.Count - 1].ReferenceNode;
 
-                    if (oldCurrent.Position.x == current.Position.x &&
-                        oldCurrent.Position.z == current.Position.z &&
-                        oldCurrent.Position.y != current.Position.y)
+                    if (oldCurrent.Position.y != current.Position.y &&
+                        !current.IsSlope && current.IsClimbable)
                     {
                         //We must be moving vertically
                         isClimbing = true;
-                        UnityEngine.Debug.DrawRay(current.Position, Vector3.up, Color.red, 0.1f);
+                        UnityEngine.Debug.DrawRay(current.Position, Vector3.up, Color.red, 3.33f);
                     }
                     else
                     {
                         isClimbing = false;
-                        UnityEngine.Debug.DrawRay(current.Position, Vector3.up, Color.blue, 0.1f);
                     }
                 }
 
@@ -633,6 +654,17 @@ namespace GalaxyBrain.Pathfinding
                     if (!neighborNode.IsGround)
                     {
                         return false;
+                    }
+                    else if(current.IsClimbable)
+                    {
+                        Vector3 direction = neighborNode.Position - current.Position;
+                        direction.y = 0;
+                        direction = MakeCardinal(direction.normalized);
+
+                        if (!current.CanClimbDirection(direction))
+                        {
+                            return false;
+                        }
                     }
                 }
             }
