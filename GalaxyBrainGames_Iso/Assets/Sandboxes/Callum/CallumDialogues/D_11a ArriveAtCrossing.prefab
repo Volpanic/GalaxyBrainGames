@@ -93,55 +93,67 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1503807423637055562, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: m_Name
-      value: D_11 CantDoThis
+      value: D_10a ArriveAtCrossing
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.size
-      value: 3
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[0].DialougeText
-      value: The wilders...
+      value: 'We made it! I didn''t think - I wasn''t sure we''d get this far. But
+        we''re here.
+
+'
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[1].DialougeText
-      value: They came to - to see you off! I - I guess they really did like you,
-        huh?
+      value: 'That''s the crossing point. I know it doesn''t look like much now,
+        but - Oh!
+
+'
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[2].DialougeText
-      value: They know I... I can't stop now. They know that. It's the only way we
-        -
+      value: "We... we don't have much time, I guess. But I need you to trust me
+        for this to work. \r\n"
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[3].DialougeText
-      value: (Wilder ROARS)
+      value: 'Your trust - it''s what''s giving me strength here. Your faith in me,
+        pulling together all the bits i''d lost. '
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[4].DialougeText
+      value: 'So I need you to try and clear your mind a bit - I''ll start the crossing. '
+      objectReference: {fileID: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[5].DialougeText
+      value: Just... relax and let me in.
+      objectReference: {fileID: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[6].DialougeText
+      value: (Wilder ROARS)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[7].DialougeText
       value: 'What?
 
 '
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
-      propertyPath: playingSequence.Array.data[5].DialougeText
+      propertyPath: playingSequence.Array.data[8].DialougeText
       value: (WILDER CHIRPS)
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
-      propertyPath: playingSequence.Array.data[6].DialougeText
-      value: Just... relax and let me in.
-      objectReference: {fileID: 0}
-    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
-      propertyPath: playingSequence.Array.data[7].DialougeText
-      value: Just... relax and let me in.
-      objectReference: {fileID: 0}
-    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
-      propertyPath: playingSequence.Array.data[8].DialougeText
-      value: Just... relax and let me in.
-      objectReference: {fileID: 0}
-    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[9].DialougeText
-      value: "I was getting to that! You could ask the Wilder. \rThis one looks strong."
+      value: "We... we don't have much time, I guess. But I need you to trust me
+        for this to work. \r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[10].DialougeText
+      value: "We... we don't have much time, I guess. But I need you to trust me
+        for this to work. \r\n"
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[3].SpeakerPortrait
@@ -168,8 +180,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[9].SpeakerPortrait
+      value: 
+      objectReference: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: playingSequence.Array.data[10].SpeakerPortrait
+      value: 
+      objectReference: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[0].NormalizedPortraitPosition
-      value: 0.8
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
