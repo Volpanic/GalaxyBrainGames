@@ -15,6 +15,7 @@ namespace GalaxyBrain
         [SerializeField, Range(0f, 1f)] private float sinWaveHeightPercent = 0.5f;
 
         [SerializeField] private bool rainbow = false;
+        [SerializeField] private bool shake = false;
 
         private EventTrigger buttonEvents;
         private RectTransform rectTransform;
@@ -59,8 +60,9 @@ namespace GalaxyBrain
         public void OnHover()
         {
             //StartCoroutine(ShakeText(.25f));
-            StartCoroutine(WaveText(.25f));
-            if(rainbow) StartCoroutine(RainbowFlash(.25f));
+            if (!shake) StartCoroutine(WaveText(.25f));
+            else StartCoroutine(ShakeText(.25f));
+            if (rainbow) StartCoroutine(RainbowFlash(.25f));
         }
 
         public void OnClick()
