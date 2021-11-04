@@ -96,6 +96,13 @@ namespace GalaxyBrain.UI
             timer += Time.deltaTime;
             UpdateDialougePortrait(playingSequence[messageCount]);
 
+            // Clicked before Dialouge is done
+            if (Input.GetMouseButtonDown(0))
+            {
+                maxCharecter = DialougeText.textInfo.characterCount - 2;
+                timer = DelayBetweenLetter * 1.1f;
+            }
+
             while (timer > DelayBetweenLetter)
             {
                 timer -= DelayBetweenLetter;
