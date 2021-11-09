@@ -17,6 +17,7 @@ namespace GalaxyBrain.UI
 
         public Sprite SpeakerPortrait;
         public float NormalizedPortraitPosition;
+        public UnityEvent EndOfLineEvent;
     }
 
     public class DialougeBox : MonoBehaviour // Handels fading in letters of the dialogue box.
@@ -129,6 +130,7 @@ namespace GalaxyBrain.UI
             //Text should be done, so close if clicked
             if (Input.GetMouseButtonDown(0))
             {
+                playingSequence[messageCount].EndOfLineEvent?.Invoke();
                 messageCount++;
 
                 //Reset values and play dialouge
@@ -148,6 +150,8 @@ namespace GalaxyBrain.UI
                     DialougeText.text = playingSequence[messageCount].DialougeText;
                     UpdateDialougePortrait(playingSequence[messageCount]);
                 }
+
+                
             }
         }
 
