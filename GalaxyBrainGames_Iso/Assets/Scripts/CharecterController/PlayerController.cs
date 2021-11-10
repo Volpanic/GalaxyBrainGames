@@ -40,6 +40,8 @@ namespace GalaxyBrain.Creatures
         [SerializeField] private GridPathfinding pathfinding;
         [SerializeField] private Animator animator;
 
+        [SerializeField] private Color selectionIconTint = Color.white;
+
         [HideInInspector] public bool Selected = false;
         [HideInInspector] public bool IsClimbing = false;
         [HideInInspector] public bool InteruptNextPathInterval = false;
@@ -110,6 +112,11 @@ namespace GalaxyBrain.Creatures
         public GridPathfinding Pathfinding
         {
             get { return pathfinding; }
+        }
+
+        public Color SelectionIconTint
+        {
+            get { return selectionIconTint; }
         }
 
         private PlayerStateMachine stateMachine;

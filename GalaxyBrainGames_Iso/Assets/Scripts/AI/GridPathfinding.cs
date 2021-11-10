@@ -576,7 +576,11 @@ namespace GalaxyBrain.Pathfinding
                     }
 
                     float moveCost = current.gCost + GetManhattenDistance(current, neighborNode);
-                    //if (neighborNode.IsWater && !canSwim) moveCost += 10;
+                    if (neighborNode.IsWater)
+                    {
+                        if (canSwim) moveCost -= 5;
+                        else moveCost += 2;
+                    }
 
                     //If were climbing or just not on the ground prefer ground
                     if (!neighborNode.IsGround && !neighborNode.IsSlope) moveCost += 5;
