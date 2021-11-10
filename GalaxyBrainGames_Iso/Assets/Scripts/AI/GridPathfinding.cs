@@ -393,7 +393,7 @@ namespace GalaxyBrain.Pathfinding
                 node.IsWater = water;
             }
 
-            if (node.IsWater && node.IsGround) node.IsWater = false;
+            if (node.IsWater && node.IsGround) node.IsGround = false;
 
             //Check if slope
             if (sloped)
@@ -412,7 +412,6 @@ namespace GalaxyBrain.Pathfinding
                     node.slopeNormal = slopeDir;
                 }
             }
-
             return node;
         }
 
@@ -618,6 +617,7 @@ namespace GalaxyBrain.Pathfinding
             }
 
             //Check for dynamic blocks, players etc
+            Vector3 dynamicBlockerCheckPoint = neighborNode.Position;
             Collider[] dynamicBlock = Physics.OverlapBox(neighborNode.Position, Vector3.one * 0.25f, Quaternion.identity, dynamicPathBlockingMask);
             for (int i = 0; i < dynamicBlock.Length; i++)
             {
@@ -746,6 +746,7 @@ namespace GalaxyBrain.Pathfinding
         {
             Vector3 gridPostarget = ToGridPos(position);
             Vector3 gridPoscurrent = ToGridPos(currentPosition);
+            UnityEngine.Debug.DrawRay(position, Vector3.up, Color.red, 0.2f);
 
             return CheckIfNodeIsViable(null, null, nodeGrid[gridPoscurrent], nodeGrid[gridPostarget]);
         }
