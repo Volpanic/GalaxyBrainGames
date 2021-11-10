@@ -286,12 +286,32 @@ namespace GalaxyBrain.Creatures
         {
             animationEventAbility.SetEventInfo(boolName,normalizedTimeForEvent,onEvent);
             abilityState.ForceAbility(interaction,animationEventAbility);
+
+            Vector3 pos = interaction.transform.position;
+            Vector3 pos2 = transform.position;
+
+            pos.y = 0;
+            pos2.y = 0;
+
+            Vector3 interactDirection = (pos - pos2).normalized;
+
+            TargetRotation = GetRotationOfDirection(interactDirection);
         }
 
         public void HardPlayAnimationEvent(Interactalbe interaction, string animationName, float normalizedTimeForEvent, Action<PlayerController> onEvent)
         {
             animationEventAbility.SetEventInfoHard(animationName, normalizedTimeForEvent, onEvent);
             abilityState.ForceAbility(interaction, animationEventAbility);
+
+            Vector3 pos = interaction.transform.position;
+            Vector3 pos2 = transform.position;
+
+            pos.y = 0;
+            pos2.y = 0;
+
+            Vector3 interactDirection = (pos - pos2).normalized;
+
+            TargetRotation = GetRotationOfDirection(interactDirection);
         }
 
         private void OnDrawGizmos()

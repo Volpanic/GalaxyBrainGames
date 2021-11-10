@@ -72,7 +72,7 @@ namespace GalaxyBrain.Creatures.States
 
         private bool ExtraNodeConditions(Node startNode, Node endNode, Node current, Node neighborNode)
         {
-            if (controller.WeighedDown && !neighborNode.IsWater)
+            if (controller.WeighedDown && neighborNode.IsGround)
             {
                 return false;
             }

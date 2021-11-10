@@ -77,7 +77,7 @@ namespace GalaxyBrain.Pathfinding
                     List<Node> nodePath = FindPath(ownerPos, lastArea);
 
                     //Visualization
-                    UpdatePath(nodePath);
+                    UpdatePath(nodePath, nodeGrid[ownerPos]);
                     OnPathChanged?.Invoke();
                 }
 
@@ -147,7 +147,7 @@ namespace GalaxyBrain.Pathfinding
             else return path.Where((x) => x.ConsumePoint).Count();
         }
 
-        private void UpdatePath(List<Node> nodePath)
+        private void UpdatePath(List<Node> nodePath, Node startNode)
         {
             path = new List<PathNodeInfo>();
             visualPath = new List<Vector3>();
@@ -183,21 +183,50 @@ namespace GalaxyBrain.Pathfinding
                     }
 
                     //Phyiscal path the player moves along
-                    if (i + 1 < nodePath.Count)
+                    Node next = null;
+                        
+                    if(i + 1 < nodePath.Count)
                     {
-                        Node next = nodePath[i + 1];
+                        next = nodePath[i + 1];
+                    }
 
-                        //Check if were changing vertically
-                        if (node.Position.x == next.Position.x && node.Position.z == next.Position.z)
+                    //Check if were changing vertically
+                    if (next != null && node.Position.x == next.Position.x && node.Position.z == next.Position.z)
+                    {
+                        if (next.Position.y > node.Position.y)
                         {
-                            if (next.Position.y > node.Position.y)
-                            {
-                                if (node.IsGround) path.Add(new PathNodeInfo(node,true,false,true));
+                            if (node.IsGround) path.Add(new PathNodeInfo(node,true,false,true));
 
-                                path.Add(new PathNodeInfo(CreateAndStoreNode(node.Position + (Vector3.up)),true,false,false));
-                                continue;
-                            }
+                            path.Add(new PathNodeInfo(CreateAndStoreNode(node.Position + (Vector3.up)),true,false,false));
+                            continue;
                         }
+                    }
+
+                    Node current = node;
+                        
+                    if(next == null)
+                    {
+                        current = (i == 0)? startNode : nodePath[i-1];
+                        next = node;
+                    }
+
+                    // Move to edge of tile, then water (From Water to Land)
+                    if (canSwim && (current.IsWater && !current.IsGround) && (!next.IsWater))
+                    {
+                        Vector3 direction = next.Position - current.Position;
+                        direction.y = 0;
+                        direction.Normalize();
+
+                        path.Add(new PathNodeInfo(current, false, false, true));
+
+                        PathNodeInfo moveToEdgeNode = new PathNodeInfo(CreateAndStoreNode(current.Position), false, false, false);
+                        moveToEdgeNode.Offset.y = WATER_FLOAT_POINT * 0.25f; //Adjust the point to be upwards
+                        path.Add(moveToEdgeNode);
+
+                        path.Add(new PathNodeInfo(CreateAndStoreNode(next.Position), false, false, false));
+                        i++;
+                        visualPath.Add(next.Position);
+                        continue;
                     }
 
                     //Deep Water
@@ -364,6 +393,8 @@ namespace GalaxyBrain.Pathfinding
                 node.IsWater = water;
             }
 
+            if (node.IsWater && node.IsGround) node.IsGround = false;
+
             //Check if slope
             if (sloped)
             {
@@ -381,7 +412,6 @@ namespace GalaxyBrain.Pathfinding
                     node.slopeNormal = slopeDir;
                 }
             }
-
             return node;
         }
 
@@ -587,6 +617,7 @@ namespace GalaxyBrain.Pathfinding
             }
 
             //Check for dynamic blocks, players etc
+            Vector3 dynamicBlockerCheckPoint = neighborNode.Position;
             Collider[] dynamicBlock = Physics.OverlapBox(neighborNode.Position, Vector3.one * 0.25f, Quaternion.identity, dynamicPathBlockingMask);
             for (int i = 0; i < dynamicBlock.Length; i++)
             {
@@ -715,6 +746,7 @@ namespace GalaxyBrain.Pathfinding
         {
             Vector3 gridPostarget = ToGridPos(position);
             Vector3 gridPoscurrent = ToGridPos(currentPosition);
+            UnityEngine.Debug.DrawRay(position, Vector3.up, Color.red, 0.2f);
 
             return CheckIfNodeIsViable(null, null, nodeGrid[gridPoscurrent], nodeGrid[gridPostarget]);
         }
