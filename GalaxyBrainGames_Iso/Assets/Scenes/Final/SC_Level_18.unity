@@ -9067,6 +9067,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8489134180897291323, guid: 9a36639567d8d8a4b9c7a227f9759ef4, type: 3}
+      propertyPath: selectionIconTint.b
+      value: 0.8354292
+      objectReference: {fileID: 0}
+    - target: {fileID: 8489134180897291323, guid: 9a36639567d8d8a4b9c7a227f9759ef4, type: 3}
+      propertyPath: selectionIconTint.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8489134180897291323, guid: 9a36639567d8d8a4b9c7a227f9759ef4, type: 3}
+      propertyPath: selectionIconTint.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8489134181068076582, guid: 9a36639567d8d8a4b9c7a227f9759ef4, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -13714,6 +13726,7 @@ MonoBehaviour:
     m_Bits: 16
   pathfinding: {fileID: 1163395528}
   animator: {fileID: 680460954}
+  selectionIconTint: {r: 1, g: 1, b: 1, a: 1}
   Selected: 0
   IsClimbing: 0
   InteruptNextPathInterval: 0
