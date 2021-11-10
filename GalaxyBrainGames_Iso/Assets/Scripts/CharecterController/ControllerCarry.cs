@@ -52,14 +52,11 @@ namespace GalaxyBrain.Creatures
             if (Mathf.Abs(posDifference.x) <= 0.01f && Mathf.Abs(posDifference.z) <= 0.01f) return;
 
             //Loop through all passengers and move them to the top of our charecter controller
-            if (controller.velocity.magnitude != 0)
+            for (int i = 0; i < passengers.Count; i++)
             {
-                for (int i = 0; i < passengers.Count; i++)
-                {
-                    Vector3 movement = (controller.bounds.center + new Vector3(0, controller.bounds.extents.y, 0)) -
-                        (passengers[i].bounds.center - new Vector3(0, passengers[i].bounds.extents.y, 0));
-                    passengers[i].Move(movement);
-                }
+                Vector3 movement = (controller.bounds.center + new Vector3(0, controller.bounds.extents.y, 0)) -
+                    (passengers[i].bounds.center - new Vector3(0, passengers[i].bounds.extents.y, 0));
+                passengers[i].Move(movement);
             }
         }
 
