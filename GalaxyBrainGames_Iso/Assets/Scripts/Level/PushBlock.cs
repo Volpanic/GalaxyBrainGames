@@ -1,5 +1,6 @@
 using GalaxyBrain.Creatures;
 using GalaxyBrain.Systems;
+using System;
 using UnityEngine;
 using Volpanic.Easing;
 
@@ -16,6 +17,7 @@ namespace GalaxyBrain.Interactables
         [SerializeField] private Collider myCollider;
         [SerializeField] private CreatureData creatureData;
         [SerializeField] private LayerMask groundMask;
+        [SerializeField] private LayerMask dontDropOnLayer;
         [SerializeField] private int maxPushRange = 3;
 
         [SerializeField] private Color ViablePathColor = Color.green;
@@ -171,12 +173,12 @@ namespace GalaxyBrain.Interactables
                 //Point has Changed
                 if (endPoint != tempEndPoint)
                 {
-                    viablePushPath = CheckIfPathIsViable(interactionCardinal.normalized, Mathf.FloorToInt(endPoint.magnitude));
+                    viablePushPath = CheckIfPathIsViable(interactionCardinal.normalized, Mathf.RoundToInt(endPoint.magnitude));
 
                     //Update Grid
                     if (pushBlockRenderer != null)
                     {
-                        UpdateTileIdecator(interactionCardinal.normalized, endPoint.magnitude);
+                        UpdateTileIdecator(interactionCardinal.normalized, Mathf.RoundToInt(endPoint.magnitude));
                     }
                 }
 
@@ -221,16 +223,19 @@ namespace GalaxyBrain.Interactables
                 }
 
                 //Check if there is no ground below us
-                if (CheckIfOffMap(transform.position + offset, 16))
+                if (CheckIfOffMap(transform.position + offset, 16) || CheckIfDroppingOn(transform.position + offset,16))
                 {
                     return false;
                 }
 
                 offset += normalized; //Increase by 1 tile size
             }
-
-
             return true;
+        }
+
+        private bool CheckIfDroppingOn(Vector3 position, float downDistance)
+        {
+            return Physics.BoxCast(position, controller.bounds.extents * 0.8f, Vector3.down, transform.rotation, downDistance, dontDropOnLayer);
         }
 
         private bool CheckIfOffMap(Vector3 position, float downDistance)
