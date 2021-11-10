@@ -74,7 +74,7 @@ namespace GalaxyBrain.Managers
                 }
 
                 //Nothing is obstructing, so path find
-                if (pathfinding != null && pathfinding.LookForPath(selectedObject))
+                if (pathfinding != null && CheckHitNormal(selectedObject.normal) && pathfinding.LookForPath(selectedObject))
                 {
                     Cursor.SetCursor(defaultColoured, Vector2.zero, CursorMode.Auto);
                     return;
@@ -95,6 +95,12 @@ namespace GalaxyBrain.Managers
             }
 
             Cursor.SetCursor(defaultGrey, Vector2.zero, CursorMode.Auto);
+        }
+
+        //Make sure the hits normal is atleast sowhat upward
+        private bool CheckHitNormal(Vector3 normal)
+        {
+            return normal.y > 0;
         }
     }
 }
