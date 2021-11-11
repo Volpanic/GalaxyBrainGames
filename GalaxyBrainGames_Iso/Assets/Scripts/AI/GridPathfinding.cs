@@ -683,7 +683,7 @@ namespace GalaxyBrain.Pathfinding
                 CreateAndStoreNode(neighborNode.Position + Vector3.down);
 
                 //Check if were are moving on the x / Z
-                if (neighborNode.Position.x != current.Position.x ||
+                if (!current.IsGround && neighborNode.Position.x != current.Position.x ||
                     neighborNode.Position.z != current.Position.z)
                 {
                     if (!neighborNode.IsGround)
