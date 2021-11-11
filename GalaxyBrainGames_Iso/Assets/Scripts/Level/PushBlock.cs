@@ -58,6 +58,7 @@ namespace GalaxyBrain.Interactables
         {
             UpdatePlane();
             cam = Camera.main;
+            transform.rotation = Quaternion.identity;
         }
 
         private void FixedUpdate()
