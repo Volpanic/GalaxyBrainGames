@@ -582,6 +582,11 @@ namespace GalaxyBrain.Pathfinding
                         else moveCost += 2;
                     }
 
+                    if (neighborNode.IsClimbable && !neighborNode.IsGround)
+                    {
+                        if (canClimb) moveCost -= 7;
+                    }
+
                     //If were climbing or just not on the ground prefer ground
                     if (!neighborNode.IsGround && !neighborNode.IsSlope) moveCost += 5;
 
