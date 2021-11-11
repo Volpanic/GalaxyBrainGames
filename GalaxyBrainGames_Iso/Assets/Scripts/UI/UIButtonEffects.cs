@@ -62,6 +62,7 @@ namespace GalaxyBrain
             //StartCoroutine(ShakeText(.25f));
             if (!shake) StartCoroutine(WaveText(.25f));
             else StartCoroutine(ShakeText(.25f));
+
             if (rainbow) StartCoroutine(RainbowFlash(.25f));
         }
 
