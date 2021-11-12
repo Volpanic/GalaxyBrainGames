@@ -17235,19 +17235,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.65846956
+      value: 0.6583685
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.25962946
+      value: 0.2595896
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.6571677
+      value: 0.6572689
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.2591161
+      value: -0.25915605
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486685, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: mouseSensitivity
@@ -17335,19 +17335,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.65846956
+      value: 0.6583685
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.25962946
+      value: 0.2595896
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.6571677
+      value: 0.6572689
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.2591161
+      value: -0.25915605
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
@@ -17522,6 +17522,38 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2075190548}
     m_Modifications:
+    - target: {fileID: 2138229590837950437, guid: 1f5b116bb08d52d48818546bc2eac57d, type: 3}
+      propertyPath: playingSequence.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2138229590837950437, guid: 1f5b116bb08d52d48818546bc2eac57d, type: 3}
+      propertyPath: playingSequence.Array.data[0].DialougeText
+      value: 'I don''t remember what happened, not really.
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2138229590837950437, guid: 1f5b116bb08d52d48818546bc2eac57d, type: 3}
+      propertyPath: playingSequence.Array.data[1].DialougeText
+      value: 'But we got cut off. The old crossings didn''t let us through anymore,
+        and your world started to go all - all gray and cold.
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2138229590837950437, guid: 1f5b116bb08d52d48818546bc2eac57d, type: 3}
+      propertyPath: playingSequence.Array.data[2].DialougeText
+      value: 'We didn''t know we needed you until you left us behind, and...nd that
+        was when everyone else started to fade.
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2138229590837950437, guid: 1f5b116bb08d52d48818546bc2eac57d, type: 3}
+      propertyPath: playingSequence.Array.data[3].DialougeText
+      value: Everyone else here started to fade. I'm all that's left, I think.
+      objectReference: {fileID: 0}
+    - target: {fileID: 2138229590837950437, guid: 1f5b116bb08d52d48818546bc2eac57d, type: 3}
+      propertyPath: playingSequence.Array.data[3].SpeakerPortrait
+      value: 
+      objectReference: {fileID: 21300000, guid: 37ce3f21f8509664e9605b6566ed61f9, type: 3}
     - target: {fileID: 2900469613288104568, guid: 1f5b116bb08d52d48818546bc2eac57d, type: 3}
       propertyPath: m_Name
       value: D_9 TheCollapse

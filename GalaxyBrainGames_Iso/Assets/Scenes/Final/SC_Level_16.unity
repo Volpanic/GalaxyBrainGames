@@ -5681,19 +5681,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.35510656
+      value: -0.35530075
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.14002135
+      value: -0.14009792
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.8598497
+      value: 0.85976946
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.3390456
+      value: -0.33901396
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486687, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_Lens.OrthographicSize
@@ -5797,19 +5797,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.35510656
+      value: -0.35530075
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.14002135
+      value: -0.14009792
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.8598497
+      value: 0.85976946
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.3390456
+      value: -0.33901396
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
@@ -10917,8 +10917,25 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2138229590837950437, guid: 199d77bb6d978f04ab39b2892288a5cb, type: 3}
+      propertyPath: playingSequence.Array.data[0].DialougeText
+      value: And I couldn't - I couldn't lose him. I couldn't be alone here again.
+      objectReference: {fileID: 0}
+    - target: {fileID: 2138229590837950437, guid: 199d77bb6d978f04ab39b2892288a5cb, type: 3}
+      propertyPath: playingSequence.Array.data[1].DialougeText
+      value: So... so ever since, I've been holding onto what's left of him, too.
+      objectReference: {fileID: 0}
+    - target: {fileID: 2138229590837950437, guid: 199d77bb6d978f04ab39b2892288a5cb, type: 3}
+      propertyPath: playingSequence.Array.data[2].DialougeText
+      value: 'What''s left of all of them. '
+      objectReference: {fileID: 0}
+    - target: {fileID: 2138229590837950437, guid: 199d77bb6d978f04ab39b2892288a5cb, type: 3}
       propertyPath: playingSequence.Array.data[3].DialougeText
       value: ...
+      objectReference: {fileID: 0}
+    - target: {fileID: 2138229590837950437, guid: 199d77bb6d978f04ab39b2892288a5cb, type: 3}
+      propertyPath: playingSequence.Array.data[4].DialougeText
+      value: 'I don''t know how much they remember - how much of any of them is the
+        same. '
       objectReference: {fileID: 0}
     - target: {fileID: 2138229590837950437, guid: 199d77bb6d978f04ab39b2892288a5cb, type: 3}
       propertyPath: playingSequence.Array.data[6].NormalizedPortraitPosition

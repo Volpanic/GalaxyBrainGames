@@ -4971,19 +4971,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.36418536
+      value: -0.36427566
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.11553702
+      value: -0.11556566
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.88086677
+      value: 0.88082945
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.27945307
+      value: -0.27944124
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5107,19 +5107,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.36418536
+      value: -0.36427566
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.11553702
+      value: -0.11556566
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.88086677
+      value: 0.88082945
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.27945307
+      value: -0.27944124
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -14725,6 +14725,53 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1494213605}
     m_Modifications:
+    - target: {fileID: 2138229590837950437, guid: d5e433505c07d1644a2a5de6d77c2132, type: 3}
+      propertyPath: playingSequence.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2138229590837950437, guid: d5e433505c07d1644a2a5de6d77c2132, type: 3}
+      propertyPath: playingSequence.Array.data[0].DialougeText
+      value: But I couldn't do it. We got there, and the wilders, I...
+      objectReference: {fileID: 0}
+    - target: {fileID: 2138229590837950437, guid: d5e433505c07d1644a2a5de6d77c2132, type: 3}
+      propertyPath: playingSequence.Array.data[1].DialougeText
+      value: "I didn't think they understood. But they helped you. They saw. \r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2138229590837950437, guid: d5e433505c07d1644a2a5de6d77c2132, type: 3}
+      propertyPath: playingSequence.Array.data[2].DialougeText
+      value: 'And... and they''re still helping you. Holding you steady. I - I didn''t
+        know they could do that. Do they think....
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2138229590837950437, guid: d5e433505c07d1644a2a5de6d77c2132, type: 3}
+      propertyPath: playingSequence.Array.data[3].DialougeText
+      value: I thought you'd be gone by now. But there... there might still be time
+        for you, even if it's too late for the wilders.
+      objectReference: {fileID: 0}
+    - target: {fileID: 2138229590837950437, guid: d5e433505c07d1644a2a5de6d77c2132, type: 3}
+      propertyPath: playingSequence.Array.data[4].DialougeText
+      value: I'm... I'm not sure if I'm strong enough to bring you back - I've never...
+        I've never done it before.
+      objectReference: {fileID: 0}
+    - target: {fileID: 2138229590837950437, guid: d5e433505c07d1644a2a5de6d77c2132, type: 3}
+      propertyPath: playingSequence.Array.data[5].DialougeText
+      value: 'But I owe it to you, and every one of the wilders to try, don''t I?
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2138229590837950437, guid: d5e433505c07d1644a2a5de6d77c2132, type: 3}
+      propertyPath: playingSequence.Array.data[3].SpeakerPortrait
+      value: 
+      objectReference: {fileID: 21300000, guid: 37ce3f21f8509664e9605b6566ed61f9, type: 3}
+    - target: {fileID: 2138229590837950437, guid: d5e433505c07d1644a2a5de6d77c2132, type: 3}
+      propertyPath: playingSequence.Array.data[4].SpeakerPortrait
+      value: 
+      objectReference: {fileID: 21300000, guid: 37ce3f21f8509664e9605b6566ed61f9, type: 3}
+    - target: {fileID: 2138229590837950437, guid: d5e433505c07d1644a2a5de6d77c2132, type: 3}
+      propertyPath: playingSequence.Array.data[5].SpeakerPortrait
+      value: 
+      objectReference: {fileID: 21300000, guid: 37ce3f21f8509664e9605b6566ed61f9, type: 3}
     - target: {fileID: 2900469613288104568, guid: d5e433505c07d1644a2a5de6d77c2132, type: 3}
       propertyPath: m_Name
       value: D_18a Confession 2

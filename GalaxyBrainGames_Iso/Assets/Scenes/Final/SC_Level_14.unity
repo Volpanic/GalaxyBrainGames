@@ -5684,17 +5684,27 @@ PrefabInstance:
     m_TransformParent: {fileID: 1639515409}
     m_Modifications:
     - target: {fileID: 2138229590837950437, guid: 428276653da5e834eb9c403d50325098, type: 3}
+      propertyPath: playingSequence.Array.data[0].DialougeText
+      value: "I could see flashes of your world sometimes. And mostly it was... it
+        was tired, and it was gray, but there was light too.  \r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2138229590837950437, guid: 428276653da5e834eb9c403d50325098, type: 3}
       propertyPath: playingSequence.Array.data[1].DialougeText
-      value: 'I imagined and I wished. I tried so hard to get to them, and I couldn''t
-        - '
+      value: I'd see snippets of these other kids - and who believed and imagined
+        so hard, and I- I imagined they were my friends. That I wasn't alone.
       objectReference: {fileID: 0}
     - target: {fileID: 2138229590837950437, guid: 428276653da5e834eb9c403d50325098, type: 3}
       propertyPath: playingSequence.Array.data[2].DialougeText
-      value: And then one day I pulled so hard that... someone came through. To here.
+      value: 'I wanted so badly to reach them, to not be alone - I used all that
+        was left of me to try the barrier, but I couldn''t get through! '
       objectReference: {fileID: 0}
     - target: {fileID: 2138229590837950437, guid: 428276653da5e834eb9c403d50325098, type: 3}
       propertyPath: playingSequence.Array.data[3].DialougeText
-      value: And I had a friend again! A boy who looked just as lonely as me!
+      value: 'I couldn''t get through but... but I could bring them in. '
+      objectReference: {fileID: 0}
+    - target: {fileID: 2138229590837950437, guid: 428276653da5e834eb9c403d50325098, type: 3}
+      propertyPath: playingSequence.Array.data[2].NormalizedPortraitPosition
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2900469613288104568, guid: 428276653da5e834eb9c403d50325098, type: 3}
       propertyPath: m_Name
@@ -8826,19 +8836,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.00092524296
+      value: -0.0007815063
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.00036479536
+      value: -0.000308156
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.93029743
+      value: -0.9302976
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.36680478
+      value: 0.36680475
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486685, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: mouseSensitivity
@@ -8926,19 +8936,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.00092524296
+      value: -0.0007815063
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.00036479536
+      value: -0.000308156
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.93029743
+      value: -0.9302976
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.36680478
+      value: 0.36680475
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}

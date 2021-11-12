@@ -545,6 +545,23 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 304048742}
     m_Modifications:
+    - target: {fileID: 5470609487627091761, guid: c87f2c076a90e0c48a16110385965c2b, type: 3}
+      propertyPath: playingSequence.Array.data[2].DialougeText
+      value: "It makes it really easy to get lost here... or leave bits behind. It
+        doesn't want you to move on, just to be a part of it.  \r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 5470609487627091761, guid: c87f2c076a90e0c48a16110385965c2b, type: 3}
+      propertyPath: playingSequence.Array.data[3].DialougeText
+      value: 'It''s tough for me to hold together for long.  That''s why I''m...
+        like this. Scattered.
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 5470609487627091761, guid: c87f2c076a90e0c48a16110385965c2b, type: 3}
+      propertyPath: playingSequence.Array.data[4].DialougeText
+      value: But you're already helping - just having someone else here makes me
+        focus.
+      objectReference: {fileID: 0}
     - target: {fileID: 6970415840578308221, guid: c87f2c076a90e0c48a16110385965c2b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -762,6 +779,10 @@ PrefabInstance:
     - target: {fileID: 3630170673359775012, guid: 9a36639567d8d8a4b9c7a227f9759ef4, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4167758212560368902, guid: 9a36639567d8d8a4b9c7a227f9759ef4, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6032747283114460258, guid: 9a36639567d8d8a4b9c7a227f9759ef4, type: 3}
       propertyPath: m_RootOrder
@@ -1009,7 +1030,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh1852636
+  m_Name: pb_Mesh584182
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1380,7 +1401,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh1852650
+  m_Name: pb_Mesh584196
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2270,7 +2291,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh1852600
+  m_Name: pb_Mesh584146
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2457,19 +2478,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.35659945
+      value: 0.35645998
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.14071092
+      value: 0.14065589
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.8591343
+      value: 0.8591922
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.33900666
+      value: -0.3390295
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486685, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: mouseSensitivity
@@ -2549,19 +2570,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.35659945
+      value: 0.35645998
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.14071092
+      value: 0.14065589
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.8591343
+      value: 0.8591922
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.33900666
+      value: -0.3390295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}

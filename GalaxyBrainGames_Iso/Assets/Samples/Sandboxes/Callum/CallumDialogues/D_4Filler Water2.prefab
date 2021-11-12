@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &4414443803888197132
+--- !u!1001 &4367947777940998706
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -93,51 +93,52 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1503807423637055562, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: m_Name
-      value: D_4 MeetSwim
+      value: D_4Filler Water2
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.size
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[0].DialougeText
-      value: Oh! That's a wilder! Hey there!
+      value: Wilders really seem to like you...
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[1].DialougeText
-      value: (Chirps happily)
+      value: I'm glad. They're the only friends i've had out here for a long time.
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[2].DialougeText
-      value: There's lots of them out here, all different types.
+      value: 'And I mean... they''re great, they are! But it''s not the same as it
+        was. '
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[3].DialougeText
-      value: If you ever need help, you can always ask one of them!
+      value: "Not like you and me.\r"
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[4].DialougeText
-      value: If you ever need help, you can always ask one of them!
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[5].DialougeText
-      value: 'The wilders and me are pretty much the only ones left in this place...  '
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[6].DialougeText
-      value: "It makes it really easy for humans like you to get lost here. \r\n"
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[7].DialougeText
-      value: "It makes it really easy for humans like you to get lost here. \r\n"
+      value: (ROARS AGAIN)
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[8].DialougeText
-      value: "It makes it really easy for humans like you to get lost here. \r\n"
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[9].DialougeText
-      value: "It makes it really easy for humans like you to get lost here. \r\n"
+      value: "I was getting to that! You could ask the Wilder. \rThis one looks strong."
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[0].SpeakerPortrait
@@ -146,7 +147,7 @@ PrefabInstance:
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[1].SpeakerPortrait
       value: 
-      objectReference: {fileID: 21300000, guid: 1f67839d971101743af08f1020bc462c, type: 3}
+      objectReference: {fileID: 21300000, guid: 37ce3f21f8509664e9605b6566ed61f9, type: 3}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[2].SpeakerPortrait
       value: 
@@ -156,11 +157,7 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 37ce3f21f8509664e9605b6566ed61f9, type: 3}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
-      propertyPath: playingSequence.Array.data[4].SpeakerPortrait
-      value: 
-      objectReference: {fileID: 21300000, guid: 37ce3f21f8509664e9605b6566ed61f9, type: 3}
-    - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
-      propertyPath: playingSequence.Array.data[1].NormalizedPortraitPosition
+      propertyPath: playingSequence.Array.data[0].NormalizedPortraitPosition
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
