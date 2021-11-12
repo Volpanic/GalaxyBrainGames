@@ -95,6 +95,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: D_1 Introduction
       objectReference: {fileID: 0}
+    - target: {fileID: 1503807423637055562, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.size
       value: 8
@@ -123,8 +127,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[5].DialougeText
-      value: "That's okay. It's not your fault humans don't teach anyone anything
-        about *important* things like magic. \r\n"
+      value: That's okay. It's not your fault nobody teaches humans anything *important*.
       objectReference: {fileID: 0}
     - target: {fileID: 2392138348966624727, guid: b762a03e787cbb04aa363042e8495c53, type: 3}
       propertyPath: playingSequence.Array.data[6].DialougeText
