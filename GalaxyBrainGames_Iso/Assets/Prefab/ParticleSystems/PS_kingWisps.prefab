@@ -76,7 +76,7 @@ ParticleSystemForceField:
     m_StartRange: 0.15
     m_EndRange: 2.5
     m_Length: 1
-    m_GravityFocus: 0.5
+    m_GravityFocus: 0.4
     m_RotationRandomness: {x: 0.3, y: 0.58}
     m_DirectionCurveX:
       serializedVersion: 2
@@ -240,7 +240,7 @@ ParticleSystemForceField:
     m_GravityCurve:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 16
+      scalar: 30
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -293,8 +293,8 @@ ParticleSystemForceField:
     m_RotationSpeedCurve:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 6
-      minScalar: 5
+      scalar: 5
+      minScalar: 4
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -643,7 +643,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3744581697472168265, guid: 6626c12d88af2fe4c8895dfac9af964b, type: 3}
       propertyPath: InitialModule.startSpeed.scalar
-      value: 0.5
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 3744581697472168265, guid: 6626c12d88af2fe4c8895dfac9af964b, type: 3}
       propertyPath: TrailModule.sizeAffectsLifetime
