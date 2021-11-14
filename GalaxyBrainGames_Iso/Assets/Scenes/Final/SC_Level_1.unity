@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 0.802
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.10210855, g: 0.107586384, b: 0.097105235, a: 0.802}
+  m_IndirectSpecularColor: {r: 0.10210862, g: 0.10758635, b: 0.097105116, a: 0.802}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1040,13 +1040,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1600548602}
     m_Modifications:
+    - target: {fileID: 2017021452, guid: a88ae4c7087b19a4da6e3af33e871ef0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8069893937207801234, guid: a88ae4c7087b19a4da6e3af33e871ef0, type: 3}
       propertyPath: m_Name
       value: TutorialPage (1)
       objectReference: {fileID: 0}
     - target: {fileID: 8069893937207801234, guid: a88ae4c7087b19a4da6e3af33e871ef0, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8069893937207801235, guid: a88ae4c7087b19a4da6e3af33e871ef0, type: 3}
       propertyPath: m_Pivot.x
@@ -1138,12 +1142,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8069893938003310874, guid: a88ae4c7087b19a4da6e3af33e871ef0, type: 3}
       propertyPath: m_text
-      value: Moving reduces your remaining actions. When you run out, you have to
-        restart.
+      value: 'Performing action like moving cost you AP. becarfull running will cause
+        you to lose and restart.
+
+        Your AP cpunter is located on the right
+        side of the screen'
       objectReference: {fileID: 0}
     - target: {fileID: 8069893938684529746, guid: a88ae4c7087b19a4da6e3af33e871ef0, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069893938684529747, guid: a88ae4c7087b19a4da6e3af33e871ef0, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069893938684529748, guid: a88ae4c7087b19a4da6e3af33e871ef0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: ab0769be202ac2c43bdd3c554088a334, type: 3}
+    - target: {fileID: 8069893938684529748, guid: a88ae4c7087b19a4da6e3af33e871ef0, type: 3}
+      propertyPath: m_UseSpriteMesh
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a88ae4c7087b19a4da6e3af33e871ef0, type: 3}
@@ -1557,6 +1576,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: D_1 Introduction
       objectReference: {fileID: 0}
+    - target: {fileID: 6422951327610339857, guid: 42e569fbcb563e243b58d9c7898a1dff, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 42e569fbcb563e243b58d9c7898a1dff, type: 3}
 --- !u!1001 &111573221736877534
@@ -1588,19 +1611,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.35654482
+      value: 0.35663286
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.14068934
+      value: 0.14072411
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.859157
+      value: 0.8591204
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.3390156
+      value: -0.33900118
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486685, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: mouseSensitivity
@@ -1680,19 +1703,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.35654482
+      value: 0.35663286
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.14068934
+      value: 0.14072411
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.859157
+      value: 0.8591204
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.3390156
+      value: -0.33900118
       objectReference: {fileID: 0}
     - target: {fileID: 7429577085039792635, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_Layer
