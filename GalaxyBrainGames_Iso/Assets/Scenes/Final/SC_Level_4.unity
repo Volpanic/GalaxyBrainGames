@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
+  m_IndirectSpecularColor: {r: 0.1273174, g: 0.13414761, b: 0.12107885, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -462,8 +462,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8069893938003310874, guid: a88ae4c7087b19a4da6e3af33e871ef0, type: 3}
       propertyPath: m_text
-      value: 'There are strong rapids in the feywild, moving into one will sweep
-        the Axolotl away '
+      value: Moving into strong rapids will sweep the Axolotl away.
       objectReference: {fileID: 0}
     - target: {fileID: 8069893938684529746, guid: a88ae4c7087b19a4da6e3af33e871ef0, type: 3}
       propertyPath: m_IsActive
@@ -2876,8 +2875,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8069893938003310874, guid: a88ae4c7087b19a4da6e3af33e871ef0, type: 3}
       propertyPath: m_text
-      value: Another creature is available. Left Click the portrait on the left or
-        swap between them useing the numbers on you keyboard.
+      value: 'Another creature is available in this level!
+
+        You can switch
+        between creatures by left clicking their portraits or using the numbers on
+        your keyboard.'
       objectReference: {fileID: 0}
     - target: {fileID: 8069893938684529746, guid: a88ae4c7087b19a4da6e3af33e871ef0, type: 3}
       propertyPath: m_IsActive
@@ -3961,19 +3963,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.35663316
+      value: 0.3564566
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.14072423
+      value: 0.14065456
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.85912037
+      value: 0.8591936
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.33900112
+      value: -0.33903006
       objectReference: {fileID: 0}
     - target: {fileID: 111573223273415090, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_RootOrder
@@ -4049,19 +4051,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.35663316
+      value: 0.3564566
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.14072423
+      value: 0.14065456
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.85912037
+      value: 0.8591936
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.33900112
+      value: -0.33903006
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
@@ -4982,8 +4984,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8069893938003310874, guid: a88ae4c7087b19a4da6e3af33e871ef0, type: 3}
       propertyPath: m_text
-      value: While in the water the Axolotl is strong enough to carry cretures and
-        objects on it's back. It can't on land.
+      value: 'The Axolotl can carry creatures and objects on its back while in the
+        water - but it can''t while on land. '
       objectReference: {fileID: 0}
     - target: {fileID: 8069893938684529746, guid: a88ae4c7087b19a4da6e3af33e871ef0, type: 3}
       propertyPath: m_IsActive
@@ -6877,7 +6879,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8069893938003310874, guid: a88ae4c7087b19a4da6e3af33e871ef0, type: 3}
       propertyPath: m_text
-      value: The Axolotl is the only creature that can swim through water tiles.
+      value: "Different creatures have different abilities. \nOnly the Axolotl can
+        swim through water tiles."
       objectReference: {fileID: 0}
     - target: {fileID: 8069893938684529746, guid: a88ae4c7087b19a4da6e3af33e871ef0, type: 3}
       propertyPath: m_IsActive

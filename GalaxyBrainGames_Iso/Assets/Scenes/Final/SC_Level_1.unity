@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 0.802
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.10210862, g: 0.10758635, b: 0.097105116, a: 0.802}
+  m_IndirectSpecularColor: {r: 0.10210855, g: 0.107586384, b: 0.097105235, a: 0.802}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -738,8 +738,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8069893938003310874, guid: a88ae4c7087b19a4da6e3af33e871ef0, type: 3}
       propertyPath: m_text
-      value: 'While you have a character selected Left clicking on a tile will move
-        them to it. '
+      value: Left clicking on a tile will move your currently selected character
+        to it.
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a88ae4c7087b19a4da6e3af33e871ef0, type: 3}
@@ -1142,11 +1142,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8069893938003310874, guid: a88ae4c7087b19a4da6e3af33e871ef0, type: 3}
       propertyPath: m_text
-      value: 'Performing action like moving cost you AP. becarfull running will cause
-        you to lose and restart.
-
-        Your AP cpunter is located on the right
-        side of the screen'
+      value: "Performing actions, like moving, costs Action Points (AP).\n\nWhen
+        you run out of Action Points, the level resets.\n \nYour AP counter is located
+        on the right side of the screen."
       objectReference: {fileID: 0}
     - target: {fileID: 8069893938684529746, guid: a88ae4c7087b19a4da6e3af33e871ef0, type: 3}
       propertyPath: m_IsActive
@@ -1611,19 +1609,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.35663316
+      value: 0.3564566
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.1407242
+      value: 0.14065456
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.85912037
+      value: 0.8591936
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.33900112
+      value: -0.33903006
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486685, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: mouseSensitivity
@@ -1703,19 +1701,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.35663316
+      value: 0.3564566
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.1407242
+      value: 0.14065456
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.85912037
+      value: 0.8591936
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.33900112
+      value: -0.33903006
       objectReference: {fileID: 0}
     - target: {fileID: 7429577085039792635, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_Layer
