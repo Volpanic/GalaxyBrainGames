@@ -1,6 +1,7 @@
 using GalaxyBrain.Audio;
 using GalaxyBrain.Systems;
 using UnityEngine;
+using UnityEngine.Events;
 using Volpanic.Easing;
 
 namespace GalaxyBrain.Interactables
@@ -15,6 +16,7 @@ namespace GalaxyBrain.Interactables
         [SerializeField] private CreatureData creatureData;
         [SerializeField] private Collider myCollider;
         [SerializeField] private AudioData onPushedSound;
+        [SerializeField] private UnityEvent onPushedEvent;
 
         private bool fallingOver = false;
         private float fallingTimer = 0;
@@ -55,6 +57,7 @@ namespace GalaxyBrain.Interactables
             FaceDirection(pushDirection);
             targetRotation = GetPushRotation(pushDirection);
             fallingOver = true;
+            onPushedEvent?.Invoke();
         }
 
         private void FaceDirection(Vector3 direction)
