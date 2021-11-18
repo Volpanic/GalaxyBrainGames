@@ -45,6 +45,11 @@ namespace GalaxyBrain
 
             }
 
+            if (Input.GetMouseButtonUp(1))
+            {
+                orbital.m_XAxis.m_InputAxisValue = 0;
+            }
+
             if (toggleInvert == false)
             {
                 if (Input.GetKey("a"))

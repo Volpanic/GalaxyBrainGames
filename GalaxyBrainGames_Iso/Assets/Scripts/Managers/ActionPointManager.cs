@@ -14,6 +14,16 @@ public class ActionPointManager : MonoBehaviour
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI actionPointTextCount;
 
+    public ActionPointData PointData
+    {
+        get { return pointData; }
+    }
+
+    public int CurrentActionPoints
+    {
+        get { return actionPointCount; }
+    }
+
     // Start is called before the first frame update
     void Awake()
     {
