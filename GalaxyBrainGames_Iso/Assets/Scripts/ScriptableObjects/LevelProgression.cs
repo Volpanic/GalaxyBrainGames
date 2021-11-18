@@ -7,6 +7,13 @@ using UnityEngine.SceneManagement;
 
 namespace GalaxyBrain.Systems
 {
+    [System.Serializable]
+    public struct SceneInfo
+    {
+        public int ActionPointsInLevel;
+        public string CreaturesInLevel;
+    }
+
     /// <summary>
     /// A scirptable object that stores the level order of the game.
     /// Also used to determine what level comes next.
@@ -16,6 +23,9 @@ namespace GalaxyBrain.Systems
     {
         [Scene]
         public List<string> ScenesInOrder;
+
+        [ReadOnly]
+        public List<SceneInfo> SceneInformation;
 
         public GameObject SceneTransition;
 
@@ -75,6 +85,15 @@ namespace GalaxyBrain.Systems
             }
 
             return Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(0));
+        }
+
+        [ContextMenu("Print Info")]
+        public void LoadSave()
+        {
+            foreach(SceneInfo scene in SceneInformation)
+            {
+                Debug.Log(scene.ActionPointsInLevel + " : " + scene.CreaturesInLevel);
+            }
         }
     }
 }

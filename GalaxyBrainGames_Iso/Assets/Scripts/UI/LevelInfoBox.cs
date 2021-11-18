@@ -1,3 +1,4 @@
+using GalaxyBrain.Systems;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,8 +9,11 @@ namespace GalaxyBrain.UI
 {
     public class LevelInfoBox : MonoBehaviour
     {
+        [SerializeField] private LevelProgression levelProgression;
         [SerializeField] private CanvasGroup infoGroup;
         [SerializeField] private TextMeshProUGUI levelNameText;
+        [SerializeField] private TextMeshProUGUI actionPointsText;
+        [SerializeField] private TextMeshProUGUI creaturesInLevelText;
 
         private string targetScene;
         private bool locked;
@@ -32,6 +36,10 @@ namespace GalaxyBrain.UI
         {
             levelNameText.text = $"Level {levelNum}";
             this.targetScene = targetScene;
+
+            SceneInfo info = levelProgression.SceneInformation[levelNum - 1];
+            actionPointsText.text = info.ActionPointsInLevel.ToString();
+            creaturesInLevelText.text = info.CreaturesInLevel;
 
             infoGroup.interactable = true;
             infoGroup.blocksRaycasts = true;
