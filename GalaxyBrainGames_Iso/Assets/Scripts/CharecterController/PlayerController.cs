@@ -42,6 +42,8 @@ namespace GalaxyBrain.Creatures
 
         [SerializeField] private Color selectionIconTint = Color.white;
 
+        [SerializeField] Sprite creatureIcon;
+
         [HideInInspector] public bool Selected = false;
         [HideInInspector] public bool IsClimbing = false;
         [HideInInspector] public bool InteruptNextPathInterval = false;
@@ -117,6 +119,11 @@ namespace GalaxyBrain.Creatures
         public Color SelectionIconTint
         {
             get { return selectionIconTint; }
+        }
+
+        public Sprite CreatureIcon
+        {
+            get { return creatureIcon; }
         }
 
         private PlayerStateMachine stateMachine;

@@ -56,7 +56,12 @@ namespace GalaxyBrainEditor.Processor
                             info.CreaturesInLevel += $"{controllers[i].name}";
                         }
 
-                        levelProgression.SceneInformation[currentIndex] = info;
+                        //Check if anything is different before we edit the progression
+                        SceneInfo oldInfo = levelProgression.SceneInformation[currentIndex];
+                        if(oldInfo.ActionPointsInLevel != info.ActionPointsInLevel || oldInfo.CreaturesInLevel != info.CreaturesInLevel)
+                        {
+                            levelProgression.SceneInformation[currentIndex] = info;
+                        }
                     }
                 }
             }
