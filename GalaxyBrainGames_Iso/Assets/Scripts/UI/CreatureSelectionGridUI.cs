@@ -114,6 +114,11 @@ namespace GalaxyBrain.UI
                 case PlayerController.PlayerTypes.Strong: creatureIcon.sprite = creatureData.StrongIcon; break;
                 case PlayerController.PlayerTypes.Water:  creatureIcon.sprite = creatureData.WaterIcon; break;
             }
+
+            if(creature.CreatureIcon != null)
+            {
+                creatureIcon.sprite = creature.CreatureIcon;
+            }
             creatureIcon.color = creature.SelectionIconTint;
         }
     }
