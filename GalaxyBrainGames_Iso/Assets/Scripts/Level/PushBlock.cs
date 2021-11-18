@@ -85,18 +85,19 @@ namespace GalaxyBrain.Interactables
                 }
                 controller.SimpleMove(Vector3.zero);
             }
+
+            Debug.DrawRay(transform.TransformPoint(targetPos), Vector3.up, Color.cyan, 0.1f);
+
         }
 
         private void UpdateBlockMoving()
         {
             pushTimer += Time.fixedDeltaTime;
             float lerpPos = Easingf.OutSine(0f, 1f, pushTimer / pushMaxTime);
-            Vector3 target = Vector3.Lerp(startPos, targetPos, lerpPos);
+            Vector3 target = Vector3.Lerp(startPos, startPos + targetPos, lerpPos);
 
-            Vector3 movement = target - oldMovement;
+            Vector3 movement = target - transform.position;
             if (movement != Vector3.zero) controller.Move(movement);
-
-            oldMovement = target;
 
             //Check if we hit a wall
             if (pushTimer >= 0.2f && (PlaceMeeting(movement, 0.9f) || !PlaceMeeting(Vector3.down*0.25f, 0.9f)))
@@ -194,6 +195,8 @@ namespace GalaxyBrain.Interactables
                         return endPoint.magnitude;
                     }
 
+                    endPoint = endPoint.normalized * (Mathf.Ceil(Mathf.Abs(endPoint.magnitude)) * Mathf.Sign(endPoint.magnitude));
+                    Debug.Log(endPoint.magnitude);
                     targetPos = (endPoint);
                     pathLocked = true;
                     return endPoint.magnitude;
@@ -271,7 +274,7 @@ namespace GalaxyBrain.Interactables
 
         public void StartPush()
         {
-            startPos = Vector3.zero;
+            startPos = transform.position;
             pushTimer = 0;
             oldMovement = Vector3.zero;
             moving = true;
