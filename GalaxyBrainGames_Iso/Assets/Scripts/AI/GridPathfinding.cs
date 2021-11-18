@@ -393,7 +393,10 @@ namespace GalaxyBrain.Pathfinding
                 node.IsWater = water;
             }
 
-            if (node.IsWater && node.IsGround) node.IsGround = false;
+            if (node.IsWater && node.IsGround)
+            {
+                node.IsWater = false;
+            }
 
             //Check if slope
             if (sloped)
@@ -464,10 +467,29 @@ namespace GalaxyBrain.Pathfinding
             if (nodeGrid.ContainsKey(pos + Vector3.back)) adjacentNode.Add(nodeGrid[pos + Vector3.back]);
 
             //Check for down slope
-            if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.right)) adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.right]);
-            if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.left)) adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.left]);
-            if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.forward)) adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.forward]);
-            if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.back)) adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.back]);
+            if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.right))
+            {
+                if(nodeGrid.ContainsKey(pos + Vector3.right) && !nodeGrid[pos + Vector3.right].IsWall)
+                   adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.right]);
+            }
+
+            if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.left))
+            {
+                if (nodeGrid.ContainsKey(pos + Vector3.left) && !nodeGrid[pos + Vector3.left].IsWall)
+                    adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.left]);
+            }
+
+            if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.forward))
+            {
+                if (nodeGrid.ContainsKey(pos + Vector3.forward) && !nodeGrid[pos + Vector3.forward].IsWall)
+                    adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.forward]);
+            }
+
+            if (nodeGrid.ContainsKey(pos + Vector3.down + Vector3.back))
+            {
+                if (nodeGrid.ContainsKey(pos + Vector3.back) && !nodeGrid[pos + Vector3.back].IsWall)
+                    adjacentNode.Add(nodeGrid[pos + Vector3.down + Vector3.back]);
+            }
 
             //Check for up the slope
             if (current.IsSlope)
