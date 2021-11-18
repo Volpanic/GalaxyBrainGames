@@ -393,7 +393,10 @@ namespace GalaxyBrain.Pathfinding
                 node.IsWater = water;
             }
 
-            if (node.IsWater && node.IsGround) node.IsGround = false;
+            if (node.IsWater && node.IsGround)
+            {
+                node.IsWater = false;
+            }
 
             //Check if slope
             if (sloped)
