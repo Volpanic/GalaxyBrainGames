@@ -211,7 +211,7 @@ namespace GalaxyBrain.Pathfinding
                     }
 
                     // Move to edge of tile, then water (From Water to Land)
-                    if (canSwim && (current.IsWater && !current.IsGround) && (!next.IsWater))
+                    if (canSwim && (current.IsWater && !current.IsGround) && (next.IsGround))
                     {
                         Vector3 direction = next.Position - current.Position;
                         direction.y = 0;
@@ -223,7 +223,7 @@ namespace GalaxyBrain.Pathfinding
                         moveToEdgeNode.Offset.y = WATER_FLOAT_POINT * 0.25f; //Adjust the point to be upwards
                         path.Add(moveToEdgeNode);
 
-                        path.Add(new PathNodeInfo(CreateAndStoreNode(next.Position), false, false, false));
+                        path.Add(new PathNodeInfo(CreateAndStoreNode(next.Position), false, false, true));
                         i++;
                         visualPath.Add(next.Position);
                         continue;
@@ -393,10 +393,10 @@ namespace GalaxyBrain.Pathfinding
                 node.IsWater = water;
             }
 
-            if (node.IsWater && node.IsGround)
-            {
-                node.IsWater = false;
-            }
+            //if (node.IsWater && node.IsGround)
+            //{
+            //    node.IsWater = false;
+            //}
 
             //Check if slope
             if (sloped)

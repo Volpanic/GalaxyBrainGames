@@ -97,6 +97,7 @@ namespace GalaxyBrain.Interactables
             Vector3 target = Vector3.Lerp(startPos, startPos + targetPos, lerpPos);
 
             Vector3 movement = target - transform.position;
+            movement.y = 0;
             if (movement != Vector3.zero) controller.Move(movement);
 
             //Check if we hit a wall
