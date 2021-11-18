@@ -15,7 +15,7 @@ namespace GalaxyBrainEditor.Processor
         public static void OnPostprocessScene()
         {
             string[] levelProgressionAssets = AssetDatabase.FindAssets("t:LevelProgression");
-            if(levelProgressionAssets.Length > 0)
+            if (levelProgressionAssets.Length > 0)
             {
                 string assetPath = AssetDatabase.GUIDToAssetPath(levelProgressionAssets[0]);
                 LevelProgression levelProgression = AssetDatabase.LoadAssetAtPath<LevelProgression>(assetPath);
@@ -27,7 +27,7 @@ namespace GalaxyBrainEditor.Processor
                 if (levelProgression && apManager != null)
                 {
                     var currentScene = SceneManager.GetActiveScene();
-                    
+
                     //Make sure were running in a scene that's in the final build
                     if (levelProgression.ScenesInOrder.Contains(currentScene.name))
                     {
@@ -52,10 +52,10 @@ namespace GalaxyBrainEditor.Processor
 
                         for (int i = 0; i < controllers.Length; i++)
                         {
-                            info.CreaturesInLevel += $"{controllers[i].name} ";
+                            if (i != 0) info.CreaturesInLevel += ", ";
+                            info.CreaturesInLevel += $"{controllers[i].name}";
                         }
 
-                        Debug.Log(currentScene.name + " : " + info.ActionPointsInLevel + " : " + info.CreaturesInLevel);
                         levelProgression.SceneInformation[currentIndex] = info;
                     }
                 }
