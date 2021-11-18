@@ -18116,7 +18116,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8722944019611907259, guid: 9a36639567d8d8a4b9c7a227f9759ef4, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8722944019988859023, guid: 9a36639567d8d8a4b9c7a227f9759ef4, type: 3}
       propertyPath: m_Enabled
@@ -36114,6 +36114,10 @@ PrefabInstance:
       propertyPath: playingSequence.Array.data[6].EndOfLineEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 252564127}
+    - target: {fileID: 2138229590837950437, guid: 8b2890cefb55b0e4489bf2b6970be0c5, type: 3}
+      propertyPath: playingSequence.Array.data[2].EndOfLineEvent.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2900469613288104568, guid: 8b2890cefb55b0e4489bf2b6970be0c5, type: 3}
       propertyPath: m_Name
       value: D_19a SomethingNew
