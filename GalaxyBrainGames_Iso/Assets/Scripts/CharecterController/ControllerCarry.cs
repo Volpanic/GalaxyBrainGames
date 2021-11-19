@@ -1,4 +1,5 @@
 using GalaxyBrain.Attributes;
+using GalaxyBrain.Audio;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ namespace GalaxyBrain.Creatures
     {
         [SerializeField] private CharacterController controller;
         [SerializeField] private Vector3 velocity;
+        [SerializeField] private AudioData newPassengerSound;
 
         private Vector3 oldPos;
         private Dictionary<GameObject, CharacterController> cachedControllers = new Dictionary<GameObject, CharacterController>();
@@ -64,6 +66,7 @@ namespace GalaxyBrain.Creatures
         {
             //Get all colliders above us
             Collider[] colls = Physics.OverlapBox(controller.bounds.center + (Vector3.up), controller.bounds.extents, transform.rotation);
+            int oldPassengerCount = passengers.Count;
             passengers.Clear();
 
             //Check if they have character controllers
@@ -81,6 +84,11 @@ namespace GalaxyBrain.Creatures
                 else cc = cachedControllers[colls[i].gameObject];
 
                 if (cc != null) passengers.Add(cc);
+            }
+
+            if(passengers.Count > oldPassengerCount)
+            {
+                newPassengerSound?.Play();
             }
         }
     }
