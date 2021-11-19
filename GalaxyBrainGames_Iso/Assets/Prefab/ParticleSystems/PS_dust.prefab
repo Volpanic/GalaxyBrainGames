@@ -46,9 +46,9 @@ ParticleSystem:
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
-  looping: 1
+  looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
@@ -115,7 +115,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 2
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -168,7 +168,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 6
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -220,22 +220,22 @@ ParticleSystem:
         m_RotationOrder: 4
     startColor:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 1
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 0.4811321, g: 0.39061904, b: 0.28368637, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 1, b: 1, a: 1}
-        key1: {r: 1, g: 1, b: 1, a: 1}
-        key2: {r: 0, g: 0, b: 0, a: 0}
+        key0: {r: 0.6698113, g: 0.55175966, b: 0.43284976, a: 1}
+        key1: {r: 0.8113208, g: 0.62665075, b: 0.21813813, a: 1}
+        key2: {r: 0.4339623, g: 0.3660034, b: 0.25996798, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
         key6: {r: 0, g: 0, b: 0, a: 0}
         key7: {r: 0, g: 0, b: 0, a: 0}
         ctime0: 0
-        ctime1: 65535
-        ctime2: 0
+        ctime1: 18890
+        ctime2: 65535
         ctime3: 0
         ctime4: 0
         ctime5: 0
@@ -250,7 +250,7 @@ ParticleSystem:
         atime6: 0
         atime7: 0
         m_Mode: 0
-        m_NumColorKeys: 2
+        m_NumColorKeys: 3
         m_NumAlphaKeys: 2
       minGradient:
         serializedVersion: 2
@@ -284,7 +284,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 2
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -606,7 +606,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 0.08
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -735,7 +735,7 @@ ParticleSystem:
     m_UseMeshMaterialIndex: 0
     m_UseMeshColors: 1
     alignToDirection: 0
-    m_Texture: {fileID: 0}
+    m_Texture: {fileID: 2800000, guid: b8a3365011283a44ab8993a4537db3f7, type: 3}
     m_TextureClipChannel: 3
     m_TextureClipThreshold: 0
     m_TextureUVChannel: 0
@@ -746,7 +746,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 1
+      value: 3
       mode: 0
       spread: 0
       speed:
@@ -971,11 +971,11 @@ ParticleSystem:
     m_BurstCount: 0
     m_Bursts: []
   SizeModule:
-    enabled: 0
+    enabled: 1
     curve:
       serializedVersion: 2
       minMaxState: 1
-      scalar: 1
+      scalar: 10
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -984,19 +984,37 @@ ParticleSystem:
           time: 0
           value: 0
           inSlope: 0
-          outSlope: 1
+          outSlope: 0
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
           outWeight: 0.33333334
         - serializedVersion: 3
-          time: 1
-          value: 1
-          inSlope: 1
-          outSlope: 0
+          time: 0.16140781
+          value: 0.88440955
+          inSlope: 1.7645502
+          outSlope: 1.7645502
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.9164244
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.33692452
+          value: 0.83982366
+          inSlope: -4.478705
+          outSlope: -4.478705
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
+          outWeight: 0.10854429
+        - serializedVersion: 3
+          time: 0.9618988
+          value: 0.106925964
+          inSlope: -2.7814856
+          outSlope: -2.7814856
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.32638744
           outWeight: 0.33333334
         m_PreInfinity: 2
         m_PostInfinity: 2
@@ -1484,7 +1502,7 @@ ParticleSystem:
     flipU: 0
     flipV: 0
   VelocityModule:
-    enabled: 0
+    enabled: 1
     x:
       serializedVersion: 2
       minMaxState: 0
@@ -2018,7 +2036,7 @@ ParticleSystem:
     speedModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.5
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -2075,7 +2093,7 @@ ParticleSystem:
     m_Curve:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 1
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -2678,11 +2696,11 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
   NoiseModule:
-    enabled: 0
+    enabled: 1
     strength:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 2
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -2841,14 +2859,14 @@ ParticleSystem:
     separateAxes: 0
     frequency: 0.5
     damping: 1
-    octaves: 1
+    octaves: 2
     octaveMultiplier: 0.5
-    octaveScale: 2
+    octaveScale: 3
     quality: 2
     scrollSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 0.64
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -3114,7 +3132,7 @@ ParticleSystem:
     rotationAmount:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 0.58
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -3167,7 +3185,7 @@ ParticleSystem:
     sizeAmount:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 0.1
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -3791,15 +3809,16 @@ ParticleSystem:
     collidesWithDynamic: 1
     interiorCollisions: 0
   TriggerModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 2
-    inside: 1
+    inside: 0
     outside: 0
-    enter: 0
+    enter: 2
     exit: 0
     colliderQueryMode: 0
     radiusScale: 1
-    primitives: []
+    primitives:
+    - {fileID: 0}
   SubModule:
     serializedVersion: 2
     enabled: 0
