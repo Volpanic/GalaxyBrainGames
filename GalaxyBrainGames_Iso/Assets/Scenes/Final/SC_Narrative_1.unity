@@ -505,6 +505,11 @@ PrefabInstance:
     m_TransformParent: {fileID: 641712103}
     m_Modifications:
     - target: {fileID: 2138229590837950437, guid: cec5c24fa8f341f4e92c5df5c585b4f1, type: 3}
+      propertyPath: playingSequence.Array.data[0].DialougeText
+      value: We made it! I didn't think - I wasn't sure we'd get this far. But we're
+        here.
+      objectReference: {fileID: 0}
+    - target: {fileID: 2138229590837950437, guid: cec5c24fa8f341f4e92c5df5c585b4f1, type: 3}
       propertyPath: playingSequence.Array.data[6].DialougeText
       value: (ROARS)
       objectReference: {fileID: 0}
@@ -9936,11 +9941,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &749731768 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2382273822889426118, guid: 9a36639567d8d8a4b9c7a227f9759ef4, type: 3}
-  m_PrefabInstance: {fileID: 641712102}
-  m_PrefabAsset: {fileID: 0}
 --- !u!43 &816556380
 Mesh:
   m_ObjectHideFlags: 0
