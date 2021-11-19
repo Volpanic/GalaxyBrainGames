@@ -11,7 +11,7 @@ namespace GalaxyBrain.Systems
     public struct SceneInfo
     {
         public int ActionPointsInLevel;
-        public string CreaturesInLevel;
+        public Sprite[] CreaturesInLevel;
     }
 
     /// <summary>
