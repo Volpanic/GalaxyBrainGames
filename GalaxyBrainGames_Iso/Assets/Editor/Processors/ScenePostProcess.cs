@@ -46,15 +46,16 @@ namespace GalaxyBrainEditor.Processor
                         //Get current info to update
                         SceneInfo info = levelProgression.SceneInformation[currentIndex];
                         info.ActionPointsInLevel = apManager.CurrentActionPoints;
-                        info.CreaturesInLevel = "";
+                        List<Sprite> creaturesInLevel = new List<Sprite>();
 
                         PlayerController[] controllers = Object.FindObjectsOfType<PlayerController>();
 
                         for (int i = 0; i < controllers.Length; i++)
                         {
-                            if (i != 0) info.CreaturesInLevel += ", ";
-                            info.CreaturesInLevel += $"{controllers[i].name}";
+                            creaturesInLevel.Add(controllers[i].CreatureIcon);
                         }
+
+                        info.CreaturesInLevel = creaturesInLevel.ToArray();
 
                         //Check if anything is different before we edit the progression
                         SceneInfo oldInfo = levelProgression.SceneInformation[currentIndex];
