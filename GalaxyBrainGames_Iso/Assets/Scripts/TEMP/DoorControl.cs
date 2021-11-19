@@ -1,10 +1,12 @@
-﻿using GalaxyBrain.Systems;
+﻿using GalaxyBrain.Audio;
+using GalaxyBrain.Systems;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DoorControl : MonoBehaviour
 {
+    public AudioData doorSound;
     public GameObject element;
     public bool isOpen = false;
     public CreatureData data;
@@ -24,5 +26,6 @@ public class DoorControl : MonoBehaviour
             isOpen = true;
             data.pathfinding?.UpdateNodeCells(myCollider.bounds.min, myCollider.bounds.max);
         }
+        doorSound?.Play();
     }
 }
