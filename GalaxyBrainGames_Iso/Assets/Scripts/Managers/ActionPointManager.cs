@@ -1,11 +1,13 @@
 using GalaxyBrain.Systems;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
+/// <summary>
+/// Manages the action points left in a stage,
+/// Triggers events in the action point scriptable object 
+/// When action points are consumed
+/// Also handles action point UI
+/// </summary>
 public class ActionPointManager : MonoBehaviour
 {
     [SerializeField] private ActionPointData pointData;
