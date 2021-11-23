@@ -104,8 +104,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3249941341132653280}
-  - component: {fileID: 3249941341132653283}
   - component: {fileID: 3249941341132653282}
+  - component: {fileID: 5079550808147913244}
   m_Layer: 0
   m_Name: Lever
   m_TagString: Untagged
@@ -130,19 +130,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &3249941341132653283
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3249941341132653293}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3249941341132653282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,6 +168,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!135 &5079550808147913244
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3249941341132653293}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: -0.25, z: 0}
 --- !u!1 &3249941341430622007
 GameObject:
   m_ObjectHideFlags: 0
@@ -322,6 +322,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_leverPurple
       objectReference: {fileID: 0}
+    - target: {fileID: 4800635706679349309, guid: e45021cca5efa7047ae26743b18329d2, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5320044258917190279, guid: e45021cca5efa7047ae26743b18329d2, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -395,6 +399,10 @@ PrefabInstance:
     - target: {fileID: 3460549944477229765, guid: ec155cb25f4cb764080d5539dc96f6b1, type: 3}
       propertyPath: m_Name
       value: SM_leverGreen
+      objectReference: {fileID: 0}
+    - target: {fileID: 3460549944477229765, guid: ec155cb25f4cb764080d5539dc96f6b1, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4273220581154912383, guid: ec155cb25f4cb764080d5539dc96f6b1, type: 3}
       propertyPath: m_RootOrder
@@ -526,6 +534,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_leverPink
       objectReference: {fileID: 0}
+    - target: {fileID: 8840327647980860889, guid: 31b1f1d1fe685fb4d94c59fd227e736f, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31b1f1d1fe685fb4d94c59fd227e736f, type: 3}
 --- !u!4 &2864084742535440432 stripped
@@ -600,6 +612,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_leverBlue
       objectReference: {fileID: 0}
+    - target: {fileID: 1091890709327166273, guid: eebd40836e405ff49b94b809ad34428f, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eebd40836e405ff49b94b809ad34428f, type: 3}
 --- !u!4 &6397852046549170457 stripped
@@ -673,6 +689,10 @@ PrefabInstance:
     - target: {fileID: 6905648916849246063, guid: 604c17d76889de0458f8e7c3d5baaeac, type: 3}
       propertyPath: m_Name
       value: SM_leverBase
+      objectReference: {fileID: 0}
+    - target: {fileID: 6905648916849246063, guid: 604c17d76889de0458f8e7c3d5baaeac, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 604c17d76889de0458f8e7c3d5baaeac, type: 3}
