@@ -15,11 +15,15 @@ namespace GalaxyBrain.Interactables
         [SerializeField] private Interactalbe interactalbe;
         [SerializeField] private CreatureData creatureData;
         [SerializeField] private Collider myCollider;
-        [SerializeField] private AudioData onPushedSound;
         [SerializeField] private UnityEvent onPushedEvent;
+
+        [Header("Sounds")]
+        [SerializeField] private AudioData onPushedSound;
+        [SerializeField] private AudioData landedSound;
 
         private bool fallingOver = false;
         private float fallingTimer = 0;
+        private bool hasPlayedLanadedSound = false;
 
         private Quaternion initalRotation;
         private Quaternion targetRotation;
@@ -36,6 +40,12 @@ namespace GalaxyBrain.Interactables
                 fallingTimer += Time.fixedDeltaTime;
                 float lerpPos = Easingf.InExpo(0,1,fallingTimer);
                 transform.rotation = Quaternion.Lerp(initalRotation, targetRotation, lerpPos);
+
+                if(!hasPlayedLanadedSound && fallingTimer >= 0.9)
+                {
+                    hasPlayedLanadedSound = true;
+                    landedSound?.Play();
+                }
 
                 if (fallingTimer >= 1)
                 {
