@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.082663864, g: 0.05024314, b: 0.13577594, a: 1}
+  m_IndirectSpecularColor: {r: 0.082663834, g: 0.050243072, b: 0.1357755, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -55413,6 +55413,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 1942340472035406117}
   velocity: {x: 0, y: 0, z: 0}
+  newPassengerSound: {fileID: 0}
   passengers: []
 --- !u!114 &4257779104419759431
 MonoBehaviour:
@@ -61280,6 +61281,63 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8525328424044803862}
   m_Mesh: {fileID: 7888064977020992391, guid: 8cd53443e62ced14aaec4e9861e10d48, type: 3}
+--- !u!1001 &7488045123483297075
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1757407978403175946, guid: bd578a290515ac44a8f2abfba3f4b2a0, type: 3}
+      propertyPath: m_RootOrder
+      value: 123
+      objectReference: {fileID: 0}
+    - target: {fileID: 1757407978403175946, guid: bd578a290515ac44a8f2abfba3f4b2a0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 1757407978403175946, guid: bd578a290515ac44a8f2abfba3f4b2a0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7.37
+      objectReference: {fileID: 0}
+    - target: {fileID: 1757407978403175946, guid: bd578a290515ac44a8f2abfba3f4b2a0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.84
+      objectReference: {fileID: 0}
+    - target: {fileID: 1757407978403175946, guid: bd578a290515ac44a8f2abfba3f4b2a0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.71291554
+      objectReference: {fileID: 0}
+    - target: {fileID: 1757407978403175946, guid: bd578a290515ac44a8f2abfba3f4b2a0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.09978235
+      objectReference: {fileID: 0}
+    - target: {fileID: 1757407978403175946, guid: bd578a290515ac44a8f2abfba3f4b2a0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.68741405
+      objectReference: {fileID: 0}
+    - target: {fileID: 1757407978403175946, guid: bd578a290515ac44a8f2abfba3f4b2a0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.09621309
+      objectReference: {fileID: 0}
+    - target: {fileID: 1757407978403175946, guid: bd578a290515ac44a8f2abfba3f4b2a0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -15.935
+      objectReference: {fileID: 0}
+    - target: {fileID: 1757407978403175946, guid: bd578a290515ac44a8f2abfba3f4b2a0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 87.913
+      objectReference: {fileID: 0}
+    - target: {fileID: 1757407978403175946, guid: bd578a290515ac44a8f2abfba3f4b2a0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1778603753061627106, guid: bd578a290515ac44a8f2abfba3f4b2a0, type: 3}
+      propertyPath: m_Name
+      value: Feywild_Logo
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bd578a290515ac44a8f2abfba3f4b2a0, type: 3}
 --- !u!1 &7497091919609158468
 GameObject:
   m_ObjectHideFlags: 0
