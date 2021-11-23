@@ -45,7 +45,13 @@ namespace GalaxyBrain.Managers
                 creatureData.CreaturesInLevel[selectedCreature].Selected = true;
                 if (oldCreature != selectedCreature) OnSelectedChanged?.Invoke(oldCreature, selectedCreature);
                 pathfinding?.ClearPath();
+                PlayCreatureSwapSound(creatureData.CreaturesInLevel[selectedCreature]);
             }
+        }
+
+        private void PlayCreatureSwapSound(PlayerController playerController)
+        {
+            creatureData.PlayCreatureSwapSound(playerController.PlayerType);
         }
 
         private void Awake()
