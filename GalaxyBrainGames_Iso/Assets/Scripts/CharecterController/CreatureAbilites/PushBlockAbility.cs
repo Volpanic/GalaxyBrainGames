@@ -1,3 +1,4 @@
+using GalaxyBrain.Audio;
 using GalaxyBrain.Interactables;
 using UnityEngine;
 
@@ -16,6 +17,13 @@ namespace GalaxyBrain.Creatures.Abilities
         private Vector3 direction;
         private bool done = false;
         private bool canceled = false;
+        private AudioData abilityStartSound;
+
+        public AudioData AbilityStartSound
+        {
+            get { return abilityStartSound; }
+            set { abilityStartSound = value; }
+        }
 
         private bool buffer = false;
 
@@ -68,6 +76,8 @@ namespace GalaxyBrain.Creatures.Abilities
             done = false;
             canceled = false;
             buffer = false;
+
+            abilityStartSound?.Play();
 
             controller.Animator.SetBool("Stand", true);
 

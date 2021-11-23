@@ -1,3 +1,4 @@
+using GalaxyBrain.Audio;
 using GalaxyBrain.Interactables;
 using UnityEngine;
 
@@ -18,6 +19,14 @@ namespace GalaxyBrain.Creatures.Abilities
 
         private const string PUSH_ANIMATION_NAME = "strongPush";
         private const string STAND_IDLE_ANIMATION_NAME = "strongStandIdle";
+
+        private AudioData abilityStartSound;
+
+        public AudioData AbilityStartSound
+        {
+            get { return abilityStartSound; }
+            set { abilityStartSound = value; }
+        }
 
         public bool OnAbilityCheckCondition(Interactalbe interactable)
         {
@@ -62,6 +71,8 @@ namespace GalaxyBrain.Creatures.Abilities
             creature.Animator.SetBool("Stand",true);
             cardinalDirection = interactDirection;
             standing = false;
+
+            abilityStartSound?.Play();
         }
 
         public void OnAbilityUpdate()

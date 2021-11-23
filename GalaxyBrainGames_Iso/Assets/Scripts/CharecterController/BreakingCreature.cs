@@ -1,3 +1,4 @@
+using GalaxyBrain.Audio;
 using GalaxyBrain.Creatures.Abilities;
 using GalaxyBrain.Systems;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace GalaxyBrain.Creatures
     {
         [SerializeField] private PlayerController controller;
         [SerializeField] private CreatureData creatureData;
+        [SerializeField] private AudioData roarSound;
 
         // Start is called before the first frame update
         void Awake()
@@ -20,8 +22,14 @@ namespace GalaxyBrain.Creatures
 
         private void Start()
         {
-            controller.AddAbility(new PushBlockAbility());
-            controller.AddAbility(new KnockOverPillarAbility());
+            PushBlockAbility pushAbility = new PushBlockAbility();
+            KnockOverPillarAbility pillarAbility = new KnockOverPillarAbility();
+
+            pushAbility.AbilityStartSound = roarSound;
+            pillarAbility.AbilityStartSound = roarSound;
+
+            controller.AddAbility(pushAbility);
+            controller.AddAbility(pillarAbility);
         }
     }
 }
