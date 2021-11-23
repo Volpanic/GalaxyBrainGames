@@ -1,4 +1,5 @@
 using GalaxyBrain.Attributes;
+using GalaxyBrain.Audio;
 using GalaxyBrain.Creatures;
 using GalaxyBrain.Managers;
 using GalaxyBrain.Pathfinding;
@@ -26,6 +27,11 @@ namespace GalaxyBrain.Systems
         public Sprite ChildIcon;
         public Sprite StrongIcon;
         public Sprite WaterIcon;
+
+        [Header("Creature Sounds")]
+        public AudioData ChildSwapSound;
+        public AudioData StrongSwapSound;
+        public AudioData WaterSwapSound;
 
         private void OnEnable()
         {
@@ -58,6 +64,16 @@ namespace GalaxyBrain.Systems
             if (CreaturesInLevel == null && CreaturesInLevel.Count <= 0) { return; }
 
             CreatureManager.SelectCreature(creatureIndex);
+        }
+
+        public void PlayCreatureSwapSound(PlayerController.PlayerTypes type)
+        {
+            switch (type)
+            {
+                case PlayerController.PlayerTypes.Child:  ChildSwapSound?.Play();  break;
+                case PlayerController.PlayerTypes.Water:  WaterSwapSound?.Play();  break;
+                case PlayerController.PlayerTypes.Strong: StrongSwapSound?.Play(); break;
+            }
         }
 
         public void LogCreature(PlayerController creature)
