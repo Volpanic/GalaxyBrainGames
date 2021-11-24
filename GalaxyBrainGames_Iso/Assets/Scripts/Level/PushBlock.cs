@@ -1,8 +1,10 @@
 using GalaxyBrain.Creatures;
 using GalaxyBrain.Systems;
-using System;
+using GalaxyBrain.Pathfinding;
 using UnityEngine;
 using Volpanic.Easing;
+using System.Collections.Generic;
+using GalaxyBrain.Audio;
 
 namespace GalaxyBrain.Interactables
 {
@@ -22,6 +24,10 @@ namespace GalaxyBrain.Interactables
 
         [SerializeField] private Color ViablePathColor = Color.green;
         [SerializeField] private Color UnvialbePathColor = Color.red;
+
+        [SerializeField] private AudioData pushSound;
+
+        private Dictionary<GameObject, PlayerController> cachedControllers = new Dictionary<GameObject, PlayerController>();
 
         private Plane plane;
         private Camera cam;
@@ -59,6 +65,14 @@ namespace GalaxyBrain.Interactables
             UpdatePlane();
             cam = Camera.main;
             transform.rotation = Quaternion.identity;
+        }
+
+        private void Start()
+        {
+            for(int i = 0; i < creatureData.GetCreatureCount(); i++)
+            {
+                cachedControllers.Add(creatureData.GetCreature(i).gameObject, creatureData.GetCreature(i));
+            }
         }
 
         private void FixedUpdate()
@@ -240,7 +254,33 @@ namespace GalaxyBrain.Interactables
 
         private bool CheckIfDroppingOn(Vector3 position, float downDistance)
         {
-            return Physics.BoxCast(position, controller.bounds.extents * 0.8f, Vector3.down, transform.rotation, downDistance, dontDropOnLayer);
+            // Check for pathfind
+            Vector3 extents = controller.bounds.extents;
+            extents.y *= downDistance;
+            extents.x *= 0.95f;
+            extents.z *= 0.95f;
+            Collider[] hitObjects = Physics.OverlapBox(position - new Vector3(0, extents.y, 0), extents, transform.rotation, dontDropOnLayer);
+
+            if (hitObjects.Length > 0)
+            {
+                for (int i = 0; i < hitObjects.Length; i++)
+                {
+
+                    if (cachedControllers.ContainsKey(hitObjects[i].gameObject))
+                    {
+                        if (cachedControllers[hitObjects[i].gameObject].PlayerType != PlayerController.PlayerTypes.Water)
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         private bool CheckIfOffMap(Vector3 position, float downDistance)
@@ -281,6 +321,7 @@ namespace GalaxyBrain.Interactables
             moving = true;
             firstLand = false;
             firstSnap = false;
+            pushSound?.Play();
 
             UpdateTileIdecator(Vector3.zero, 0);
 

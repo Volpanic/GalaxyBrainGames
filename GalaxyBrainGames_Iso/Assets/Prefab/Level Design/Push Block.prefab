@@ -388,7 +388,7 @@ MonoBehaviour:
     m_Bits: 9
   dontDropOnLayer:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 1032
   maxPushRange: 10
   ViablePathColor: {r: 0.7058824, g: 1, b: 0.46666667, a: 1}
   UnvialbePathColor: {r: 1, g: 0.4666667, b: 0.5721092, a: 1}
@@ -437,6 +437,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 1942340471600068356}
   velocity: {x: 0, y: 0, z: 0}
+  newPassengerSound: {fileID: 0}
   passengers: []
 --- !u!1 &2192300117144973008
 GameObject:
