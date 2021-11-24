@@ -18,7 +18,6 @@ public class DoorControl : MonoBehaviour
         if (isOpen)
         {
             element.SetActive(true);
-            animator.Play("AN_door_close");
             if (animator != null)
                 animator.SetBool("doorOpen", false);
             isOpen = false;
@@ -27,7 +26,6 @@ public class DoorControl : MonoBehaviour
         else
         {
             element.SetActive(false);
-            animator.Play("AN_door_open");
             if (animator != null)
                 animator.SetBool("doorOpen", true);
             isOpen = true;
