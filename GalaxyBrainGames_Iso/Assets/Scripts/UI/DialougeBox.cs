@@ -43,7 +43,9 @@ namespace GalaxyBrain.UI
             if (playingSequence != null && playingSequence.Count > 0)
             {
                 DialougeText.text = playingSequence[0].DialougeText;
+                DialougeText.ForceMeshUpdate();
                 UpdateDialougePortrait(playingSequence[0]);
+                DialougeText.maxVisibleCharacters = 0;
             }
         }
 
