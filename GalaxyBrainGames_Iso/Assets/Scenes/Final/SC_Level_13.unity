@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
+  m_IndirectSpecularColor: {r: 0.1273174, g: 0.13414761, b: 0.12107885, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -7791,12 +7791,40 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3249941341132653282, guid: e631227cdd43beb4b9ac9d78b8a9fff1, type: 3}
+      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3249941341132653282, guid: e631227cdd43beb4b9ac9d78b8a9fff1, type: 3}
+      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3249941341132653282, guid: e631227cdd43beb4b9ac9d78b8a9fff1, type: 3}
       propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1678785077}
     - target: {fileID: 3249941341132653282, guid: e631227cdd43beb4b9ac9d78b8a9fff1, type: 3}
+      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 420581061}
+    - target: {fileID: 3249941341132653282, guid: e631227cdd43beb4b9ac9d78b8a9fff1, type: 3}
+      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3249941341132653282, guid: e631227cdd43beb4b9ac9d78b8a9fff1, type: 3}
       propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: Both
+      objectReference: {fileID: 0}
+    - target: {fileID: 3249941341132653282, guid: e631227cdd43beb4b9ac9d78b8a9fff1, type: 3}
+      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Both
+      objectReference: {fileID: 0}
+    - target: {fileID: 3249941341132653282, guid: e631227cdd43beb4b9ac9d78b8a9fff1, type: 3}
+      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: DoorControl, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3249941341132653282, guid: e631227cdd43beb4b9ac9d78b8a9fff1, type: 3}
+      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3249941341132653293, guid: e631227cdd43beb4b9ac9d78b8a9fff1, type: 3}
       propertyPath: m_Name
@@ -7810,8 +7838,7 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 3249941341132653282, guid: e631227cdd43beb4b9ac9d78b8a9fff1, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e631227cdd43beb4b9ac9d78b8a9fff1, type: 3}
 --- !u!4 &1205570610 stripped
 Transform:
@@ -8533,61 +8560,6 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!1 &1358518320 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3249941341132653293, guid: e631227cdd43beb4b9ac9d78b8a9fff1, type: 3}
-  m_PrefabInstance: {fileID: 1205570609}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1358518324
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1358518320}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ea2043751817934a9bdf2638ed7a25e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lastInteractedWithCreature: {fileID: 0}
-  myCollider: {fileID: 0}
-  requiredType: 0
-  allTypes: 0
-  onlyOnce: 0
-  consumeActionPoint: 0
-  setAnimatorBool: 0
-  animatorBoolName: 
-  normlaizedTimeToActivate: 0
-  hardPlayAnimationName: 
-  OnInteractedEvent: {fileID: 0}
-  OnInteracted:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 420581061}
-        m_TargetAssemblyTypeName: DoorControl, Assembly-CSharp
-        m_MethodName: Both
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1678785077}
-        m_TargetAssemblyTypeName: DoorControl, Assembly-CSharp
-        m_MethodName: Both
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!43 &1361481236
 Mesh:
   m_ObjectHideFlags: 0
@@ -12269,19 +12241,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0011258126
+      value: -0.0010407567
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.00044393542
+      value: -0.00041037798
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.93029225
+      value: -0.9302923
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.36681733
+      value: 0.36681736
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486687, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_Lens.OrthographicSize
@@ -12365,19 +12337,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0011258126
+      value: -0.0010407567
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.00044393542
+      value: -0.00041037798
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.93029225
+      value: -0.9302923
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.36681733
+      value: 0.36681736
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
