@@ -118,7 +118,6 @@ MonoBehaviour:
   interactalbe: {fileID: 988944399688586278}
   creatureData: {fileID: 11400000, guid: 7c514ea391c56834799b9fb50443484e, type: 2}
   myCollider: {fileID: 6263726591571609241}
-  onPushedSound: {fileID: 11400000, guid: ba37d25b001cefa4e95b6285d399f27b, type: 2}
   onPushedEvent:
     m_PersistentCalls:
       m_Calls:
@@ -146,6 +145,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onPushedSound: {fileID: 11400000, guid: ba37d25b001cefa4e95b6285d399f27b, type: 2}
+  landedSound: {fileID: 0}
 --- !u!65 &6263726591571609241
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -498,7 +499,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3265108399380157197}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.0035828932, y: -0.08001792, z: -0.0071657845}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6776261139150203049}
@@ -1015,7 +1016,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6143416998570537491}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalPosition: {x: 0.006, y: -0.433, z: 0.003}
   m_LocalScale: {x: 0.8373125, y: 0.8373125, z: 0.8373125}
   m_Children:
   - {fileID: 878886645953847981}
