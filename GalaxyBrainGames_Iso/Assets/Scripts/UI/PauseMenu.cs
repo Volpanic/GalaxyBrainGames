@@ -37,7 +37,7 @@ namespace GalaxyBrain.UI
         public void MainMenu()
         {
             mainGroup.interactable = false;
-            levelFade?.FadeOut(() => SceneManager.LoadScene(0));
+            levelFade?.FadeOut(() => SceneManager.LoadScene(1));
         }
     }
 }
