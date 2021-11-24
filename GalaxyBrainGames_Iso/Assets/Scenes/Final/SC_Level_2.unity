@@ -3019,7 +3019,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5470609487627091761, guid: c87f2c076a90e0c48a16110385965c2b, type: 3}
       propertyPath: playingSequence.Array.data[0].DialougeText
-      value: "Did you feel that? The wilds shifting... \n"
+      value: "Did you feel that? That shifting, the world changing... \n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 5470609487627091761, guid: c87f2c076a90e0c48a16110385965c2b, type: 3}
+      propertyPath: playingSequence.Array.data[1].DialougeText
+      value: It's these wilds, this world... they're not like yours. Not as... solid,
+        I guess? Always shifting, falling apart and swirling together forever...
       objectReference: {fileID: 0}
     - target: {fileID: 5470609487627091761, guid: c87f2c076a90e0c48a16110385965c2b, type: 3}
       propertyPath: playingSequence.Array.data[2].DialougeText
@@ -3028,16 +3033,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5470609487627091761, guid: c87f2c076a90e0c48a16110385965c2b, type: 3}
       propertyPath: playingSequence.Array.data[3].DialougeText
-      value: 'It''s tough for me to hold together for long.  That''s why I''m...
-        like this. Scattered.
-
-'
+      value: "That's why I'm... like this. Scattered. It's tough to hold together
+        sometimes - but just having someone else here is helping. \n"
       objectReference: {fileID: 0}
     - target: {fileID: 5470609487627091761, guid: c87f2c076a90e0c48a16110385965c2b, type: 3}
       propertyPath: playingSequence.Array.data[4].DialougeText
-      value: 'But you''re already helping - just having someone else here makes me
-        focus. Whenever you touch a wisp, I get a little stronger - and I can push
-        us somewhere new. '
+      value: 'Whenever you touch a wisp, I get a little stronger - and I can push
+        us another step closer to home. '
       objectReference: {fileID: 0}
     - target: {fileID: 5470609487627091761, guid: c87f2c076a90e0c48a16110385965c2b, type: 3}
       propertyPath: playingSequence.Array.data[0].SpeakerPortrait
@@ -3063,6 +3065,10 @@ PrefabInstance:
       propertyPath: playingSequence.Array.data[5].SpeakerPortrait
       value: 
       objectReference: {fileID: 21300000, guid: 1925031f63e5f8f40a1993d635af24f8, type: 3}
+    - target: {fileID: 5470609487627091761, guid: c87f2c076a90e0c48a16110385965c2b, type: 3}
+      propertyPath: playingSequence.Array.data[1].NormalizedPortraitPosition
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6970415840578308221, guid: c87f2c076a90e0c48a16110385965c2b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
