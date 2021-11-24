@@ -1,5 +1,6 @@
 using UnityEngine;
 using GalaxyBrain.Pathfinding;
+using System;
 
 namespace GalaxyBrain.Creatures.States
 {
@@ -12,6 +13,7 @@ namespace GalaxyBrain.Creatures.States
     {
         private GridPathfinding pathfinding;
         private LayerMask waterLayer;
+        private bool waterSnap = false;
 
         public PlayerDefaultState(PlayerController controller, GridPathfinding pathfinding, LayerMask waterLayer) : base(controller)
         {
@@ -19,11 +21,21 @@ namespace GalaxyBrain.Creatures.States
             this.waterLayer = waterLayer;
         }
 
+        public override void OnStateStart()
+        {
+            waterSnap = false;
+        }
+
         public override void OnStateUpdate()
         {
             if (!SubmergedInWater())
             {
                 controller.Controller.SimpleMove(Vector3.zero);
+                waterSnap = false;
+            }
+            else
+            {
+                SnapToCorrectWaterPosition();
             }
 
             if (controller.Selected && !machine.LockState)
@@ -33,16 +45,34 @@ namespace GalaxyBrain.Creatures.States
             }
         }
 
+        private void SnapToCorrectWaterPosition()
+        {
+            if(!waterSnap)
+            {
+                if (controller.PlayerType == PlayerController.PlayerTypes.Water)
+                {
+                    Vector3 targetPos = pathfinding.ToGridPos(controller.transform.position + pathfinding.SearchPointOffset);
+                    targetPos += Vector3.down * pathfinding.WATER_FLOAT_POINT;
+
+                    controller.Controller.enabled = false;
+                    controller.transform.position = targetPos;
+                    controller.Controller.enabled = true;
+                }
+
+                waterSnap = true;
+            }
+        }
+
         private bool SubmergedInWater()
         {
             Vector3 extents = controller.ColliderBounds.extents;
-            return Physics.CheckBox(controller.Controller.bounds.center + (Vector3.up * extents.y * 2f), extents, controller.transform.rotation,
+            return Physics.CheckBox(controller.Controller.bounds.center, extents, controller.transform.rotation,
                 waterLayer, QueryTriggerInteraction.Collide);
         }
 
         private bool ExtraNodeConditions(Node startNode, Node endNode, Node current, Node neighborNode)
         {
-            if (controller.WeighedDown && !neighborNode.IsWater)
+            if (controller.WeighedDown && neighborNode.IsGround && !neighborNode.IsWater)
             {
                 return false;
             }
@@ -54,7 +84,7 @@ namespace GalaxyBrain.Creatures.States
         {
             if (pathfinding == null) return;
 
-            if (Input.GetMouseButtonDown(0))
+            if (controller.LeftClicked)
             {
                 //Change to pathfinding state
                 controller.StartMoveAlongPath(pathfinding.GetPath(), true);

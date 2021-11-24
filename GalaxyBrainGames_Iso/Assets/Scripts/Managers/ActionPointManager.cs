@@ -1,11 +1,13 @@
 using GalaxyBrain.Systems;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
+/// <summary>
+/// Manages the action points left in a stage,
+/// Triggers events in the action point scriptable object 
+/// When action points are consumed
+/// Also handles action point UI
+/// </summary>
 public class ActionPointManager : MonoBehaviour
 {
     [SerializeField] private ActionPointData pointData;
@@ -13,6 +15,16 @@ public class ActionPointManager : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI actionPointTextCount;
+
+    public ActionPointData PointData
+    {
+        get { return pointData; }
+    }
+
+    public int CurrentActionPoints
+    {
+        get { return actionPointCount; }
+    }
 
     // Start is called before the first frame update
     void Awake()

@@ -1,40 +1,51 @@
 using GalaxyBrain.Creatures;
 using GalaxyBrain.Interactables;
 using GalaxyBrain.Systems;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace GalaxyBrain.Managers
 {
+    public enum InteractionViability
+    {
+        NonViable,
+        InteractableNotInRange,
+        Interactable
+    }
+
     public class InteractionManager : MonoBehaviour
     {
         [SerializeField] CreatureData creatureData;
 
         private Dictionary<GameObject, Interactalbe> interactions = new Dictionary<GameObject, Interactalbe>();
 
-        public bool LookForInteractables(RaycastHit selectedObject)
+        public InteractionViability LookForInteractables(RaycastHit selectedObject)
         {
-            if (creatureData == null) return false;
+            if (creatureData == null) return InteractionViability.NonViable;
 
             PlayerController selectedCreature = creatureData.GetSelectedCreature();
 
+            //Check if interaction is cached
             if (interactions.ContainsKey(selectedObject.collider.gameObject))
             {
+                //Make sure we are the correct creature type.
                 if(!interactions[selectedObject.collider.gameObject].IsRequiredType(selectedCreature.PlayerType))
                 {
-                    return false;
+                    return InteractionViability.InteractableNotInRange;
                 }
 
-                if (Input.GetMouseButtonDown(0) &&
-                    interactions[selectedObject.collider.gameObject].CheckIfNeaby(selectedCreature.gameObject, 1.25f))
+                //Check if were in the creatures default state and in range
+                if (selectedCreature.InDefaultState && interactions[selectedObject.collider.gameObject].CheckIfNeaby(selectedCreature.gameObject, 1.05f))
                 {
-                    interactions[selectedObject.collider.gameObject].AttemptInteract(selectedCreature);
-                    return true;
+                    if(selectedCreature.LeftClicked)
+                    {
+                        interactions[selectedObject.collider.gameObject].AttemptInteract(selectedCreature);
+                    }
+                    return InteractionViability.Interactable;
                 }
+                return InteractionViability.InteractableNotInRange;
             }
-            return false;
+            return InteractionViability.NonViable;
         }
 
         // Start is called before the first frame update

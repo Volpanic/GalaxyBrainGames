@@ -63,9 +63,9 @@ namespace GalaxyBrain.Creatures.States
 
         private void MoveAlongPath()
         {
-
             //Don't move horizontally if we're rotating to face a new direction
-            if (Quaternion.Dot(controller.TargetRotation, controller.transform.rotation) < TURN_FORGIVENESS) return;
+            float rotationDot = Quaternion.Dot(controller.TargetRotation, controller.transform.rotation);
+            if (Mathf.Abs(rotationDot) < TURN_FORGIVENESS) return;
 
             //Make sure index is in array
             if (currentPathIndex + 1 >= path.Length)
@@ -76,7 +76,7 @@ namespace GalaxyBrain.Creatures.States
             }
 
             //Move the player along the path
-            moveTimer += Time.deltaTime;
+            moveTimer += Time.fixedDeltaTime;
 
             // Get current point and the next point on path
             Vector3 oldPos = path[currentPathIndex].Position;
@@ -101,6 +101,7 @@ namespace GalaxyBrain.Creatures.States
             {
                 if (consumeActionPoints && path[currentPathIndex + 1].ConsumePoint) controller.ConsumeActionPoint(1);
                 currentPathIndex++;
+
                 moveTimer = 0;
 
                 // Stop if we want to move the player manually
@@ -113,6 +114,12 @@ namespace GalaxyBrain.Creatures.States
                 else
                 {
                     controller.PathInterval(path[currentPathIndex - 1].Position, path[currentPathIndex].Position);
+
+                    Debug.DrawRay(path[currentPathIndex].Position,Vector3.up*4,Color.red,0.1f);
+                    if (!QuickNodeCheck(path[currentPathIndex + 1].Position, path[currentPathIndex].Position))
+                    {
+                        StopMoveAlongPath();
+                    }
                 }
 
                 if(controller.InteruptNextPathInterval)
@@ -121,6 +128,11 @@ namespace GalaxyBrain.Creatures.States
                     controller.InteruptNextPathInterval = false;
                 }
             }
+        }
+
+        private bool QuickNodeCheck(Vector3 targetPos,Vector3 currentPos)
+        {
+            return controller.Pathfinding.CheckNode(targetPos, currentPos);
         }
 
         private void StopMoveAlongPath()

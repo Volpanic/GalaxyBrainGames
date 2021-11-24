@@ -19,12 +19,22 @@ namespace GalaxyBrain.Assets.Scripts.CharecterController.CreatureAbilites
         private Action<PlayerController> onEvent;
 
         private PlayerController controller;
+        private bool hardPlay = false;
 
         public void SetEventInfo(string animationBoolName, float normalizedTimeToRunEvent, Action<PlayerController> onEvent)
         {
             this.animationBoolName = animationBoolName;
             this.normalizedTimeToRunEvent = normalizedTimeToRunEvent;
             this.onEvent = onEvent;
+            hardPlay = false;
+        }
+
+        public void SetEventInfoHard(string animationName, float normalizedTimeToRunEvent, Action<PlayerController> onEvent)
+        {
+            this.animationBoolName = animationName;
+            this.normalizedTimeToRunEvent = normalizedTimeToRunEvent;
+            this.onEvent = onEvent;
+            hardPlay = true;
         }
 
         public bool OnAbilityCheckCondition(Interactalbe interactable)
@@ -38,7 +48,7 @@ namespace GalaxyBrain.Assets.Scripts.CharecterController.CreatureAbilites
             {
                 if (controller.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= normalizedTimeToRunEvent)
                 {
-                    controller.Animator.SetBool(animationBoolName, false);
+                    if(!hardPlay) controller.Animator.SetBool(animationBoolName, false);
                     onEvent?.Invoke(controller);
                     return AbilityDoneType.Done;
                 }
@@ -53,7 +63,8 @@ namespace GalaxyBrain.Assets.Scripts.CharecterController.CreatureAbilites
 
         public void OnAbilityStart(PlayerController controller, Interactalbe interactable, Vector3 interactDirection)
         {
-            controller.Animator.SetBool(animationBoolName,true);
+            if (!hardPlay) controller.Animator.SetBool(animationBoolName, true);
+            else controller.Animator.Play(animationBoolName);
             this.controller = controller;
         }
 

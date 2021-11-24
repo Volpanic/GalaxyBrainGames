@@ -13,7 +13,7 @@ namespace GalaxyBrain.UI
         [SerializeField] private bool fadeIn = true;
 
         //This action is invoked when a fade is completed, it then clears itself.
-        private Action afterFade;
+        private System.Action afterFade;
 
         public bool FadeDone
         {
@@ -54,7 +54,7 @@ namespace GalaxyBrain.UI
         }
 
         //Actions chain an event to happen when the fade is completed.
-        public void FadeIn(Action fadeCompleteEvent = null)
+        public void FadeIn(System.Action fadeCompleteEvent = null)
         {
             FadeInGroup.blocksRaycasts = true;
             FadeInGroup.alpha = 1;
@@ -63,7 +63,7 @@ namespace GalaxyBrain.UI
             afterFade = fadeCompleteEvent;
         }
 
-        public void FadeOut(Action fadeCompleteEvent = null)
+        public void FadeOut(System.Action fadeCompleteEvent = null)
         {
             FadeInGroup.blocksRaycasts = true;
             FadeInGroup.alpha = 0;

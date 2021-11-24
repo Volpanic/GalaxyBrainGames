@@ -1,4 +1,5 @@
 using GalaxyBrain.Attributes;
+using GalaxyBrain.Audio;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ namespace GalaxyBrain.Creatures
     {
         [SerializeField] private CharacterController controller;
         [SerializeField] private Vector3 velocity;
+        [SerializeField] private AudioData newPassengerSound;
 
         private Vector3 oldPos;
         private Dictionary<GameObject, CharacterController> cachedControllers = new Dictionary<GameObject, CharacterController>();
@@ -36,7 +38,7 @@ namespace GalaxyBrain.Creatures
             oldPos = transform.position;
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             velocity = controller.velocity;
             FindPassengers();
@@ -52,21 +54,19 @@ namespace GalaxyBrain.Creatures
             if (Mathf.Abs(posDifference.x) <= 0.01f && Mathf.Abs(posDifference.z) <= 0.01f) return;
 
             //Loop through all passengers and move them to the top of our charecter controller
-            if (controller.velocity.magnitude != 0)
+            for (int i = 0; i < passengers.Count; i++)
             {
-                for (int i = 0; i < passengers.Count; i++)
-                {
-                    Vector3 movement = (controller.bounds.center + new Vector3(0, controller.bounds.extents.y, 0)) -
-                        (passengers[i].bounds.center - new Vector3(0, passengers[i].bounds.extents.y, 0));
-                    passengers[i].Move(movement);
-                }
+                Vector3 movement = (controller.bounds.center + new Vector3(0, controller.bounds.extents.y, 0)) -
+                    (passengers[i].bounds.center - new Vector3(0, passengers[i].bounds.extents.y, 0));
+                passengers[i].Move(movement);
             }
         }
 
         private void FindPassengers()
         {
             //Get all colliders above us
-            Collider[] colls = Physics.OverlapBox(controller.bounds.center + (Vector3.up * 0.5f), controller.bounds.extents, transform.rotation);
+            Collider[] colls = Physics.OverlapBox(controller.bounds.center + (Vector3.up), controller.bounds.extents, transform.rotation);
+            int oldPassengerCount = passengers.Count;
             passengers.Clear();
 
             //Check if they have character controllers
@@ -84,6 +84,11 @@ namespace GalaxyBrain.Creatures
                 else cc = cachedControllers[colls[i].gameObject];
 
                 if (cc != null) passengers.Add(cc);
+            }
+
+            if(passengers.Count > oldPassengerCount)
+            {
+                newPassengerSound?.Play();
             }
         }
     }

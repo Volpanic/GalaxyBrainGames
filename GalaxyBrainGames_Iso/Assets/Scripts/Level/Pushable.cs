@@ -1,5 +1,7 @@
+using GalaxyBrain.Audio;
 using GalaxyBrain.Systems;
 using UnityEngine;
+using UnityEngine.Events;
 using Volpanic.Easing;
 
 namespace GalaxyBrain.Interactables
@@ -13,9 +15,15 @@ namespace GalaxyBrain.Interactables
         [SerializeField] private Interactalbe interactalbe;
         [SerializeField] private CreatureData creatureData;
         [SerializeField] private Collider myCollider;
+        [SerializeField] private UnityEvent onPushedEvent;
+
+        [Header("Sounds")]
+        [SerializeField] private AudioData onPushedSound;
+        [SerializeField] private AudioData landedSound;
 
         private bool fallingOver = false;
         private float fallingTimer = 0;
+        private bool hasPlayedLanadedSound = false;
 
         private Quaternion initalRotation;
         private Quaternion targetRotation;
@@ -25,13 +33,19 @@ namespace GalaxyBrain.Interactables
             initalRotation = transform.rotation;
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (fallingOver)
             {
-                fallingTimer += Time.deltaTime;
+                fallingTimer += Time.fixedDeltaTime;
                 float lerpPos = Easingf.InExpo(0,1,fallingTimer);
                 transform.rotation = Quaternion.Lerp(initalRotation, targetRotation, lerpPos);
+
+                if(!hasPlayedLanadedSound && fallingTimer >= 0.9)
+                {
+                    hasPlayedLanadedSound = true;
+                    landedSound?.Play();
+                }
 
                 if (fallingTimer >= 1)
                 {
@@ -48,11 +62,12 @@ namespace GalaxyBrain.Interactables
         {
             if (pushDirection == Vector3.zero) return;
 
-            Debug.DrawRay(transform.position,pushDirection * 4,Color.white,5);
+            onPushedSound?.Play();
 
             FaceDirection(pushDirection);
             targetRotation = GetPushRotation(pushDirection);
             fallingOver = true;
+            onPushedEvent?.Invoke();
         }
 
         private void FaceDirection(Vector3 direction)

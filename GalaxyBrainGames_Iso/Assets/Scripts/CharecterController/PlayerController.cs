@@ -40,6 +40,10 @@ namespace GalaxyBrain.Creatures
         [SerializeField] private GridPathfinding pathfinding;
         [SerializeField] private Animator animator;
 
+        [SerializeField] private Color selectionIconTint = Color.white;
+
+        [SerializeField] Sprite creatureIcon;
+
         [HideInInspector] public bool Selected = false;
         [HideInInspector] public bool IsClimbing = false;
         [HideInInspector] public bool InteruptNextPathInterval = false;
@@ -49,6 +53,8 @@ namespace GalaxyBrain.Creatures
 
         public event Action<Vector3, Vector3> OnPathInterval;
         private Quaternion targetRotation;
+        private bool leftClicked  = false;
+        private bool rightClicked = false;
 
         public bool CanClimb { get { return canClimb; } }
         public bool CanSwim { get { return canSwim; } }
@@ -62,6 +68,16 @@ namespace GalaxyBrain.Creatures
         public bool Grounded
         {
             get { return controller.isGrounded; }
+        }
+
+        public bool LeftClicked
+        {
+            get { return leftClicked; }
+        }
+
+        public bool RightClicked
+        {
+            get { return rightClicked; }
         }
 
         public CharacterController Controller
@@ -93,6 +109,21 @@ namespace GalaxyBrain.Creatures
         public Animator Animator
         {
             get { return animator; }
+        }
+
+        public GridPathfinding Pathfinding
+        {
+            get { return pathfinding; }
+        }
+
+        public Color SelectionIconTint
+        {
+            get { return selectionIconTint; }
+        }
+
+        public Sprite CreatureIcon
+        {
+            get { return creatureIcon; }
         }
 
         private PlayerStateMachine stateMachine;
@@ -137,6 +168,12 @@ namespace GalaxyBrain.Creatures
 
         private void Update()
         {
+            if (!leftClicked) leftClicked = Input.GetMouseButtonDown(0);
+            if (!rightClicked) rightClicked = Input.GetMouseButtonDown(1);
+        }
+
+        private void FixedUpdate()
+        {
             // If timescale is 0 don't run any code
             // Most likely game is paused if timescale is 0
             if (Time.timeScale == 0) return;
@@ -144,12 +181,15 @@ namespace GalaxyBrain.Creatures
             stateMachine.UpdateState();
 
             transform.rotation = UpdateRotation(transform.rotation, targetRotation);
+
+            leftClicked = false;
+            rightClicked = false;
         }
 
         public Quaternion UpdateRotation(Quaternion current, Quaternion target)
         {
             //Rotate towards target rotation, rotate speed * 1440 (being 360*4)
-            return Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * (rotateSpeed * 1440f));
+            return Quaternion.RotateTowards(transform.rotation, targetRotation, Time.fixedDeltaTime * (rotateSpeed * 1440f));
         }
 
         public Quaternion GetDirectionOfMovement()
@@ -191,8 +231,20 @@ namespace GalaxyBrain.Creatures
             {
                 List<PathNodeInfo> targetList = new List<PathNodeInfo>();
 
-                PathNodeInfo startNode = new PathNodeInfo(pathfinding.CreateAndStoreNode(pathfinding.ToGridPos(transform.position)), false, false, false);
-                PathNodeInfo endNode = new PathNodeInfo(pathfinding.CreateAndStoreNode(pathfinding.ToGridPos(transform.position) + offset), false, false, false);
+                PathNodeInfo startNode = new PathNodeInfo(pathfinding.CreateAndStoreNode(pathfinding.ToGridPos(transform.position + pathfinding.SearchPointOffset)), false, false, false);
+                PathNodeInfo endNode = new PathNodeInfo(pathfinding.CreateAndStoreNode(pathfinding.ToGridPos(transform.position + pathfinding.SearchPointOffset) + offset), false, false, false);
+
+                if (startNode.ReferenceNode.IsWater && canSwim)
+                {
+                    startNode.IsSwimming = true;
+                    startNode.Offset += Vector3.down * pathfinding.WATER_FLOAT_POINT;
+                }
+
+                if (endNode.ReferenceNode.IsWater && canSwim)
+                {
+                    endNode.IsSwimming = true;
+                    endNode.Offset += Vector3.down * pathfinding.WATER_FLOAT_POINT;
+                }
 
                 targetList.Add(startNode);
                 targetList.Add(endNode);
@@ -248,6 +300,32 @@ namespace GalaxyBrain.Creatures
         {
             animationEventAbility.SetEventInfo(boolName,normalizedTimeForEvent,onEvent);
             abilityState.ForceAbility(interaction,animationEventAbility);
+
+            Vector3 pos = interaction.transform.position;
+            Vector3 pos2 = transform.position;
+
+            pos.y = 0;
+            pos2.y = 0;
+
+            Vector3 interactDirection = (pos - pos2).normalized;
+
+            TargetRotation = GetRotationOfDirection(interactDirection);
+        }
+
+        public void HardPlayAnimationEvent(Interactalbe interaction, string animationName, float normalizedTimeForEvent, Action<PlayerController> onEvent)
+        {
+            animationEventAbility.SetEventInfoHard(animationName, normalizedTimeForEvent, onEvent);
+            abilityState.ForceAbility(interaction, animationEventAbility);
+
+            Vector3 pos = interaction.transform.position;
+            Vector3 pos2 = transform.position;
+
+            pos.y = 0;
+            pos2.y = 0;
+
+            Vector3 interactDirection = (pos - pos2).normalized;
+
+            TargetRotation = GetRotationOfDirection(interactDirection);
         }
 
         private void OnDrawGizmos()

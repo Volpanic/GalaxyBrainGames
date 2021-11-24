@@ -2,10 +2,14 @@ using GalaxyBrain.Creatures;
 using GalaxyBrain.Pathfinding;
 using GalaxyBrain.Systems;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// Manages the creatures in the current scene, storing it's data in the
+/// Creature data scriptable object and triggering it's events.
+/// Also determines where the pathfinding starts from.
+/// </summary>
 namespace GalaxyBrain.Managers
 {
     public class CreatureManager : MonoBehaviour
@@ -41,13 +45,20 @@ namespace GalaxyBrain.Managers
                 creatureData.CreaturesInLevel[selectedCreature].Selected = true;
                 if (oldCreature != selectedCreature) OnSelectedChanged?.Invoke(oldCreature, selectedCreature);
                 pathfinding?.ClearPath();
+                PlayCreatureSwapSound(creatureData.CreaturesInLevel[selectedCreature]);
             }
+        }
+
+        private void PlayCreatureSwapSound(PlayerController playerController)
+        {
+            creatureData.PlayCreatureSwapSound(playerController.PlayerType);
         }
 
         private void Awake()
         {
             creatureData.LogManager(this);
             creatureData.pathfinding = pathfinding;
+            Application.targetFrameRate = -1;
         }
 
         // Start is called before the first frame update

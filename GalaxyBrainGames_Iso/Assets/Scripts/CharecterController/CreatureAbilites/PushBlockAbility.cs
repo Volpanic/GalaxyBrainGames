@@ -1,3 +1,4 @@
+using GalaxyBrain.Audio;
 using GalaxyBrain.Interactables;
 using UnityEngine;
 
@@ -16,28 +17,42 @@ namespace GalaxyBrain.Creatures.Abilities
         private Vector3 direction;
         private bool done = false;
         private bool canceled = false;
+        private AudioData abilityStartSound;
+
+        public AudioData AbilityStartSound
+        {
+            get { return abilityStartSound; }
+            set { abilityStartSound = value; }
+        }
 
         private bool buffer = false;
+
+        private const string PUSH_ANIMATION_NAME = "strongPush";
 
         public bool OnAbilityCheckCondition(Interactalbe interactable)
         {
             block = interactable.GetComponent<PushBlock>();
 
-            return (block != null);
+            if(block != null && !block.Moving)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public AbilityDoneType OnAbilityCheckDone()
         {
             if(done)
             {
-                if (controller.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
+                if (canceled) return AbilityDoneType.Canceled;
+
+                if (controller.Animator.GetCurrentAnimatorStateInfo(0).IsName(PUSH_ANIMATION_NAME) && controller.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.75f)
                 {
                     controller.Animator.SetBool("Push", false);
                     block?.StartPush();
                     return AbilityDoneType.Done;
                 }
-
-                if (canceled) return AbilityDoneType.Canceled;
             }
 
             return AbilityDoneType.NotDone;
@@ -50,6 +65,7 @@ namespace GalaxyBrain.Creatures.Abilities
             done = false;
             buffer = false;
             controller.Animator.SetBool("Push", false);
+            controller.Animator.SetBool("Stand", false);
         }
 
         public void OnAbilityStart(PlayerController controller, Interactalbe interactable, Vector3 interactDirection)
@@ -61,6 +77,10 @@ namespace GalaxyBrain.Creatures.Abilities
             canceled = false;
             buffer = false;
 
+            abilityStartSound?.Play();
+
+            controller.Animator.SetBool("Stand", true);
+
             Debug.DrawRay(interactable.transform.position, interactDirection * 15, Color.yellow, 100);
         }
 
@@ -68,21 +88,23 @@ namespace GalaxyBrain.Creatures.Abilities
         {
             if (buffer && !done)
             {
-                float blockMagnitude = block.UpdateAbility(direction);
+                float blockMagnitude = block.UpdateAbility(controller,direction);
 
                 if (block.PathLocked)
                 {
-                    if (blockMagnitude >= 1)
+                    if (blockMagnitude >= .9)
                     {
                         done = true;
+                        controller.Animator.SetBool("Stand", false);
                         controller.Animator.SetBool("Push", true);
                     }
+                }
 
-                    if (blockMagnitude < 0)
-                    {
-                        done = true;
-                        canceled = true;
-                    }
+                if (blockMagnitude < 0)
+                {
+                    done = true;
+                    canceled = true;
+                    controller.Animator.SetBool("Stand", false);
                 }
             }
             buffer = true;

@@ -1,4 +1,6 @@
+using GalaxyBrain.Creatures;
 using GalaxyBrain.Systems;
+using System;
 using UnityEngine;
 using Volpanic.Easing;
 
@@ -15,6 +17,7 @@ namespace GalaxyBrain.Interactables
         [SerializeField] private Collider myCollider;
         [SerializeField] private CreatureData creatureData;
         [SerializeField] private LayerMask groundMask;
+        [SerializeField] private LayerMask dontDropOnLayer;
         [SerializeField] private int maxPushRange = 3;
 
         [SerializeField] private Color ViablePathColor = Color.green;
@@ -35,6 +38,11 @@ namespace GalaxyBrain.Interactables
         private bool firstSnap = true;
         private bool firstLand = true;
 
+        public bool Moving
+        {
+            get { return moving; }
+        }
+
         public bool PathLocked
         {
             get { return pathLocked; }
@@ -50,9 +58,10 @@ namespace GalaxyBrain.Interactables
         {
             UpdatePlane();
             cam = Camera.main;
+            transform.rotation = Quaternion.identity;
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (moving)
             {
@@ -62,7 +71,7 @@ namespace GalaxyBrain.Interactables
             {
                 if (Physics.BoxCast(controller.bounds.center, controller.bounds.extents * 0.98f, Vector3.down, Quaternion.identity, 0.025f)) 
                 {
-                    SmoothSnapToGrid();
+                    //SmoothSnapToGrid();
 
                     if (!firstLand)
                     {
@@ -76,18 +85,20 @@ namespace GalaxyBrain.Interactables
                 }
                 controller.SimpleMove(Vector3.zero);
             }
+
+            Debug.DrawRay(transform.TransformPoint(targetPos), Vector3.up, Color.cyan, 0.1f);
+
         }
 
         private void UpdateBlockMoving()
         {
-            pushTimer += Time.deltaTime;
+            pushTimer += Time.fixedDeltaTime;
             float lerpPos = Easingf.OutSine(0f, 1f, pushTimer / pushMaxTime);
-            Vector3 target = Vector3.Lerp(startPos, targetPos, lerpPos);
+            Vector3 target = Vector3.Lerp(startPos, startPos + targetPos, lerpPos);
 
-            Vector3 movement = target - oldMovement;
+            Vector3 movement = target - transform.position;
+            movement.y = 0;
             if (movement != Vector3.zero) controller.Move(movement);
-
-            oldMovement = target;
 
             //Check if we hit a wall
             if (pushTimer >= 0.2f && (PlaceMeeting(movement, 0.9f) || !PlaceMeeting(Vector3.down*0.25f, 0.9f)))
@@ -110,7 +121,7 @@ namespace GalaxyBrain.Interactables
 
                 creatureData.pathfinding.UpdateNodeCells(startPos - Vector3.one, startPos + Vector3.one);
                 moving = false;
-                SmoothSnapToGrid();
+                //SmoothSnapToGrid();
             }
         }
 
@@ -137,7 +148,7 @@ namespace GalaxyBrain.Interactables
             Vector3 targetSnap = creatureData.pathfinding.ToGridPos(transform.position);
 
             controller.enabled = false;
-            transform.position = Vector3.MoveTowards(transform.position, targetSnap, Time.deltaTime * 4);
+            transform.position = Vector3.MoveTowards(transform.position, targetSnap, Time.fixedDeltaTime * 4);
             controller.enabled = true;
 
             if (!firstSnap)
@@ -147,7 +158,7 @@ namespace GalaxyBrain.Interactables
             }
         }
 
-        public float UpdateAbility(Vector3 interactionCardinal)
+        public float UpdateAbility(PlayerController controller,Vector3 interactionCardinal)
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             float enter = 0;
@@ -165,16 +176,16 @@ namespace GalaxyBrain.Interactables
                 //Point has Changed
                 if (endPoint != tempEndPoint)
                 {
-                    viablePushPath = CheckIfPathIsViable(interactionCardinal.normalized, Mathf.FloorToInt(endPoint.magnitude));
+                    viablePushPath = CheckIfPathIsViable(interactionCardinal.normalized, Mathf.RoundToInt(endPoint.magnitude));
 
                     //Update Grid
                     if (pushBlockRenderer != null)
                     {
-                        UpdateTileIdecator(interactionCardinal.normalized, endPoint.magnitude);
+                        UpdateTileIdecator(interactionCardinal.normalized, Mathf.RoundToInt(endPoint.magnitude));
                     }
                 }
 
-                if (viablePushPath && Input.GetMouseButtonDown(0))
+                if (viablePushPath && controller.LeftClicked)
                 {
                     pushBlockRenderer.gameObject.SetActive(false);
                     tempEndPoint = Vector3.zero;
@@ -185,13 +196,15 @@ namespace GalaxyBrain.Interactables
                         return endPoint.magnitude;
                     }
 
+                    endPoint = endPoint.normalized * (Mathf.Ceil(Mathf.Abs(endPoint.magnitude)) * Mathf.Sign(endPoint.magnitude));
+                    Debug.Log(endPoint.magnitude);
                     targetPos = (endPoint);
                     pathLocked = true;
                     return endPoint.magnitude;
                 }
 
                 //Cancel
-                if(Input.GetMouseButtonDown(1))
+                if(controller.RightClicked)
                 {
                     pushBlockRenderer.gameObject.SetActive(false);
                     tempEndPoint = Vector3.zero;
@@ -209,27 +222,30 @@ namespace GalaxyBrain.Interactables
             for(int i = 0; i < magnitude; i++)
             {
                 //Check for a wall
-                if (PlaceMeeting(offset,0.95f))
+                if (PlaceMeeting(offset,0.8f))
                 {
                     return false;
                 }
 
                 //Check if there is no ground below us
-                if (CheckIfOffMap(transform.position + offset, 16))
+                if (CheckIfOffMap(transform.position + offset, 16) || CheckIfDroppingOn(transform.position + offset,16))
                 {
                     return false;
                 }
 
                 offset += normalized; //Increase by 1 tile size
             }
-
-
             return true;
+        }
+
+        private bool CheckIfDroppingOn(Vector3 position, float downDistance)
+        {
+            return Physics.BoxCast(position, controller.bounds.extents * 0.8f, Vector3.down, transform.rotation, downDistance, dontDropOnLayer);
         }
 
         private bool CheckIfOffMap(Vector3 position, float downDistance)
         {
-            return !Physics.BoxCast(position, controller.bounds.extents * 0.95f, Vector3.down, transform.rotation, downDistance, groundMask);
+            return !Physics.BoxCast(position, controller.bounds.extents * 0.8f, Vector3.down, transform.rotation, downDistance, groundMask);
         }
 
         private void UpdateTileIdecator(Vector3 normalized, float magnitude)
@@ -259,7 +275,7 @@ namespace GalaxyBrain.Interactables
 
         public void StartPush()
         {
-            startPos = Vector3.zero;
+            startPos = transform.position;
             pushTimer = 0;
             oldMovement = Vector3.zero;
             moving = true;
