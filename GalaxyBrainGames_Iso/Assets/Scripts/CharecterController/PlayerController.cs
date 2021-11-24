@@ -328,6 +328,11 @@ namespace GalaxyBrain.Creatures
             TargetRotation = GetRotationOfDirection(interactDirection);
         }
 
+        public bool IsInState(Type stateType)
+        {
+           return stateMachine.CurrentState.GetType() == stateType;
+        }
+
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.green;

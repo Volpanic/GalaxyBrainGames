@@ -1,5 +1,6 @@
 using GalaxyBrain.Audio;
 using GalaxyBrain.Creatures.Abilities;
+using GalaxyBrain.Creatures.States;
 using GalaxyBrain.Systems;
 using UnityEngine;
 
@@ -14,6 +15,8 @@ namespace GalaxyBrain.Creatures
         [SerializeField] private CreatureData creatureData;
         [SerializeField] private AudioData roarSound;
 
+        private bool hasPlayedRoar = true;
+
         // Start is called before the first frame update
         void Awake()
         {
@@ -22,14 +25,21 @@ namespace GalaxyBrain.Creatures
 
         private void Start()
         {
-            PushBlockAbility pushAbility = new PushBlockAbility();
-            KnockOverPillarAbility pillarAbility = new KnockOverPillarAbility();
+            controller.AddAbility(new PushBlockAbility());
+            controller.AddAbility(new KnockOverPillarAbility());
+        }
 
-            pushAbility.AbilityStartSound = roarSound;
-            pillarAbility.AbilityStartSound = roarSound;
-
-            controller.AddAbility(pushAbility);
-            controller.AddAbility(pillarAbility);
+        private void FixedUpdate()
+        {
+            if (controller.InDefaultState)
+            {
+                hasPlayedRoar = false;
+            }
+            else  if(!hasPlayedRoar && controller.IsInState(typeof(PlayerAbilityState)))
+            {
+                hasPlayedRoar = true;
+                roarSound?.Play();
+            }
         }
     }
 }
