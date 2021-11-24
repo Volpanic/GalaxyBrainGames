@@ -18,7 +18,8 @@ public class DoorControl : MonoBehaviour
         if (isOpen)
         {
             element.SetActive(true);
-            if(animator != null)
+            animator.Play("AN_door_close");
+            if (animator != null)
                 animator.SetBool("doorOpen", false);
             isOpen = false;
             data.pathfinding?.UpdateNodeCells(myCollider.bounds.min,myCollider.bounds.max);
@@ -26,6 +27,7 @@ public class DoorControl : MonoBehaviour
         else
         {
             element.SetActive(false);
+            animator.Play("AN_door_open");
             if (animator != null)
                 animator.SetBool("doorOpen", true);
             isOpen = true;
