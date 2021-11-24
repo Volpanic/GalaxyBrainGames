@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
+  m_IndirectSpecularColor: {r: 0.1273174, g: 0.13414761, b: 0.12107885, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3051,12 +3051,14 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5470609487627091761, guid: c87f2c076a90e0c48a16110385965c2b, type: 3}
       propertyPath: playingSequence.Array.data[0].DialougeText
-      value: "Did you feel that? That shifting, the world changing... \n"
+      value: 'Did you feel that? The Shifting - the world changing.
+
+'
       objectReference: {fileID: 0}
     - target: {fileID: 5470609487627091761, guid: c87f2c076a90e0c48a16110385965c2b, type: 3}
       propertyPath: playingSequence.Array.data[1].DialougeText
-      value: It's these wilds, this world... they're not like yours. Not as... solid,
-        I guess? Always shifting, falling apart and swirling together forever...
+      value: It's these wilds... they're not like your world. Not as... solid, I
+        guess? Falling apart and swirling together, shifting forever...
       objectReference: {fileID: 0}
     - target: {fileID: 5470609487627091761, guid: c87f2c076a90e0c48a16110385965c2b, type: 3}
       propertyPath: playingSequence.Array.data[2].DialougeText
@@ -3072,6 +3074,10 @@ PrefabInstance:
       propertyPath: playingSequence.Array.data[4].DialougeText
       value: Whenever you touch a wisp, I get a little stronger - and we can move
         another step further in.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5470609487627091761, guid: c87f2c076a90e0c48a16110385965c2b, type: 3}
+      propertyPath: playingSequence.Array.data[5].DialougeText
+      value: Do you think... we can help each other?
       objectReference: {fileID: 0}
     - target: {fileID: 5470609487627091761, guid: c87f2c076a90e0c48a16110385965c2b, type: 3}
       propertyPath: playingSequence.Array.data[0].SpeakerPortrait
@@ -18000,19 +18006,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.35663313
+      value: 0.35665908
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.1407242
+      value: 0.14073446
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.85912037
+      value: 0.8591096
       objectReference: {fileID: 0}
     - target: {fileID: 111573222980486684, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.33900115
+      value: -0.3389969
       objectReference: {fileID: 0}
     - target: {fileID: 111573223273415090, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_RootOrder
@@ -18088,19 +18094,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.35663313
+      value: 0.35665908
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.1407242
+      value: 0.14073446
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.85912037
+      value: 0.8591096
       objectReference: {fileID: 0}
     - target: {fileID: 6498380474920186188, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.33900115
+      value: -0.3389969
       objectReference: {fileID: 0}
     - target: {fileID: 8841790897374377946, guid: 1b3eaba963609d046aae6ba66d178f16, type: 3}
       propertyPath: sharedProfile
