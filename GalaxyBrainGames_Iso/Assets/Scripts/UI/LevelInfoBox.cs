@@ -56,11 +56,20 @@ namespace GalaxyBrain.UI
             levelNameText.text = $"Level {levelNum}";
             this.targetScene = targetScene;
 
-            SceneInfo info = levelProgression.SceneInformation[levelNum - 1];
-            actionPointsText.text = info.ActionPointsInLevel.ToString();
-            CreateCreatureIcons(info.CreaturesInLevel);
+            if (levelProgression.SceneInformation != null && (levelNum - 1) < levelProgression.SceneInformation.Count)
+            {
+                SceneInfo info = levelProgression.SceneInformation[levelNum - 1];
+                actionPointsText.text = info.ActionPointsInLevel.ToString();
+                CreateCreatureIcons(info.CreaturesInLevel);
+            }
+            else
+            {
+                actionPointsText.text = "Level info is generated when built";
+                CreateCreatureIcons(null);
+            }
 
-            levelPreview.texture = levelProgression.SceneScreenShots[levelNum - 1];
+            if (levelProgression.SceneScreenShots != null && (levelNum - 1) < levelProgression.SceneScreenShots.Count)
+                levelPreview.texture = levelProgression.SceneScreenShots[levelNum - 1];
 
             infoGroup.interactable = true;
             infoGroup.blocksRaycasts = true;
@@ -78,6 +87,9 @@ namespace GalaxyBrain.UI
             {
                 Destroy(child.gameObject);
             }
+
+
+            if (creaturesInLevel == null) return;
 
             for (int i = 0; i < creaturesInLevel.Length; i++)
             {
