@@ -14,11 +14,14 @@ namespace GalaxyBrain.UI
         [SerializeField] private SaveData saveData;
         [SerializeField] private LevelProgression levelProgression;
         [SerializeField] private GameEvent nextLevelEvent;
+        [SerializeField] private Sprite lockedIcon;
 
         [Header("Reference")]
         [SerializeField] private GameObject levelIconPrefab;
         [SerializeField] private GridLayoutGroup layout;
         [SerializeField] private LevelInfoBox infoBox;
+
+        private Sprite unlockedIcon;
 
         private void Start()
         {
@@ -39,14 +42,21 @@ namespace GalaxyBrain.UI
                 {
                     GameObject icon = Instantiate(levelIconPrefab, layout.transform);
                     Button button = icon.GetComponent<Button>();
+                    Image iconSprite = icon.GetComponent<Image>();
                     TextMeshProUGUI text = icon.GetComponentInChildren<TextMeshProUGUI>();
 
                     bool locked = i > saveData.Data.MaxLevelCompleted;
 
+                    if(unlockedIcon == null  && !locked)
+                    {
+                        unlockedIcon = iconSprite.sprite;
+                    }
+
                     //Change name if level is unlocked
                     if (locked)
                     {
-                        text.text = "Locked";
+                        text.text = "";
+                        iconSprite.sprite = lockedIcon;
                     }
                     else
                     {
