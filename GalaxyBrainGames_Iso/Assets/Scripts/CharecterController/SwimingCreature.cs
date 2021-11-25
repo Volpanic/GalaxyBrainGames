@@ -20,5 +20,10 @@ namespace GalaxyBrain.Creatures
         {
             creatureData.LogCreature(controller);
         }
+
+        private void FixedUpdate()
+        {
+            controller.WeighedDown = controllerCarry.SteppedOn;
+        }
     }
 }
