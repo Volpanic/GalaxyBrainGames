@@ -19,6 +19,7 @@ namespace GalaxyBrain.UI
         [SerializeField] private TextMeshProUGUI actionPointsText;
         [SerializeField] private GridLayoutGroup creaturesInLevelgroup;
         [SerializeField] private RectTransform folderInfoBox;
+        [SerializeField] private RawImage levelPreview;
 
         private string targetScene;
         private bool locked;
@@ -58,6 +59,8 @@ namespace GalaxyBrain.UI
             SceneInfo info = levelProgression.SceneInformation[levelNum - 1];
             actionPointsText.text = info.ActionPointsInLevel.ToString();
             CreateCreatureIcons(info.CreaturesInLevel);
+
+            levelPreview.texture = levelProgression.SceneScreenShots[levelNum - 1];
 
             infoGroup.interactable = true;
             infoGroup.blocksRaycasts = true;

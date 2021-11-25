@@ -27,6 +27,9 @@ namespace GalaxyBrain.Systems
         [ReadOnly]
         public List<SceneInfo> SceneInformation;
 
+        [ReadOnly]
+        public List<Texture2D> SceneScreenShots;
+
         public GameObject SceneTransition;
 
         private Transform canvasRoot;
