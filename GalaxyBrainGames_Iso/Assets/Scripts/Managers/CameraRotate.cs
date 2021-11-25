@@ -16,61 +16,65 @@ namespace GalaxyBrain
         // Update is called once per frame
         void Update()
         {
-            var orbital = vcam.GetCinemachineComponent<CinemachineOrbitalTransposer>();
-            float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+            if (Time.timeScale != 0)
+            {
+                var orbital = vcam.GetCinemachineComponent<CinemachineOrbitalTransposer>();
+                float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
 
 
-            if (toggleInvert == false)
-            {
-                orbital.m_XAxis.Value -= Input.mouseScrollDelta.y * mouseScrollSpeed;
-            }
-            if (toggleInvert == true)
-            {
-                orbital.m_XAxis.Value += Input.mouseScrollDelta.y * mouseScrollSpeed;
-            }
-            
-
-            if (Input.GetMouseButton(1))
-            {
-                if(toggleInvert == false)
+                if (toggleInvert == false)
                 {
-                    orbital.m_XAxis.m_InputAxisValue = -mouseX;
+                    orbital.m_XAxis.Value -= Input.mouseScrollDelta.y * mouseScrollSpeed;
                 }
-                else
+                if (toggleInvert == true)
                 {
-                    orbital.m_XAxis.m_InputAxisValue = mouseX;
+                    orbital.m_XAxis.Value += Input.mouseScrollDelta.y * mouseScrollSpeed;
                 }
 
-            }
 
-            if (Input.GetMouseButtonUp(1))
-            {
-                orbital.m_XAxis.m_InputAxisValue = 0;
-            }
-
-            if (toggleInvert == false)
-            {
-                if (Input.GetKey("a"))
+                if (Input.GetMouseButton(1))
                 {
-                    orbital.m_XAxis.Value += keyScrollSpeed;
+                    if (toggleInvert == false)
+                    {
+                        orbital.m_XAxis.m_InputAxisValue = -mouseX;
+                    }
+                    else
+                    {
+                        orbital.m_XAxis.m_InputAxisValue = mouseX;
+                    }
+
                 }
 
-                if (Input.GetKey("d"))
+                if (Input.GetMouseButtonUp(1))
                 {
-                    orbital.m_XAxis.Value -= keyScrollSpeed;
-                }
-            }
-            if (toggleInvert == true)
-            {
-                if (Input.GetKey("a"))
-                {
-                    orbital.m_XAxis.Value -= keyScrollSpeed;
+                    orbital.m_XAxis.m_InputAxisValue = 0;
                 }
 
-                if (Input.GetKey("d"))
+                if (toggleInvert == false)
                 {
-                    orbital.m_XAxis.Value += keyScrollSpeed;
+                    if (Input.GetKey("a"))
+                    {
+                        orbital.m_XAxis.Value += keyScrollSpeed;
+                    }
+
+                    if (Input.GetKey("d"))
+                    {
+                        orbital.m_XAxis.Value -= keyScrollSpeed;
+                    }
                 }
+                if (toggleInvert == true)
+                {
+                    if (Input.GetKey("a"))
+                    {
+                        orbital.m_XAxis.Value -= keyScrollSpeed;
+                    }
+
+                    if (Input.GetKey("d"))
+                    {
+                        orbital.m_XAxis.Value += keyScrollSpeed;
+                    }
+                }
+
             }
 
 
