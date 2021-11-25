@@ -59,6 +59,8 @@ namespace GalaxyBrain
 
         public void OnHover()
         {
+            if (buttonText == null) return;
+
             //StartCoroutine(ShakeText(.25f));
             if (!shake) StartCoroutine(WaveText(.25f));
             else StartCoroutine(ShakeText(.25f));
@@ -68,6 +70,8 @@ namespace GalaxyBrain
 
         public void OnClick()
         {
+            if (buttonText == null) return;
+
             StartCoroutine(WaveText(.25f));
         }
 
