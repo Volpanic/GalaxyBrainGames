@@ -81,9 +81,15 @@ namespace GalaxyBrain.UI
 
             for (int i = 0; i < creaturesInLevel.Length; i++)
             {
-                GameObject go = new GameObject();
-                go.AddComponent<Image>().sprite = creaturesInLevel[i];
-                go.transform.SetParent(creaturesInLevelgroup.transform,false);
+                Sprite creatureIcon = creaturesInLevel[i];
+                if (creatureIcon != null)
+                {
+                    GameObject go = new GameObject();
+                    Image sprite = go.AddComponent<Image>();
+                    sprite.sprite = creatureIcon;
+                    sprite.preserveAspect =  true;
+                    go.transform.SetParent(creaturesInLevelgroup.transform, false);
+                }
             }
             LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)creaturesInLevelgroup.transform);
         }
